@@ -15,28 +15,6 @@ interface HybridFeedContentProps {
 const HybridFeedContent: React.FC<HybridFeedContentProps> = ({ feedType, viewMode }) => {
   const { posts } = useHybridFeed();
 
-  // Mock comments for classic mode
-  const mockComments = [
-    {
-      id: '1',
-      content: 'Great post! Thanks for sharing.',
-      userId: 'user1',
-      username: 'johndoe',
-      user: {
-        name: 'John Doe',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
-        is_verified: false,
-      },
-      createdAt: '2h',
-      likes: 5,
-    },
-  ];
-
-  const handleAddComment = (postId: string, comment: string) => {
-    console.log('Add comment:', postId, comment);
-    // In a real implementation, this would add the comment
-  };
-
   // Filter posts based on view mode
   const getDisplayPosts = () => {
     if (viewMode === 'classic') {
@@ -51,11 +29,79 @@ const HybridFeedContent: React.FC<HybridFeedContentProps> = ({ feedType, viewMod
   const displayPosts = getDisplayPosts();
 
   if (viewMode === 'classic') {
-    // Classic mode: Just use the original unified content - no changes to classic behavior
-    return <UnifiedFeedContent feedType={feedType} />;
+    // Classic mode: Show posts from HybridFeedContext in classic layout
+    return (
+      <div className="space-y-4">
+        {displayPosts.map((post) => (
+          <HybridPostCard
+            key={post.id}
+            post={post}
+            viewMode="classic"
+            showThread={false}
+          />
+        ))}
+        {displayPosts.length === 0 && (
+          <Card className="mx-2 sm:mx-0">
+            <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                <TrendingUp className="w-8 h-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                No posts yet
+              </h3>
+              <p className="text-gray-600 max-w-sm">
+                Be the first to share something amazing!
+              </p>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    );
   } else {
-    // Threaded mode: Use Twitter-style threaded feed
-    return <TwitterThreadedFeed feedType={feedType} />;
+    // Threaded mode: Show posts with threading structure
+    const rootPosts = posts.filter(post => !post.parentId);
+
+    return (
+      <div className="space-y-4">
+        {rootPosts.map((post) => (
+          <div key={post.id} className="space-y-2">
+            <HybridPostCard
+              post={post}
+              viewMode="threaded"
+              showThread={true}
+            />
+            {/* Show replies in threaded view */}
+            {posts
+              .filter(p => p.parentId === post.id)
+              .map((reply) => (
+                <div key={reply.id} className="ml-8 border-l-2 border-gray-200 pl-4">
+                  <HybridPostCard
+                    post={reply}
+                    viewMode="threaded"
+                    showThread={false}
+                    isInThread={true}
+                  />
+                </div>
+              ))}
+          </div>
+        ))}
+        {rootPosts.length === 0 && (
+          <Card className="mx-2 sm:mx-0">
+            <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                <MessageSquare className="w-8 h-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                No threads yet
+              </h3>
+              <p className="text-gray-600 max-w-sm">
+                Start a conversation to see threaded discussions here!
+              </p>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    );
   }
 };
 

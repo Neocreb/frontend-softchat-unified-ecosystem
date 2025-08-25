@@ -58,14 +58,14 @@ const HybridPostCard: React.FC<HybridPostCardProps> = ({
   onNavigateToPost,
   viewMode
 }) => {
-  const { 
-    toggleLike, 
-    toggleBookmark, 
-    toggleGift, 
+  const {
+    toggleLike,
+    toggleBookmark,
+    toggleGift,
     incrementShares,
     createReplyPost,
     createQuotePost,
-    getPostReplies 
+    getPostReplies
   } = useHybridFeed();
   const { user } = useAuth();
   const navigate = useNavigate();

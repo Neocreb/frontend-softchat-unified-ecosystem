@@ -41,6 +41,7 @@ import { HybridFeedProvider, useHybridFeed } from "@/contexts/HybridFeedContext"
 import HybridPostCard from "@/components/feed/HybridPostCard";
 import HybridFeedContent from "@/components/feed/HybridFeedContent";
 import CommentSection from "@/components/feed/CommentSection";
+import ErrorBoundary from "@/components/ui/error-boundary";
 
 // Stories component for the feed
 const StoriesSection = ({
@@ -582,9 +583,31 @@ const EnhancedFeedWithTabs = () => {
                   className="mt-0 space-y-0"
                 >
                   {feedViewMode === 'threaded' ? (
-                    <HybridFeedProvider>
-                      <HybridFeedContent feedType={tab.value} viewMode={feedViewMode} />
-                    </HybridFeedProvider>
+                    <ErrorBoundary
+                      fallback={
+                        <div className="flex flex-col items-center justify-center py-12 text-center">
+                          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                            <MessageSquare className="w-8 h-8 text-red-500" />
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                            Thread Mode Error
+                          </h3>
+                          <p className="text-gray-600 max-w-sm mb-4">
+                            Unable to load threaded view. Switching back to classic view.
+                          </p>
+                          <Button
+                            onClick={() => setFeedViewMode('classic')}
+                            variant="outline"
+                          >
+                            Switch to Classic View
+                          </Button>
+                        </div>
+                      }
+                    >
+                      <HybridFeedProvider>
+                        <HybridFeedContent feedType={tab.value} viewMode={feedViewMode} />
+                      </HybridFeedProvider>
+                    </ErrorBoundary>
                   ) : (
                     <UnifiedFeedContent feedType={tab.value} />
                   )}
