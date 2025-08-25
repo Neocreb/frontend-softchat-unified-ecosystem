@@ -5,8 +5,7 @@ import UnifiedFeedContent from './UnifiedFeedContent';
 import TwitterThreadedFeed from './TwitterThreadedFeed';
 import CommentSection from './CommentSection';
 import { Card, CardContent } from '@/components/ui/card';
-import { MessageSquare, Users, TrendingUp, AlertCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { MessageSquare, Users, TrendingUp } from 'lucide-react';
 
 interface HybridFeedContentProps {
   feedType: string;
