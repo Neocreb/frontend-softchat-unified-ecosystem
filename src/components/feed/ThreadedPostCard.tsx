@@ -42,7 +42,6 @@ interface ThreadedPostCardProps {
   post: ThreadedPost;
   showThread?: boolean;
   isInThread?: boolean;
-  showTwitterStyle?: boolean; // Twitter-style flat layout
   onNavigateToPost?: (postId: string) => void;
 }
 
@@ -50,7 +49,6 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
   post,
   showThread = false,
   isInThread = false,
-  showTwitterStyle = false,
   onNavigateToPost
 }) => {
   const {
@@ -72,7 +70,7 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
 
   const replies = getPostReplies(post.id);
   const isRootPost = !post.parentId;
-  const indentLevel = showTwitterStyle ? 0 : Math.min(post.depth || 0, 3); // No indentation in Twitter style
+  const indentLevel = Math.min(post.depth || 0, 3); // Max 3 levels of indentation
 
   const handleReply = () => {
     if (!user || !replyContent.trim()) return;
@@ -135,20 +133,19 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
   return (
     <div className={cn(
       "relative",
-      !showTwitterStyle && indentLevel > 0 && "ml-6 border-l-2 border-muted pl-4",
-      !showTwitterStyle && post.type === 'reply' && "ml-2"
+      indentLevel > 0 && "ml-6 border-l-2 border-muted pl-4",
+      post.type === 'reply' && "ml-2"
     )}>
-      {/* Thread connection line for replies - only show if not Twitter style */}
-      {post.isReply && !isInThread && !showTwitterStyle && (
+      {/* Thread connection line for replies */}
+      {post.isReply && !isInThread && (
         <div className="absolute -left-6 -top-2 w-6 h-4 border-l-2 border-b-2 border-muted rounded-bl-lg" />
       )}
 
       <Card className={cn(
-        "overflow-hidden max-w-full transition-all duration-200 cursor-pointer hover:bg-muted/30",
-        !showTwitterStyle && post.type === 'reply' && "bg-muted/30",
+        "overflow-hidden max-w-full transition-all duration-200",
+        post.type === 'reply' && "bg-muted/30",
         post.type === 'quote' && "border-primary/30"
-      )}
-      onClick={showTwitterStyle ? handleNavigateToPost : undefined}>
+      )}>
         <CardHeader className="pb-3 pt-4 px-4 flex flex-row gap-3 items-start">
           <Avatar className="h-9 w-9 flex-shrink-0">
             <AvatarImage src={post.author.avatar} alt={post.author.name} />
@@ -196,7 +193,7 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
               <span className="truncate">@{post.author.username}</span>
               <span className="mx-1 flex-shrink-0">·</span>
               <span className="flex-shrink-0">{post.createdAt}</span>
-              {post.isReply && !showTwitterStyle && (
+              {post.isReply && (
                 <>
                   <span className="mx-1 flex-shrink-0">·</span>
                   <Button
@@ -238,16 +235,6 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
         </CardHeader>
 
         <CardContent className="px-4 py-3 text-sm">
-          {/* Twitter-style "Replying to" indicator */}
-          {showTwitterStyle && post.isReply && post.parentId && (
-            <div className="mb-2 text-sm text-muted-foreground">
-              Replying to <span className="text-blue-500 hover:underline cursor-pointer" onClick={(e) => {
-                e.stopPropagation();
-                onNavigateToPost?.(post.parentId!);
-              }}>@{posts.find(p => p.id === post.parentId)?.author.username || 'user'}</span>
-            </div>
-          )}
-
           <p className="mb-3 break-words">{post.content}</p>
           
           {/* Quoted post display */}
@@ -426,8 +413,8 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Show thread replies if enabled - never in Twitter style main feed */}
-      {showThread && !showTwitterStyle && replies.length > 0 && (
+      {/* Show thread replies if enabled */}
+      {showThread && replies.length > 0 && (
         <div className="mt-4 space-y-4">
           {replies.slice(0, 3).map((reply) => (
             <ThreadedPostCard
@@ -435,7 +422,6 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
               post={reply}
               showThread={false}
               isInThread={true}
-              showTwitterStyle={false}
               onNavigateToPost={onNavigateToPost}
             />
           ))}
