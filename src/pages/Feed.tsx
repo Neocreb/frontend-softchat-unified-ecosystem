@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { MessageSquare, List } from "lucide-react";
 import PostCard from "@/components/feed/PostCard";
 import EnhancedPostCard from "@/components/feed/EnhancedPostCard";
 import EnhancedCreatePostCard from "@/components/feed/EnhancedCreatePostCard";
 import FeedSidebar from "@/components/feed/FeedSidebar";
+import SavedPosts from "@/components/feed/SavedPosts";
+import WatchHistory from "@/components/feed/WatchHistory";
 import { FeedNativeAdCard } from "@/components/ads/FeedNativeAdCard";
 import { SponsoredPostCard } from "@/components/ads/SponsoredPostCard";
-import TwitterThreadedFeed from "@/components/feed/TwitterThreadedFeed";
 import { adSettings } from "../../config/adSettings";
-import { EnhancedFeedProvider } from "@/contexts/EnhancedFeedContext";
-
-type FeedMode = 'classic' | 'threaded';
 
 // Define the Post type to match what PostCard expects
 export type Post = {
@@ -89,7 +84,6 @@ const posts: Post[] = [
 ];
 
 const Feed = () => {
-  const [feedMode, setFeedMode] = useState<FeedMode>('classic');
   const [feedWithAds, setFeedWithAds] = useState<(Post | { id: string; type: 'native_ad' | 'sponsored_post' })[]>([]);
 
   // Create feed with ads
@@ -171,67 +165,28 @@ const Feed = () => {
           <FeedSidebar />
         </div>
         <div className="col-span-1 md:col-span-3">
-          {/* Feed Mode Toggle */}
-          <div className="mb-6 flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-            <div className="flex items-center gap-3">
-              <h2 className="text-lg font-semibold">Feed</h2>
-              <Badge variant="outline" className="flex items-center gap-1">
-                {feedMode === 'threaded' ? (
-                  <>
-                    <MessageSquare className="h-3 w-3" />
-                    Twitter-style
-                  </>
-                ) : (
-                  <>
-                    <List className="h-3 w-3" />
-                    Classic
-                  </>
-                )}
-              </Badge>
-            </div>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setFeedMode(feedMode === 'classic' ? 'threaded' : 'classic')}
-              className="flex items-center gap-2"
-            >
-              {feedMode === 'classic' ? (
-                <>
-                  <MessageSquare className="h-4 w-4" />
-                  Switch to Threaded
-                </>
-              ) : (
-                <>
-                  <List className="h-4 w-4" />
-                  Switch to Classic
-                </>
-              )}
-            </Button>
-          </div>
-
-          {feedMode === 'threaded' ? (
-            // Twitter-style threaded feed with ads and sponsored content
-            <EnhancedFeedProvider>
-              <TwitterThreadedFeed feedType="unified" />
-            </EnhancedFeedProvider>
-          ) : (
-            // Classic feed with ads
-            <Tabs defaultValue="following" className="mb-6">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="following">Following</TabsTrigger>
-                <TabsTrigger value="discover">Discover</TabsTrigger>
-              </TabsList>
-              <TabsContent value="following" className="space-y-4 mt-4">
-                <EnhancedCreatePostCard />
-                {feedWithAds.map((item) => renderFeedItem(item, false))}
-              </TabsContent>
-              <TabsContent value="discover" className="space-y-4 mt-4">
-                <EnhancedCreatePostCard />
-                {feedWithAds.map((item) => renderFeedItem(item, true))}
-              </TabsContent>
-            </Tabs>
-          )}
+          <Tabs defaultValue="following" className="mb-6">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="following">Following</TabsTrigger>
+              <TabsTrigger value="discover">Discover</TabsTrigger>
+              <TabsTrigger value="saved">Saved</TabsTrigger>
+              <TabsTrigger value="history">History</TabsTrigger>
+            </TabsList>
+            <TabsContent value="following" className="space-y-4 mt-4">
+              <EnhancedCreatePostCard />
+              {feedWithAds.map((item) => renderFeedItem(item, false))}
+            </TabsContent>
+            <TabsContent value="discover" className="space-y-4 mt-4">
+              <EnhancedCreatePostCard />
+              {feedWithAds.map((item) => renderFeedItem(item, true))}
+            </TabsContent>
+            <TabsContent value="saved" className="mt-4">
+              <SavedPosts />
+            </TabsContent>
+            <TabsContent value="history" className="mt-4">
+              <WatchHistory />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>
