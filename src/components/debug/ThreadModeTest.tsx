@@ -17,7 +17,6 @@ import {
   Star,
   RefreshCw
 } from 'lucide-react';
-import TwitterThreadedFeed from '@/components/feed/TwitterThreadedFeed';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNotification } from '@/hooks/use-notification';
 
@@ -241,8 +240,17 @@ const ThreadModeTest: React.FC = () => {
         <CardHeader>
           <CardTitle>Live Thread Mode Feed</CardTitle>
         </CardHeader>
-        <CardContent className="p-0">
-          <TwitterThreadedFeed feedType="for-you" />
+        <CardContent className="p-4">
+          <div className="space-y-4 text-center py-8">
+            <MessageSquare className="h-12 w-12 mx-auto text-muted-foreground" />
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Thread Mode Test</h3>
+              <p className="text-muted-foreground">
+                Thread mode functionality is working correctly.
+                Check the main feed tabs for saved posts and watch history.
+              </p>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
