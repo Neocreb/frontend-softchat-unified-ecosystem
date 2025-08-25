@@ -1,8 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-export type FeedViewMode = 'classic' | 'threaded';
-
-interface ThreadedPost {
+interface Post {
   id: string;
   content: string;
   author: {
@@ -11,10 +9,6 @@ interface ThreadedPost {
     avatar: string;
     verified: boolean;
   };
-  parentId?: string; // For threaded replies
-  threadId?: string; // Groups related posts
-  isReply: boolean;
-  quotedPost?: string; // For quote posts
   createdAt: string;
   likes: number;
   comments: number;
@@ -25,12 +19,10 @@ interface ThreadedPost {
   gifted?: boolean;
   image?: string;
   location?: string;
-  depth?: number; // For nested display (0 = root, 1 = reply, etc.)
-  type: 'post' | 'reply' | 'quote';
-  originalPost?: ThreadedPost; // For quote posts
+  type: 'post';
 }
 
-interface ThreadedComment {
+interface Comment {
   id: string;
   content: string;
   userId: string;
@@ -43,30 +35,25 @@ interface ThreadedComment {
   createdAt: string;
   likes: number;
   parentId?: string; // For nested comments
-  replies?: ThreadedComment[];
-  canPromoteToPost?: boolean; // Allow promotion to post
+  replies?: Comment[];
 }
 
 interface EnhancedFeedContextType {
-  // View mode state
-  viewMode: FeedViewMode;
-  setViewMode: (mode: FeedViewMode) => void;
-  
   // Post management
-  posts: ThreadedPost[];
-  addPost: (post: Omit<ThreadedPost, 'id' | 'createdAt'>) => void;
-  updatePost: (postId: string, updates: Partial<ThreadedPost>) => void;
+  posts: Post[];
+  addPost: (post: Omit<Post, 'id' | 'createdAt'>) => void;
+  updatePost: (postId: string, updates: Partial<Post>) => void;
   removePost: (postId: string) => void;
   
-  // Threading functions
-  createReplyPost: (parentId: string, content: string, author: ThreadedPost['author']) => void;
-  createQuotePost: (quotedPostId: string, content: string, author: ThreadedPost['author']) => void;
-  promoteCommentToPost: (comment: ThreadedComment, parentPostId: string) => void;
+  // Saved content management
+  savedPosts: Post[];
+  savePost: (postId: string) => void;
+  unsavePost: (postId: string) => void;
   
-  // Thread navigation
-  getPostThread: (postId: string) => ThreadedPost[];
-  getPostReplies: (postId: string) => ThreadedPost[];
-  getThreadRoot: (postId: string) => ThreadedPost | null;
+  // History tracking
+  viewHistory: Post[];
+  addToHistory: (postId: string) => void;
+  clearHistory: () => void;
   
   // Interaction handling
   toggleLike: (postId: string) => void;
@@ -90,9 +77,8 @@ interface EnhancedFeedProviderProps {
 }
 
 export const EnhancedFeedProvider: React.FC<EnhancedFeedProviderProps> = ({ children }) => {
-  const [viewMode, setViewMode] = useState<FeedViewMode>('classic');
-  const [posts, setPosts] = useState<ThreadedPost[]>([
-    // Sample threaded data
+  const [posts, setPosts] = useState<Post[]>([
+    // Sample data
     {
       id: '1',
       content: 'Just launched my new project! Excited to share it with everyone 🚀',
@@ -102,7 +88,6 @@ export const EnhancedFeedProvider: React.FC<EnhancedFeedProviderProps> = ({ chil
         avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150',
         verified: true,
       },
-      isReply: false,
       type: 'post',
       createdAt: '2h',
       likes: 45,
@@ -113,26 +98,6 @@ export const EnhancedFeedProvider: React.FC<EnhancedFeedProviderProps> = ({ chil
     },
     {
       id: '2',
-      content: 'Congratulations! This looks amazing. Can\'t wait to try it out! 🎉',
-      author: {
-        name: 'Alex Rodriguez',
-        username: 'alex_codes',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
-        verified: false,
-      },
-      parentId: '1',
-      threadId: '1',
-      isReply: true,
-      type: 'reply',
-      createdAt: '1h',
-      likes: 12,
-      comments: 3,
-      shares: 1,
-      gifts: 1,
-      depth: 1,
-    },
-    {
-      id: '3',
       content: 'The design choices here are incredible! Love the attention to detail.',
       author: {
         name: 'Maya Patel',
@@ -140,21 +105,36 @@ export const EnhancedFeedProvider: React.FC<EnhancedFeedProviderProps> = ({ chil
         avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150',
         verified: true,
       },
-      parentId: '1',
-      threadId: '1',
-      isReply: true,
-      type: 'reply',
+      type: 'post',
       createdAt: '45m',
       likes: 8,
       comments: 1,
       shares: 2,
       gifts: 0,
-      depth: 1,
+    },
+    {
+      id: '3',
+      content: 'Working on some exciting new features. Can\'t wait to show you all what we\'re building! 💻✨',
+      author: {
+        name: 'Mike Johnson',
+        username: 'mikej_dev',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
+        verified: false,
+      },
+      type: 'post',
+      createdAt: '5h',
+      likes: 23,
+      comments: 7,
+      shares: 3,
+      gifts: 0,
     },
   ]);
 
-  const addPost = (post: Omit<ThreadedPost, 'id' | 'createdAt'>) => {
-    const newPost: ThreadedPost = {
+  const [savedPosts, setSavedPosts] = useState<Post[]>([]);
+  const [viewHistory, setViewHistory] = useState<Post[]>([]);
+
+  const addPost = (post: Omit<Post, 'id' | 'createdAt'>) => {
+    const newPost: Post = {
       ...post,
       id: Date.now().toString(),
       createdAt: 'now',
@@ -162,7 +142,7 @@ export const EnhancedFeedProvider: React.FC<EnhancedFeedProviderProps> = ({ chil
     setPosts(prev => [newPost, ...prev]);
   };
 
-  const updatePost = (postId: string, updates: Partial<ThreadedPost>) => {
+  const updatePost = (postId: string, updates: Partial<Post>) => {
     setPosts(prev => prev.map(post => 
       post.id === postId ? { ...post, ...updates } : post
     ));
@@ -172,115 +152,41 @@ export const EnhancedFeedProvider: React.FC<EnhancedFeedProviderProps> = ({ chil
     setPosts(prev => prev.filter(post => post.id !== postId));
   };
 
-  const createReplyPost = (parentId: string, content: string, author: ThreadedPost['author']) => {
-    const parentPost = posts.find(p => p.id === parentId);
-    if (!parentPost) return;
+  const savePost = (postId: string) => {
+    const post = posts.find(p => p.id === postId);
+    if (!post) return;
 
-    const replyPost: ThreadedPost = {
-      id: Date.now().toString(),
-      content,
-      author,
-      parentId,
-      threadId: parentPost.threadId || parentPost.id,
-      isReply: true,
-      type: 'reply',
-      createdAt: 'now',
-      likes: 0,
-      comments: 0,
-      shares: 0,
-      gifts: 0,
-      depth: (parentPost.depth || 0) + 1,
-    };
+    setSavedPosts(prev => {
+      const isAlreadySaved = prev.some(p => p.id === postId);
+      if (isAlreadySaved) {
+        return prev; // Already saved
+      }
+      return [post, ...prev];
+    });
 
-    setPosts(prev => [replyPost, ...prev]);
-    
-    // Update parent comment count
-    updatePost(parentId, { 
-      comments: (parentPost.comments || 0) + 1 
+    // Update the post's bookmarked status
+    updatePost(postId, { bookmarked: true });
+  };
+
+  const unsavePost = (postId: string) => {
+    setSavedPosts(prev => prev.filter(p => p.id !== postId));
+    updatePost(postId, { bookmarked: false });
+  };
+
+  const addToHistory = (postId: string) => {
+    const post = posts.find(p => p.id === postId);
+    if (!post) return;
+
+    setViewHistory(prev => {
+      // Remove if already in history to avoid duplicates
+      const filtered = prev.filter(p => p.id !== postId);
+      // Add to the beginning
+      return [post, ...filtered].slice(0, 50); // Keep only last 50 items
     });
   };
 
-  const createQuotePost = (quotedPostId: string, content: string, author: ThreadedPost['author']) => {
-    const quotedPost = posts.find(p => p.id === quotedPostId);
-    if (!quotedPost) return;
-
-    const quotePost: ThreadedPost = {
-      id: Date.now().toString(),
-      content,
-      author,
-      quotedPost: quotedPostId,
-      originalPost: quotedPost,
-      isReply: false,
-      type: 'quote',
-      createdAt: 'now',
-      likes: 0,
-      comments: 0,
-      shares: 0,
-      gifts: 0,
-    };
-
-    setPosts(prev => [quotePost, ...prev]);
-    
-    // Update quoted post shares
-    updatePost(quotedPostId, { 
-      shares: (quotedPost.shares || 0) + 1 
-    });
-  };
-
-  const promoteCommentToPost = (comment: ThreadedComment, parentPostId: string) => {
-    const newPost: ThreadedPost = {
-      id: Date.now().toString(),
-      content: `💬 "${comment.content}" - promoting this insightful comment to a post!`,
-      author: {
-        name: comment.user.name,
-        username: comment.username,
-        avatar: comment.user.avatar,
-        verified: comment.user.is_verified,
-      },
-      parentId: parentPostId,
-      isReply: true,
-      type: 'reply',
-      createdAt: 'now',
-      likes: comment.likes,
-      comments: 0,
-      shares: 0,
-      gifts: 0,
-    };
-
-    setPosts(prev => [newPost, ...prev]);
-  };
-
-  const getPostThread = (postId: string): ThreadedPost[] => {
-    const post = posts.find(p => p.id === postId);
-    if (!post) return [];
-
-    const threadId = post.threadId || post.id;
-    return posts
-      .filter(p => p.threadId === threadId || p.id === threadId)
-      .sort((a, b) => {
-        // Sort by depth first, then by creation time
-        if (a.depth !== b.depth) {
-          return (a.depth || 0) - (b.depth || 0);
-        }
-        return new Date(b.createdAt === 'now' ? Date.now() : 0).getTime() - 
-               new Date(a.createdAt === 'now' ? Date.now() : 0).getTime();
-      });
-  };
-
-  const getPostReplies = (postId: string): ThreadedPost[] => {
-    return posts
-      .filter(p => p.parentId === postId)
-      .sort((a, b) => (a.depth || 0) - (b.depth || 0));
-  };
-
-  const getThreadRoot = (postId: string): ThreadedPost | null => {
-    const post = posts.find(p => p.id === postId);
-    if (!post) return null;
-
-    if (!post.parentId) return post;
-
-    const threadId = post.threadId || post.id;
-    return posts.find(p => p.id === threadId && !p.parentId) || null;
+  const clearHistory = () => {
+    setViewHistory([]);
   };
 
   const toggleLike = (postId: string) => {
@@ -297,9 +203,16 @@ export const EnhancedFeedProvider: React.FC<EnhancedFeedProviderProps> = ({ chil
     const post = posts.find(p => p.id === postId);
     if (!post) return;
 
+    const isBookmarked = !post.bookmarked;
     updatePost(postId, {
-      bookmarked: !post.bookmarked,
+      bookmarked: isBookmarked,
     });
+
+    if (isBookmarked) {
+      savePost(postId);
+    } else {
+      unsavePost(postId);
+    }
   };
 
   const toggleGift = (postId: string) => {
@@ -322,18 +235,16 @@ export const EnhancedFeedProvider: React.FC<EnhancedFeedProviderProps> = ({ chil
   };
 
   const value = {
-    viewMode,
-    setViewMode,
     posts,
     addPost,
     updatePost,
     removePost,
-    createReplyPost,
-    createQuotePost,
-    promoteCommentToPost,
-    getPostThread,
-    getPostReplies,
-    getThreadRoot,
+    savedPosts,
+    savePost,
+    unsavePost,
+    viewHistory,
+    addToHistory,
+    clearHistory,
     toggleLike,
     toggleBookmark,
     toggleGift,
