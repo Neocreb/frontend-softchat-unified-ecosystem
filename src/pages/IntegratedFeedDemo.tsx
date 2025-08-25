@@ -89,7 +89,7 @@ const mockComments = [
 
 const IntegratedFeedDemo: React.FC = () => {
   const [, setLocation] = useLocation();
-  const [feedMode, setFeedMode] = useState<SimpleFeedMode>('classic');
+  const [feedMode, setFeedMode] = useState<'classic' | 'saved'>('classic');
   const [posts, setPosts] = useState(mockPosts);
 
   const handleCreatePost = (content: string, image?: string) => {
