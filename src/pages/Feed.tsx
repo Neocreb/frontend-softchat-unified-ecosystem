@@ -89,6 +89,7 @@ const posts: Post[] = [
 ];
 
 const Feed = () => {
+  const [feedMode, setFeedMode] = useState<FeedMode>('classic');
   const [feedWithAds, setFeedWithAds] = useState<(Post | { id: string; type: 'native_ad' | 'sponsored_post' })[]>([]);
 
   // Create feed with ads
