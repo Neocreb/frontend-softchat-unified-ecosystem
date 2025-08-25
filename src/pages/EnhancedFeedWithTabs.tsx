@@ -457,13 +457,13 @@ const EnhancedFeedWithTabs = () => {
     },
   ];
 
-  // Dynamic tab for Thread/Classic toggle
+  // Dynamic tab for Saved/Classic toggle
   const viewToggleTab = {
     value: "view-toggle",
-    label: feedViewMode === 'classic' ? "Thread" : "Classic",
-    icon: feedViewMode === 'classic' ? MessageSquare : List,
+    label: feedViewMode === 'classic' ? "Saved" : "Classic",
+    icon: feedViewMode === 'classic' ? Bookmark : List,
     description: feedViewMode === 'classic'
-      ? "Switch to threaded conversation view"
+      ? "View your saved posts and history"
       : "Switch back to classic feed view",
     isToggle: true,
   };
