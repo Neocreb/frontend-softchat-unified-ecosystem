@@ -80,7 +80,26 @@ const EnhancedFeedContext = createContext<EnhancedFeedContextType | undefined>(u
 export const useEnhancedFeed = () => {
   const context = useContext(EnhancedFeedContext);
   if (!context) {
-    throw new Error('useEnhancedFeed must be used within an EnhancedFeedProvider');
+    console.error('useEnhancedFeed must be used within an EnhancedFeedProvider');
+    // Return a safe fallback instead of throwing to prevent app crashes
+    return {
+      viewMode: 'classic' as FeedViewMode,
+      setViewMode: () => console.warn('setViewMode not available - no EnhancedFeedProvider'),
+      posts: [],
+      addPost: () => console.warn('addPost not available - no EnhancedFeedProvider'),
+      updatePost: () => console.warn('updatePost not available - no EnhancedFeedProvider'),
+      removePost: () => console.warn('removePost not available - no EnhancedFeedProvider'),
+      createReplyPost: () => console.warn('createReplyPost not available - no EnhancedFeedProvider'),
+      createQuotePost: () => console.warn('createQuotePost not available - no EnhancedFeedProvider'),
+      promoteCommentToPost: () => console.warn('promoteCommentToPost not available - no EnhancedFeedProvider'),
+      getPostThread: () => [],
+      getPostReplies: () => [],
+      getThreadRoot: () => null,
+      toggleLike: () => console.warn('toggleLike not available - no EnhancedFeedProvider'),
+      toggleBookmark: () => console.warn('toggleBookmark not available - no EnhancedFeedProvider'),
+      toggleGift: () => console.warn('toggleGift not available - no EnhancedFeedProvider'),
+      incrementShares: () => console.warn('incrementShares not available - no EnhancedFeedProvider'),
+    };
   }
   return context;
 };
