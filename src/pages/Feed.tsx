@@ -171,20 +171,67 @@ const Feed = () => {
           <FeedSidebar />
         </div>
         <div className="col-span-1 md:col-span-3">
-          <Tabs defaultValue="following" className="mb-6">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="following">Following</TabsTrigger>
-              <TabsTrigger value="discover">Discover</TabsTrigger>
-            </TabsList>
-            <TabsContent value="following" className="space-y-4 mt-4">
-              <EnhancedCreatePostCard />
-              {feedWithAds.map((item) => renderFeedItem(item, false))}
-            </TabsContent>
-            <TabsContent value="discover" className="space-y-4 mt-4">
-              <EnhancedCreatePostCard />
-              {feedWithAds.map((item) => renderFeedItem(item, true))}
-            </TabsContent>
-          </Tabs>
+          {/* Feed Mode Toggle */}
+          <div className="mb-6 flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+            <div className="flex items-center gap-3">
+              <h2 className="text-lg font-semibold">Feed</h2>
+              <Badge variant="outline" className="flex items-center gap-1">
+                {feedMode === 'threaded' ? (
+                  <>
+                    <MessageSquare className="h-3 w-3" />
+                    Twitter-style
+                  </>
+                ) : (
+                  <>
+                    <List className="h-3 w-3" />
+                    Classic
+                  </>
+                )}
+              </Badge>
+            </div>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setFeedMode(feedMode === 'classic' ? 'threaded' : 'classic')}
+              className="flex items-center gap-2"
+            >
+              {feedMode === 'classic' ? (
+                <>
+                  <MessageSquare className="h-4 w-4" />
+                  Switch to Threaded
+                </>
+              ) : (
+                <>
+                  <List className="h-4 w-4" />
+                  Switch to Classic
+                </>
+              )}
+            </Button>
+          </div>
+
+          {feedMode === 'threaded' ? (
+            // Twitter-style threaded feed with ads and sponsored content
+            <EnhancedFeedProvider>
+              <TwitterThreadedFeed feedType="unified" />
+            </EnhancedFeedProvider>
+          ) : (
+            // Classic feed with ads
+            <Tabs defaultValue="following" className="mb-6">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="following">Following</TabsTrigger>
+                <TabsTrigger value="discover">Discover</TabsTrigger>
+              </TabsList>
+              <TabsContent value="following" className="space-y-4 mt-4">
+                <EnhancedCreatePostCard />
+                {feedWithAds.map((item) => renderFeedItem(item, false))}
+              </TabsContent>
+              <TabsContent value="discover" className="space-y-4 mt-4">
+                <EnhancedCreatePostCard />
+                {feedWithAds.map((item) => renderFeedItem(item, true))}
+              </TabsContent>
+            </Tabs>
+          )}
         </div>
       </div>
     </div>
