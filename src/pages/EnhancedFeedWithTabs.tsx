@@ -537,7 +537,7 @@ const EnhancedFeedWithTabs = () => {
                       onClick={() => {
                         if (tab.isToggle) {
                           // Toggle view mode
-                          setFeedViewMode(prev => prev === 'classic' ? 'threaded' : 'classic');
+                          setFeedViewMode(prev => prev === 'classic' ? 'saved' : 'classic');
                         } else {
                           setActiveTab(tab.value);
                         }
