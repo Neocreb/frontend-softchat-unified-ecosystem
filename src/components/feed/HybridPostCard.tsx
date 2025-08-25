@@ -58,24 +58,6 @@ const HybridPostCard: React.FC<HybridPostCardProps> = ({
   onNavigateToPost,
   viewMode
 }) => {
-  // Safely access context with fallbacks
-  let feedContext;
-  try {
-    feedContext = useHybridFeed();
-  } catch (error) {
-    console.error('HybridPostCard: Context not available', error);
-    // Provide fallback functions to prevent crashes
-    feedContext = {
-      toggleLike: () => console.warn('toggleLike not available'),
-      toggleBookmark: () => console.warn('toggleBookmark not available'),
-      toggleGift: () => console.warn('toggleGift not available'),
-      incrementShares: () => console.warn('incrementShares not available'),
-      createReplyPost: () => console.warn('createReplyPost not available'),
-      createQuotePost: () => console.warn('createQuotePost not available'),
-      getPostReplies: () => []
-    };
-  }
-
   const {
     toggleLike,
     toggleBookmark,
@@ -84,7 +66,7 @@ const HybridPostCard: React.FC<HybridPostCardProps> = ({
     createReplyPost,
     createQuotePost,
     getPostReplies
-  } = feedContext;
+  } = useHybridFeed();
   const { user } = useAuth();
   const navigate = useNavigate();
   const { handleUserFollow } = useEntityFollowHandlers();
