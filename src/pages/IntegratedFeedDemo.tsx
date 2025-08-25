@@ -230,7 +230,7 @@ const IntegratedFeedDemo: React.FC = () => {
 
         {/* Feed Posts */}
         <div className="space-y-6">
-          {posts.map((post) => (
+          {posts.filter(post => feedMode === 'saved' ? post.bookmarked : true).map((post) => (
             <div key={post.id} className="space-y-4">
               <PostCard post={post} />
               
