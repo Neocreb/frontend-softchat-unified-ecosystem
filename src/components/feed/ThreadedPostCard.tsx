@@ -54,6 +54,7 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
   onNavigateToPost
 }) => {
   const {
+    posts,
     toggleLike,
     toggleBookmark,
     toggleGift,
