@@ -558,13 +558,13 @@ const EnhancedFeedWithTabs = () => {
               )}
 
               {/* Tab Content */}
-              {baseTabs.map((tab) => (
+              {tabs.map((tab) => (
                 <TabsContent
                   key={tab.value}
                   value={tab.value}
                   className="mt-0 space-y-0"
                 >
-                  {feedViewMode === 'saved' ? (
+                  {tab.value === 'saved' ? (
                     <ErrorBoundary
                       fallback={
                         <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -575,19 +575,19 @@ const EnhancedFeedWithTabs = () => {
                             Saved Content Error
                           </h3>
                           <p className="text-gray-600 max-w-sm mb-4">
-                            Unable to load saved content. Switching back to classic view.
+                            Unable to load saved content. Please try again later.
                           </p>
                           <Button
-                            onClick={() => setFeedViewMode('classic')}
+                            onClick={() => setActiveTab('for-you')}
                             variant="outline"
                           >
-                            Switch to Classic View
+                            Go to All Feed
                           </Button>
                         </div>
                       }
                     >
                       <HybridFeedProvider>
-                        <HybridFeedContent feedType={tab.value} viewMode={feedViewMode} />
+                        <HybridFeedContent feedType={tab.value} viewMode='saved' />
                       </HybridFeedProvider>
                     </ErrorBoundary>
                   ) : (
