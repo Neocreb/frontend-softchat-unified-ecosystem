@@ -191,7 +191,7 @@ const IntegratedFeedDemo: React.FC = () => {
                 <div>
                   <p className="font-medium text-sm">Current Mode</p>
                   <p className="text-xs text-muted-foreground">
-                    {feedMode === 'classic' ? 'Classic Feed' : 'Threaded View'}
+                    {feedMode === 'classic' ? 'Classic Feed' : 'Saved Content'}
                   </p>
                 </div>
               </div>
