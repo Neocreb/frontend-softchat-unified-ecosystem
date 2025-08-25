@@ -76,17 +76,9 @@ const EnhancedFeedView: React.FC<EnhancedFeedViewProps> = ({
 
     let filteredPosts = posts;
 
-    if (viewMode === 'classic') {
+    if (viewMode === 'classic' || showOnlyRootPosts) {
       // Classic view - show only root posts
       filteredPosts = posts.filter(post => !post.parentId);
-    } else if (viewMode === 'threaded') {
-      // Twitter-style threaded view - show ALL posts flat (no nesting)
-      if (showOnlyRootPosts) {
-        filteredPosts = posts.filter(post => !post.parentId);
-      } else {
-        // Show all posts including replies as flat list
-        filteredPosts = posts;
-      }
     }
 
     // Sort posts
@@ -204,7 +196,7 @@ const EnhancedFeedView: React.FC<EnhancedFeedViewProps> = ({
                   className="flex items-center gap-2"
                 >
                   <Filter className="h-4 w-4" />
-                  {showOnlyRootPosts ? 'Show All Posts' : 'Root Posts Only'}
+                  {showOnlyRootPosts ? 'Show All' : 'Root Only'}
                 </Button>
               )}
             </div>
@@ -258,12 +250,11 @@ const EnhancedFeedView: React.FC<EnhancedFeedViewProps> = ({
                   />
                 </div>
               ) : (
-                // Twitter-style threaded view - all posts flat, no nested replies in main feed
+                // Threaded view with enhanced PostCard
                 <ThreadedPostCard
                   post={post}
-                  showThread={false} // Never show nested replies in main feed
+                  showThread={!currentThreadId}
                   isInThread={!!currentThreadId}
-                  showTwitterStyle={!currentThreadId} // Use Twitter-style flat layout in main feed
                   onNavigateToPost={(postId) => {
                     if (onNavigateToThread) {
                       onNavigateToThread(postId);
