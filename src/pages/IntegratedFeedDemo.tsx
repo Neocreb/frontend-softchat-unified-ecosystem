@@ -242,12 +242,11 @@ const IntegratedFeedDemo: React.FC = () => {
                 />
               )}
               
-              {feedMode === 'threaded' && (
-                <div className="ml-6 border-l-2 border-muted pl-4 space-y-4">
-                  <div className="text-sm text-muted-foreground">
-                    💬 In threaded view, replies would become standalone posts that can be liked, shared, and gifted individually.
+              {feedMode === 'saved' && post.bookmarked && (
+                <div className="ml-6 border-l-2 border-blue-200 pl-4 space-y-4">
+                  <div className="text-sm text-blue-600 bg-blue-50 p-2 rounded">
+                    📚 This post is saved to your collection
                   </div>
-                  {/* Mock threaded replies */}
                   <Card className="bg-muted/30">
                     <CardContent className="p-4">
                       <div className="flex items-center gap-3 mb-2">
