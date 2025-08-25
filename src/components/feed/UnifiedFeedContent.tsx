@@ -1605,47 +1605,49 @@ const UnifiedFeedItemCard: React.FC<{
 // Main unified feed content component
 const UnifiedFeedContent: React.FC<{ feedType: string }> = ({ feedType }) => {
   const [feedItems, setFeedItems] = useState<UnifiedFeedItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { userPosts } = useFeed();
+  const {
+    userPosts,
+    isLoading,
+    error,
+    hasMore,
+    loadMorePosts,
+    refreshFeed
+  } = useFeed();
 
   useEffect(() => {
-    // Simulate loading
-    setTimeout(() => {
-      const allItems = generateUnifiedFeed();
+    if (!userPosts || userPosts.length === 0) {
+      setFeedItems([]);
+      return;
+    }
 
-      // Merge user posts with generated content
-      const mergedItems = [...userPosts, ...allItems];
+    // Filter items based on feed type
+    let filteredItems = filterContentByFeedType(userPosts, feedType);
 
-      // Filter items based on feed type using utility
-      let filteredItems = filterContentByFeedType(mergedItems, feedType);
+    // Apply additional filtering based on tab selection for better content organization
+    if (feedType === 'groups') {
+      filteredItems = filteredItems.filter(item =>
+        item.type === 'group' ||
+        (item.type === 'post' && item.author?.id?.startsWith('group-')) ||
+        item.type === 'community_event'
+      );
+    } else if (feedType === 'pages') {
+      filteredItems = filteredItems.filter(item =>
+        item.type === 'page' ||
+        (item.type === 'post' && item.author?.id?.startsWith('page-')) ||
+        item.type === 'sponsored_post'
+      );
+    } else if (feedType === 'following') {
+      filteredItems = filteredItems.filter(item =>
+        item.type === 'post' ||
+        item.type === 'recommended_user' ||
+        item.type === 'story_recap'
+      );
+    }
 
-      // Apply additional filtering based on tab selection for better content organization
-      if (feedType === 'groups') {
-        filteredItems = filteredItems.filter(item =>
-          item.type === 'group' ||
-          (item.type === 'post' && item.author?.id?.startsWith('group-')) ||
-          item.type === 'community_event'
-        );
-      } else if (feedType === 'pages') {
-        filteredItems = filteredItems.filter(item =>
-          item.type === 'page' ||
-          (item.type === 'post' && item.author?.id?.startsWith('page-')) ||
-          item.type === 'sponsored_post'
-        );
-      } else if (feedType === 'following') {
-        filteredItems = filteredItems.filter(item =>
-          item.type === 'post' ||
-          item.type === 'recommended_user' ||
-          item.type === 'story_recap'
-        );
-      }
+    // Sort by timestamp (newest first)
+    filteredItems.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
-      // Sort by timestamp (newest first)
-      filteredItems.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
-
-      setFeedItems(filteredItems);
-      setLoading(false);
-    }, 1000);
+    setFeedItems(filteredItems);
   }, [feedType, userPosts]);
 
   const handleInteraction = (itemId: string, type: string) => {
@@ -1664,23 +1666,72 @@ const UnifiedFeedContent: React.FC<{ feedType: string }> = ({ feedType }) => {
     }));
   };
 
-  if (loading) {
+  const handleLoadMore = useCallback(() => {
+    if (hasMore && !isLoading) {
+      loadMorePosts();
+    }
+  }, [hasMore, isLoading, loadMorePosts]);
+
+  // Handle infinite scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 1000
+      ) {
+        handleLoadMore();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleLoadMore]);
+
+  // Handle error state
+  if (error) {
     return (
-      <div className="space-y-4">
-        {[...Array(3)].map((_, i) => (
-          <Card key={i} className="animate-pulse">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
-                <div className="space-y-2">
-                  <div className="w-32 h-4 bg-gray-200 rounded"></div>
-                  <div className="w-24 h-3 bg-gray-200 rounded"></div>
-                </div>
-              </div>
-              <div className="w-full h-48 bg-gray-200 rounded-lg"></div>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+          <AlertCircle className="w-8 h-8 text-red-500" />
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          Failed to load feed
+        </h3>
+        <p className="text-gray-600 max-w-sm mb-4">
+          {error}
+        </p>
+        <Button onClick={refreshFeed} variant="outline">
+          <RefreshCw className="w-4 h-4 mr-2" />
+          Try Again
+        </Button>
+      </div>
+    );
+  }
+
+  // Show loading skeleton for initial load
+  if (isLoading && feedItems.length === 0) {
+    return <FeedSkeleton />;
+  }
+
+  // If no content available for feed type
+  if (!isLoading && feedItems.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+          <TrendingUp className="w-8 h-8 text-gray-400" />
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          No posts yet for {feedType}
+        </h3>
+        <p className="text-gray-600 max-w-sm mb-4">
+          {feedType === "following"
+            ? "Start following people to see their posts here"
+            : "Be the first to share something amazing!"}
+        </p>
+        <Button onClick={refreshFeed} variant="outline">
+          <RefreshCw className="w-4 h-4 mr-2" />
+          Refresh
+        </Button>
       </div>
     );
   }
@@ -1695,10 +1746,31 @@ const UnifiedFeedContent: React.FC<{ feedType: string }> = ({ feedType }) => {
         />
       ))}
 
-      {feedItems.length === 0 && (
-        <div className="text-center py-12 mx-2 sm:mx-0">
-          <p className="text-gray-500 mb-4">No content available for this feed.</p>
-          <Button variant="outline">Refresh</Button>
+      {/* Load More Button or Loading Indicator */}
+      {hasMore && (
+        <div className="flex justify-center py-6">
+          <Button
+            onClick={handleLoadMore}
+            disabled={isLoading}
+            variant="outline"
+            size="lg"
+          >
+            {isLoading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900 mr-2"></div>
+                Loading...
+              </>
+            ) : (
+              "Load More"
+            )}
+          </Button>
+        </div>
+      )}
+
+      {/* Show loading indicator for pagination */}
+      {isLoading && feedItems.length > 0 && (
+        <div className="flex justify-center py-4">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
         </div>
       )}
     </div>
