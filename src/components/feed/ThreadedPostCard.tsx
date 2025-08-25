@@ -244,7 +244,7 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
               Replying to <span className="text-blue-500 hover:underline cursor-pointer" onClick={(e) => {
                 e.stopPropagation();
                 onNavigateToPost?.(post.parentId!);
-              }}>@{post.threadId ? 'thread' : 'previous post'}</span>
+              }}>@{posts.find(p => p.id === post.parentId)?.author.username || 'user'}</span>
             </div>
           )}
 
