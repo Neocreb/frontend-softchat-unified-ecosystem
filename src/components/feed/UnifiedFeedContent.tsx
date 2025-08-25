@@ -33,6 +33,8 @@ import {
   ExternalLink,
   Gift,
   Crown,
+  AlertCircle,
+  RefreshCw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
