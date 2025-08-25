@@ -51,14 +51,14 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
   isInThread = false,
   onNavigateToPost 
 }) => {
-  const { 
-    toggleLike, 
-    toggleBookmark, 
-    toggleGift, 
+  const {
+    toggleLike,
+    toggleBookmark,
+    toggleGift,
     incrementShares,
     createReplyPost,
     createQuotePost,
-    getPostReplies 
+    getPostReplies
   } = useEnhancedFeed();
   const { user } = useAuth();
   
@@ -150,10 +150,12 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
             <AvatarImage src={post.author.avatar} alt={post.author.name} />
             <AvatarFallback>{post.author.name.substring(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
-          
+
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-center gap-2">
-              <span className="font-semibold truncate">{post.author.name}</span>
+              <span className="font-semibold truncate">
+                {post.author.name}
+              </span>
               {post.author.verified && (
                 <Badge variant="default" className="px-1 py-0 h-5 bg-softchat-primary hover:bg-softchat-primary/90 flex-shrink-0">
                   <svg

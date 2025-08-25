@@ -128,6 +128,7 @@ import AdminLayout from "./components/layout/AdminLayout";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
 import TikTokStyleVideos from "./pages/TikTokStyleVideos";
 import EnhancedTikTokVideos from "./pages/EnhancedTikTokVideos";
+// import FeedWithFollowDemo from "./pages/FeedWithFollowDemo";
 import EnhancedTikTokVideosV3 from "./pages/EnhancedTikTokVideosV3";
 import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
@@ -371,6 +372,7 @@ const AppRoutes = () => {
         >
           <Route index element={<Navigate to="feed" replace />} />
           <Route path="feed" element={<EnhancedFeedWithTabs />} />
+          {/* <Route path="feed-demo" element={<FeedWithFollowDemo />} /> */}
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />
           <Route

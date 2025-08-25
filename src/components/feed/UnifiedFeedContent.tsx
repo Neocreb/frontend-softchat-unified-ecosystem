@@ -53,22 +53,28 @@ import { UnifiedActivityService } from '@/services/unifiedActivityService';
 import { useNotification } from '@/hooks/use-notification';
 import EnhancedShareDialog from './EnhancedShareDialog';
 import QuickActionButton from './QuickActionButton';
+// import { FeedUserCard, FeedGroupCard, FeedPageCard } from './FeedEntityCards';
+// import { groups, pages } from '@/data/mockExploreData';
+// import { getRandomMockUsers } from '@/data/mockUsers';
+// import { useEntityFollowHandlers } from './UnifiedFeedHandlers';
 
 // Unified content type interface
 interface UnifiedFeedItem {
   id: string;
-  type: 
-    | "post" 
-    | "product" 
-    | "job" 
-    | "freelancer_skill" 
-    | "sponsored_post" 
-    | "ad" 
-    | "live_event" 
+  type:
+    | "post"
+    | "product"
+    | "job"
+    | "freelancer_skill"
+    | "sponsored_post"
+    | "ad"
+    | "live_event"
     | "community_event"
     | "story_recap"
     | "recommended_user"
-    | "trending_topic";
+    | "trending_topic"
+    | "group"
+    | "page";
   timestamp: Date;
   priority: number; // Higher number = higher priority in feed
   author?: {
@@ -405,6 +411,96 @@ const generateUnifiedFeed = (): UnifiedFeedItem[] => {
         saved: false,
       },
     },
+
+    // Group recommendation
+    {
+      id: "group-1",
+      type: "group",
+      timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
+      priority: 5,
+      content: {
+        ...groups[0], // Web Development Hub
+        recentActivity: "15 new posts today"
+      },
+      interactions: {
+        likes: 0,
+        comments: 0,
+        shares: 0,
+      },
+      userInteracted: {
+        liked: false,
+        commented: false,
+        shared: false,
+        saved: false,
+      },
+    },
+
+    // Page recommendation
+    {
+      id: "page-1",
+      type: "page",
+      timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
+      priority: 5,
+      content: pages[1], // Tesla
+      interactions: {
+        likes: 0,
+        comments: 0,
+        shares: 0,
+      },
+      userInteracted: {
+        liked: false,
+        commented: false,
+        shared: false,
+        saved: false,
+      },
+    },
+
+    // User recommendation
+    {
+      id: "user-rec-1",
+      type: "recommended_user",
+      timestamp: new Date(Date.now() - 7 * 60 * 60 * 1000), // 7 hours ago
+      priority: 4,
+      content: {
+        ...getRandomMockUsers(1)[0].profile,
+        mutualConnections: 8,
+        isFollowing: false
+      },
+      interactions: {
+        likes: 0,
+        comments: 0,
+        shares: 0,
+      },
+      userInteracted: {
+        liked: false,
+        commented: false,
+        shared: false,
+        saved: false,
+      },
+    },
+
+    // Another group recommendation
+    {
+      id: "group-2",
+      type: "group",
+      timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000), // 8 hours ago
+      priority: 4,
+      content: {
+        ...groups[2], // Travel Addicts
+        recentActivity: "New photo challenge started"
+      },
+      interactions: {
+        likes: 0,
+        comments: 0,
+        shares: 0,
+      },
+      userInteracted: {
+        liked: false,
+        commented: false,
+        shared: false,
+        saved: false,
+      },
+    },
   ];
 
   // Calculate priorities for all items
@@ -426,11 +522,14 @@ const generateUnifiedFeed = (): UnifiedFeedItem[] => {
 
   // Use intelligent mixing to distribute content types evenly
   return mixContentIntelligently(itemsWithCalculatedPriority, {
-    posts: 50,      // 50% regular posts
+    posts: 40,      // 40% regular posts
     products: 20,   // 20% product recommendations
     jobs: 15,       // 15% job/freelancer content
-    ads: 10,        // 10% sponsored content
+    ads: 8,         // 8% sponsored content
     events: 5,      // 5% events
+    groups: 6,      // 6% group recommendations
+    pages: 4,       // 4% page recommendations
+    users: 2,       // 2% user recommendations
   });
 };
 
@@ -444,6 +543,7 @@ const UnifiedFeedItemCard: React.FC<{
   const navigate = useNavigate();
   const { user } = useAuth();
   const notification = useNotification();
+  // const { handleUserFollow, handleGroupJoin, handlePageFollow } = useEntityFollowHandlers();
 
   // Modal states
   const [showComments, setShowComments] = React.useState(false);
@@ -548,6 +648,15 @@ const UnifiedFeedItemCard: React.FC<{
             navigate(item.content.ctaUrl);
           }
         }
+        break;
+      case 'group':
+        navigate(`/app/groups/${item.id.replace('group-', '')}`);
+        break;
+      case 'page':
+        navigate(`/app/pages/${item.id.replace('page-', '')}`);
+        break;
+      case 'recommended_user':
+        navigate(`/app/profile/${item.content.username}`);
         break;
       default:
         // Regular posts go to post detail
@@ -710,13 +819,27 @@ const UnifiedFeedItemCard: React.FC<{
           {/* Header */}
           <div className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10">
+              <Avatar
+                className="h-10 w-10 cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/app/profile/${item.author?.username}`);
+                }}
+              >
                 <AvatarImage src={item.author?.avatar} />
                 <AvatarFallback>{item.author?.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold">{item.author?.name}</span>
+                  <span
+                    className="font-semibold cursor-pointer hover:underline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/app/profile/${item.author?.username}`);
+                    }}
+                  >
+                    {item.author?.name}
+                  </span>
                   {item.author?.verified && (
                     <Badge variant="secondary" className="h-4 w-4 p-0 rounded-full bg-blue-500">
                       <span className="text-white text-xs">✓</span>
@@ -729,6 +852,16 @@ const UnifiedFeedItemCard: React.FC<{
                   ))}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <span
+                    className="cursor-pointer hover:underline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/app/profile/${item.author?.username}`);
+                    }}
+                  >
+                    @{item.author?.username}
+                  </span>
+                  <span>•</span>
                   <span>{formatTime(item.timestamp)}</span>
                   <Globe className="w-3 h-3" />
                   {item.content.location && (
@@ -1430,6 +1563,42 @@ const UnifiedFeedItemCard: React.FC<{
     );
   }
 
+  // Group recommendation rendering
+  if (item.type === "group") {
+    return (
+      <FeedGroupCard
+        key={item.id}
+        group={item.content}
+        onToggleJoin={handleGroupJoin}
+        className="mb-4 sm:mb-6 mx-2 sm:mx-0"
+      />
+    );
+  }
+
+  // Page recommendation rendering
+  if (item.type === "page") {
+    return (
+      <FeedPageCard
+        key={item.id}
+        page={item.content}
+        onToggleFollow={handlePageFollow}
+        className="mb-4 sm:mb-6 mx-2 sm:mx-0"
+      />
+    );
+  }
+
+  // Recommended user rendering
+  if (item.type === "recommended_user") {
+    return (
+      <FeedUserCard
+        key={item.id}
+        user={item.content}
+        onToggleFollow={handleUserFollow}
+        className="mb-4 sm:mb-6 mx-2 sm:mx-0"
+      />
+    );
+  }
+
   return null;
 };
 
@@ -1448,7 +1617,28 @@ const UnifiedFeedContent: React.FC<{ feedType: string }> = ({ feedType }) => {
       const mergedItems = [...userPosts, ...allItems];
 
       // Filter items based on feed type using utility
-      const filteredItems = filterContentByFeedType(mergedItems, feedType);
+      let filteredItems = filterContentByFeedType(mergedItems, feedType);
+
+      // Apply additional filtering based on tab selection for better content organization
+      if (feedType === 'groups') {
+        filteredItems = filteredItems.filter(item =>
+          item.type === 'group' ||
+          (item.type === 'post' && item.author?.id?.startsWith('group-')) ||
+          item.type === 'community_event'
+        );
+      } else if (feedType === 'pages') {
+        filteredItems = filteredItems.filter(item =>
+          item.type === 'page' ||
+          (item.type === 'post' && item.author?.id?.startsWith('page-')) ||
+          item.type === 'sponsored_post'
+        );
+      } else if (feedType === 'following') {
+        filteredItems = filteredItems.filter(item =>
+          item.type === 'post' ||
+          item.type === 'recommended_user' ||
+          item.type === 'story_recap'
+        );
+      }
 
       // Sort by timestamp (newest first)
       filteredItems.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
