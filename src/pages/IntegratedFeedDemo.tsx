@@ -9,10 +9,10 @@ import {
   Sparkles, 
   Gift,
   Heart,
-  Share2
+  Share2,
+  Bookmark
 } from 'lucide-react';
 import { useLocation } from 'wouter';
-import SimpleFeedToggle, { SimpleFeedMode } from '@/components/feed/SimpleFeedToggle';
 import PostCard from '@/components/feed/PostCard';
 import CommentSection from '@/components/feed/CommentSection';
 import CreatePostCard from '@/components/feed/CreatePostCard';
@@ -89,7 +89,7 @@ const mockComments = [
 
 const IntegratedFeedDemo: React.FC = () => {
   const [, setLocation] = useLocation();
-  const [feedMode, setFeedMode] = useState<SimpleFeedMode>('classic');
+  const [feedMode, setFeedMode] = useState<'classic' | 'saved'>('classic');
   const [posts, setPosts] = useState(mockPosts);
 
   const handleCreatePost = (content: string, image?: string) => {
@@ -173,10 +173,15 @@ const IntegratedFeedDemo: React.FC = () => {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>Feed Controls</CardTitle>
-              <SimpleFeedToggle 
-                currentMode={feedMode} 
-                onModeChange={setFeedMode} 
-              />
+              <Button
+                variant={feedMode === 'saved' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setFeedMode(feedMode === 'classic' ? 'saved' : 'classic')}
+                className="flex items-center gap-2"
+              >
+                <Bookmark className="h-4 w-4" />
+                {feedMode === 'saved' ? 'Show Feed' : 'Show Saved'}
+              </Button>
             </div>
           </CardHeader>
           <CardContent>
@@ -186,7 +191,7 @@ const IntegratedFeedDemo: React.FC = () => {
                 <div>
                   <p className="font-medium text-sm">Current Mode</p>
                   <p className="text-xs text-muted-foreground">
-                    {feedMode === 'classic' ? 'Classic Feed' : 'Threaded View'}
+                    {feedMode === 'classic' ? 'Classic Feed' : 'Saved Content'}
                   </p>
                 </div>
               </div>
@@ -225,7 +230,7 @@ const IntegratedFeedDemo: React.FC = () => {
 
         {/* Feed Posts */}
         <div className="space-y-6">
-          {posts.map((post) => (
+          {posts.filter(post => feedMode === 'saved' ? post.bookmarked : true).map((post) => (
             <div key={post.id} className="space-y-4">
               <PostCard post={post} />
               
@@ -237,12 +242,11 @@ const IntegratedFeedDemo: React.FC = () => {
                 />
               )}
               
-              {feedMode === 'threaded' && (
-                <div className="ml-6 border-l-2 border-muted pl-4 space-y-4">
-                  <div className="text-sm text-muted-foreground">
-                    💬 In threaded view, replies would become standalone posts that can be liked, shared, and gifted individually.
+              {feedMode === 'saved' && post.bookmarked && (
+                <div className="ml-6 border-l-2 border-blue-200 pl-4 space-y-4">
+                  <div className="text-sm text-blue-600 bg-blue-50 p-2 rounded">
+                    📚 This post is saved to your collection
                   </div>
-                  {/* Mock threaded replies */}
                   <Card className="bg-muted/30">
                     <CardContent className="p-4">
                       <div className="flex items-center gap-3 mb-2">

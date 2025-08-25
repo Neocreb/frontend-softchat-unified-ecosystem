@@ -133,7 +133,6 @@ import EnhancedTikTokVideosV3 from "./pages/EnhancedTikTokVideosV3";
 import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import FreelanceDashboardRouteTest from "./components/debug/FreelanceDashboardRouteTest";
-import ThreadModeTest from "./components/debug/ThreadModeTest";
 import RouteTest from "./components/debug/RouteTest";
 import DetailedJobPage from "./pages/DetailedJobPage";
 import DetailedProductPage from "./pages/DetailedProductPage";
@@ -546,7 +545,6 @@ const AppRoutes = () => {
           <Route path="achievements" element={<GamificationSystem />} />
           <Route path="camera-test" element={<CameraPermissionTest />} />
           <Route path="freelance-route-test" element={<FreelanceDashboardRouteTest />} />
-          <Route path="thread-mode-test" element={<ThreadModeTest />} />
           <Route path="route-test" element={<RouteTest />} />
           <Route path="enhanced-freelance-demo" element={<EnhancedDashboardDemo userType="freelancer" />} />
           <Route path="enhanced-client-demo" element={<EnhancedDashboardDemo userType="client" />} />

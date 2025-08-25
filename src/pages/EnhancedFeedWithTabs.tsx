@@ -427,7 +427,6 @@ const EnhancedFeedWithTabs = () => {
   const [showCreatePostFlow, setShowCreatePostFlow] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [userStories, setUserStories] = useState<any[]>([]);
-  const [feedViewMode, setFeedViewMode] = useState<'classic' | 'threaded'>('classic');
   const { toast } = useToast();
 
   const baseTabs = [
@@ -455,20 +454,15 @@ const EnhancedFeedWithTabs = () => {
       icon: Building,
       description: "Content from pages and businesses you follow",
     },
+    {
+      value: "saved",
+      label: "Saved",
+      icon: Bookmark,
+      description: "Your saved posts and viewing history",
+    },
   ];
 
-  // Dynamic tab for Thread/Classic toggle
-  const viewToggleTab = {
-    value: "view-toggle",
-    label: feedViewMode === 'classic' ? "Thread" : "Classic",
-    icon: feedViewMode === 'classic' ? MessageSquare : List,
-    description: feedViewMode === 'classic'
-      ? "Switch to threaded conversation view"
-      : "Switch back to classic feed view",
-    isToggle: true,
-  };
-
-  const tabs = [...baseTabs, viewToggleTab];
+  const tabs = baseTabs;
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -535,29 +529,17 @@ const EnhancedFeedWithTabs = () => {
                     <button
                       key={tab.value}
                       onClick={() => {
-                        if (tab.isToggle) {
-                          // Toggle view mode
-                          setFeedViewMode(prev => prev === 'classic' ? 'threaded' : 'classic');
-                        } else {
-                          setActiveTab(tab.value);
-                        }
+                        setActiveTab(tab.value);
                       }}
                       className={cn(
                         "flex-shrink-0 flex items-center gap-2 px-4 py-3 text-sm font-medium text-center border-b-2 transition-colors min-w-max",
-                        !tab.isToggle && activeTab === tab.value
+                        activeTab === tab.value
                           ? "text-blue-600 border-blue-600"
-                          : tab.isToggle
-                          ? "text-purple-600 border-purple-600 bg-purple-50"
                           : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"
                       )}
                     >
                       <tab.icon className="h-4 w-4" />
                       <span>{tab.label}</span>
-                      {tab.isToggle && (
-                        <span className="ml-1 text-xs bg-purple-100 px-2 py-0.5 rounded-full">
-                          Switch
-                        </span>
-                      )}
                     </button>
                   ))}
                 </div>
@@ -576,36 +558,36 @@ const EnhancedFeedWithTabs = () => {
               )}
 
               {/* Tab Content */}
-              {baseTabs.map((tab) => (
+              {tabs.map((tab) => (
                 <TabsContent
                   key={tab.value}
                   value={tab.value}
                   className="mt-0 space-y-0"
                 >
-                  {feedViewMode === 'threaded' ? (
+                  {tab.value === 'saved' ? (
                     <ErrorBoundary
                       fallback={
                         <div className="flex flex-col items-center justify-center py-12 text-center">
                           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
-                            <MessageSquare className="w-8 h-8 text-red-500" />
+                            <Bookmark className="w-8 h-8 text-red-500" />
                           </div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                            Thread Mode Error
+                            Saved Content Error
                           </h3>
                           <p className="text-gray-600 max-w-sm mb-4">
-                            Unable to load threaded view. Switching back to classic view.
+                            Unable to load saved content. Please try again later.
                           </p>
                           <Button
-                            onClick={() => setFeedViewMode('classic')}
+                            onClick={() => setActiveTab('for-you')}
                             variant="outline"
                           >
-                            Switch to Classic View
+                            Go to All Feed
                           </Button>
                         </div>
                       }
                     >
                       <HybridFeedProvider>
-                        <HybridFeedContent feedType={tab.value} viewMode={feedViewMode} />
+                        <HybridFeedContent feedType={tab.value} viewMode='saved' />
                       </HybridFeedProvider>
                     </ErrorBoundary>
                   ) : (
