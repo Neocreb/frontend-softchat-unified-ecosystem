@@ -17,7 +17,7 @@ export default function GlobalPrivacyPolicy() {
             </h1>
           </div>
           <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-            Comprehensive privacy protection across all jurisdictions where SoftChat operates, 
+            Comprehensive privacy protection across all jurisdictions where Eloity operates,
             ensuring compliance with GDPR, NDPR, CCPA, LGPD, and other regional privacy laws.
           </p>
           <div className="flex flex-wrap justify-center gap-2 mt-4">
@@ -39,8 +39,8 @@ export default function GlobalPrivacyPolicy() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p>
-                  SoftChat ("we," "our," or "us") operates a global unified social media, creator economy, 
-                  and financial services platform. This Privacy Policy applies to all users worldwide and 
+                  Eloity ("we," "our," or "us") operates a global unified social media, creator economy,
+                  and financial services platform. This Privacy Policy applies to all users worldwide and
                   complies with applicable privacy laws in each jurisdiction where we operate.
                 </p>
                 
@@ -347,7 +347,7 @@ export default function GlobalPrivacyPolicy() {
                     <div className="bg-blue-50 p-3 rounded">
                       <ul className="text-sm space-y-1 text-blue-700">
                         <li>• <strong>In-App:</strong> Privacy settings and account management</li>
-                        <li>• <strong>Email:</strong> privacy@softchat.com</li>
+                        <li>• <strong>Email:</strong> privacy@eloity.com</li>
                         <li>• <strong>Support:</strong> Through customer service portal</li>
                         <li>• <strong>Regional:</strong> Local data protection contacts</li>
                         <li>• <strong>Response Time:</strong> 30 days (1 month) maximum</li>
@@ -580,7 +580,7 @@ export default function GlobalPrivacyPolicy() {
                     <h4 className="font-semibold">European Union (GDPR)</h4>
                     <div className="bg-blue-50 p-3 rounded">
                       <ul className="text-sm space-y-1 text-blue-700">
-                        <li>• Data Protection Officer: dpo@softchat.com</li>
+                        <li>• Data Protection Officer: dpo@eloity.com</li>
                         <li>• Legal basis for processing clearly defined</li>
                         <li>• Explicit consent for special categories</li>
                         <li>• Right to lodge complaints with supervisory authorities</li>
@@ -664,20 +664,20 @@ export default function GlobalPrivacyPolicy() {
                     <h4 className="font-semibold">Global Privacy Contacts</h4>
                     <div className="bg-blue-50 p-3 rounded">
                       <ul className="text-sm space-y-1 text-blue-700">
-                        <li>• <strong>General Privacy:</strong> privacy@softchat.com</li>
-                        <li>• <strong>Data Protection Officer:</strong> dpo@softchat.com</li>
-                        <li>• <strong>Security Issues:</strong> security@softchat.com</li>
-                        <li>• <strong>Legal Requests:</strong> legal@softchat.com</li>
-                        <li>• <strong>Support:</strong> support@softchat.com</li>
+                        <li>• <strong>General Privacy:</strong> privacy@eloity.com</li>
+                        <li>• <strong>Data Protection Officer:</strong> dpo@eloity.com</li>
+                        <li>• <strong>Security Issues:</strong> security@eloity.com</li>
+                        <li>• <strong>Legal Requests:</strong> legal@eloity.com</li>
+                        <li>• <strong>Support:</strong> support@eloity.com</li>
                       </ul>
                     </div>
 
                     <h4 className="font-semibold">Regional Contacts</h4>
                     <ul className="text-sm space-y-1 text-gray-600">
-                      <li>• <strong>EU/EEA:</strong> eu-privacy@softchat.com</li>
-                      <li>• <strong>Africa:</strong> africa-privacy@softchat.com</li>
-                      <li>• <strong>Americas:</strong> americas-privacy@softchat.com</li>
-                      <li>• <strong>Asia-Pacific:</strong> apac-privacy@softchat.com</li>
+                      <li>• <strong>EU/EEA:</strong> eu-privacy@eloity.com</li>
+                      <li>• <strong>Africa:</strong> africa-privacy@eloity.com</li>
+                      <li>• <strong>Americas:</strong> americas-privacy@eloity.com</li>
+                      <li>• <strong>Asia-Pacific:</strong> apac-privacy@eloity.com</li>
                     </ul>
 
                     <h4 className="font-semibold">Regulatory Authority Contacts</h4>
@@ -726,8 +726,8 @@ export default function GlobalPrivacyPolicy() {
 
                 <div className="text-center">
                   <p className="text-sm text-gray-600 mb-4">
-                    This Privacy Policy represents our commitment to protecting your personal information 
-                    across all regions where SoftChat operates. We continuously update our practices to 
+                    This Privacy Policy represents our commitment to protecting your personal information
+                    across all regions where Eloity operates. We continuously update our practices to
                     ensure the highest standards of privacy protection and regulatory compliance.
                   </p>
                   
