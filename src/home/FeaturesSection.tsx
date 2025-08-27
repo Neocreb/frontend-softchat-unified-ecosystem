@@ -105,7 +105,7 @@ const FeaturesSection = () => {
                     flex flex-col items-center text-center p-4 rounded-lg border transition-all duration-200
                     ${
                       activeFeature === feature.id
-                        ? "bg-softchat-50 text-softchat-700 shadow-md border-softchat-200"
+                        ? "bg-eloity-50 text-eloity-700 shadow-md border-eloity-200"
                         : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
                     }
                   `}
