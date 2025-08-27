@@ -133,7 +133,7 @@ const FeaturesSection = () => {
                 <div className="grid md:grid-cols-2 min-h-[400px]">
                   <div className="p-8 flex flex-col justify-center">
                     <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
-                    <p className="text-softchat-600 font-medium mb-4">
+                    <p className="text-eloity-600 font-medium mb-4">
                       {feature.tagline}
                     </p>
                     <p className="text-gray-600 mb-6 leading-relaxed">
