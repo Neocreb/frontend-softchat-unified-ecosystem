@@ -344,7 +344,7 @@ const EnhancedAccessibilityFeatures: React.FC<EnhancedAccessibilityFeaturesProps
     setSettings({
       highContrast: false,
       reducedMotion: false,
-      fontSize: getInitialFontSize(),
+      fontSize: 13,
       colorBlindnessFilter: 'none',
       darkMode: true,
       focusIndicators: true,
