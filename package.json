@@ -1,7 +1,7 @@
 {
-  "name": "softchat-platform",
+  "name": "eloity-platform",
   "version": "1.0.0",
-  "description": "AI-powered social media and marketplace platform with crypto trading and freelancing features",
+  "description": "Eloity - where everything connects. AI-powered social platform with marketplace, crypto trading, and freelancing features",
   "type": "module",
   "license": "MIT",
   "scripts": {
