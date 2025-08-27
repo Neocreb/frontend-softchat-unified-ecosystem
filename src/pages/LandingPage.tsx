@@ -15,7 +15,7 @@ const LandingPage = () => {
       <FeaturesSection />
       <AdvancedFeaturesSection />
       <ProblemSolutionSection />
-      <WhySoftchatSection />
+      <WhyEloitySection />
       <ScreenshotCarousel />
       <NewsletterSection />
     </Layout>
