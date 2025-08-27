@@ -156,7 +156,7 @@ const HeroSection = () => {
           </div>
 
           <div className="mt-16 relative">
-            <div className="absolute -inset-px rounded-xl bg-gradient-to-tr from-softchat-500 to-teal-400 opacity-70 blur-sm"></div>
+            <div className="absolute -inset-px rounded-xl bg-gradient-to-tr from-eloity-500 to-teal-400 opacity-70 blur-sm"></div>
             <div className="relative rounded-xl bg-card dark:bg-card shadow-xl overflow-hidden border border-border dark:border-border">
               <img
                 src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=1280"
