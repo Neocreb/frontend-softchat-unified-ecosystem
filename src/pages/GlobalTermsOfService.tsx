@@ -41,27 +41,27 @@ const GlobalTermsOfService = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Globe className="w-5 h-5" />
-              Welcome to SoftChat Global
+              Welcome to Eloity Global
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              These Global Terms of Service ("Terms") govern your use of SoftChat, a comprehensive 
-              AI-powered social media and financial services platform operating across multiple 
-              countries and regions worldwide. SoftChat provides social networking, marketplace 
+              These Global Terms of Service ("Terms") govern your use of Eloity, a comprehensive
+              AI-powered social media and financial services platform operating across multiple
+              countries and regions worldwide. Eloity provides social networking, marketplace
               functionality, freelancing services, cryptocurrency trading, real-time financial 
               services, Watch2Earn video monetization, multi-regional payment processing, global 
               KYC verification, and advanced analytics features.
             </p>
             <p>
-              By accessing or using SoftChat, you agree to be bound by these Terms and all 
+              By accessing or using Eloity, you agree to be bound by these Terms and all
               applicable local laws and regulations in your jurisdiction. If you disagree with 
               any part of these terms, you may not access the Service.
             </p>
             <div className="bg-blue-50 p-4 rounded-lg">
               <h4 className="font-semibold text-blue-900 mb-2">Global Operations Notice:</h4>
               <p className="text-sm text-blue-800">
-                SoftChat operates across multiple jurisdictions including but not limited to: 
+                Eloity operates across multiple jurisdictions including but not limited to:
                 North America (US, Canada), Europe (UK, EU countries), Africa (Nigeria, Kenya, 
                 Ghana, South Africa), Asia-Pacific (India, Australia, Singapore), and Latin 
                 America (Brazil, Mexico, Argentina). Specific regional terms may apply based 
@@ -385,11 +385,11 @@ const GlobalTermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Regional Legal Contacts</h4>
               <ul className="list-disc list-inside space-y-1 text-sm">
-                <li><strong>North America:</strong> legal-na@softchat.com</li>
-                <li><strong>Europe:</strong> legal-eu@softchat.com (GDPR Data Protection Officer)</li>
-                <li><strong>Africa:</strong> legal-africa@softchat.com</li>
-                <li><strong>Asia-Pacific:</strong> legal-apac@softchat.com</li>
-                <li><strong>Latin America:</strong> legal-latam@softchat.com</li>
+                <li><strong>North America:</strong> legal-na@eloity.com</li>
+                <li><strong>Europe:</strong> legal-eu@eloity.com (GDPR Data Protection Officer)</li>
+                <li><strong>Africa:</strong> legal-africa@eloity.com</li>
+                <li><strong>Asia-Pacific:</strong> legal-apac@eloity.com</li>
+                <li><strong>Latin America:</strong> legal-latam@eloity.com</li>
                 <li>Local language support available for legal inquiries</li>
               </ul>
             </div>
@@ -405,7 +405,7 @@ const GlobalTermsOfService = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
                 <h4 className="font-semibold mb-2">Global Headquarters</h4>
-                <p><strong>Email:</strong> legal@softchat.com</p>
+                <p><strong>Email:</strong> legal@eloity.com</p>
                 <p><strong>Response Time:</strong> 5 business days</p>
                 <p><strong>Emergency Support:</strong> Available 24/7 for verified users</p>
               </div>

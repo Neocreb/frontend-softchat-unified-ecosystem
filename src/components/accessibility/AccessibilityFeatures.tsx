@@ -127,7 +127,7 @@ interface AccessibilityContextType {
 const defaultSettings: AccessibilitySettings = {
   highContrast: false,
   darkMode: false,
-  fontSize: 16,
+  fontSize: 13,
   fontFamily: "system",
   reducedMotion: false,
   colorBlindSupport: false,

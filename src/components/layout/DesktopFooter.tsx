@@ -31,14 +31,14 @@ const DesktopFooter = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <SoftchatLogo className="h-6 w-6" />
-              <span className="font-bold text-lg text-primary">Softchat</span>
+              <span className="font-bold text-lg text-primary">Eloity</span>
             </div>
             <p className="text-sm text-muted-foreground">
               The ultimate social platform for creators, traders, and
               professionals.
             </p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>© 2024 Softchat</span>
+              <span>© 2024 Eloity</span>
             </div>
           </div>
 
@@ -188,7 +188,7 @@ const DesktopFooter = () => {
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>© 2024 Softchat. All rights reserved.</span>
+            <span>© 2024 Eloity. All rights reserved.</span>
           </div>
 
           <div className="flex items-center gap-4">

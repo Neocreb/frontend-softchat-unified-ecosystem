@@ -16,8 +16,8 @@ export default function DataProcessingAgreement() {
             </h1>
           </div>
           <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-            Comprehensive data processing terms for business partners, creators, and enterprise clients 
-            of SoftChat's global platform services.
+            Comprehensive data processing terms for business partners, creators, and enterprise clients
+            of Eloity's global platform services.
           </p>
           <div className="flex flex-wrap justify-center gap-2 mt-4">
             <Badge variant="outline" className="bg-slate-50">GDPR Article 28 Compliant</Badge>
@@ -37,8 +37,8 @@ export default function DataProcessingAgreement() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p>
-                  This Data Processing Agreement ("DPA") forms part of the service agreement between 
-                  SoftChat ("Processor") and the subscribing entity ("Controller") for the provision 
+                  This Data Processing Agreement ("DPA") forms part of the service agreement between
+                  Eloity ("Processor") and the subscribing entity ("Controller") for the provision
                   of platform services involving personal data processing.
                 </p>
 
@@ -49,7 +49,7 @@ export default function DataProcessingAgreement() {
                       <li>• <strong>Personal Data:</strong> Any information relating to identified or identifiable natural persons</li>
                       <li>• <strong>Processing:</strong> Any operation performed on personal data</li>
                       <li>• <strong>Controller:</strong> Entity determining purposes and means of processing</li>
-                      <li>• <strong>Processor:</strong> SoftChat as entity processing on behalf of Controller</li>
+                      <li>• <strong>Processor:</strong> Eloity as entity processing on behalf of Controller</li>
                       <li>• <strong>Sub-processor:</strong> Third parties engaged to assist in processing</li>
                       <li>• <strong>Data Subject:</strong> Identified or identifiable natural person</li>
                     </ul>
@@ -83,8 +83,8 @@ export default function DataProcessingAgreement() {
                 <div className="bg-blue-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-blue-800 mb-2">Processing Authority</h4>
                   <p className="text-sm text-blue-700">
-                    SoftChat shall process personal data only on documented instructions from the Controller, 
-                    including with regard to transfers of personal data to third countries or international 
+                    Eloity shall process personal data only on documented instructions from the Controller,
+                    including with regard to transfers of personal data to third countries or international
                     organizations, unless required to do so by applicable law.
                   </p>
                 </div>
@@ -108,7 +108,7 @@ export default function DataProcessingAgreement() {
                       <li>• No processing beyond documented instructions</li>
                       <li>• No unauthorized access to personal data</li>
                       <li>• No sharing with unauthorized third parties</li>
-                      <li>• No processing for SoftChat's independent purposes</li>
+                      <li>• No processing for Eloity's independent purposes</li>
                       <li>• No retention beyond agreed periods</li>
                       <li>• No modification of data subject rights procedures</li>
                     </ul>
@@ -205,7 +205,7 @@ export default function DataProcessingAgreement() {
                 <div className="bg-yellow-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-yellow-800 mb-2">Sub-processor Authorization</h4>
                   <p className="text-sm text-yellow-700">
-                    Controller provides general authorization for SoftChat to engage sub-processors, 
+                    Controller provides general authorization for Eloity to engage sub-processors,
                     subject to the conditions and safeguards specified in this agreement.
                   </p>
                 </div>
@@ -250,9 +250,9 @@ export default function DataProcessingAgreement() {
 
                     <h4 className="font-semibold">Sub-processor Liability</h4>
                     <p className="text-sm text-gray-600">
-                      SoftChat remains fully liable to Controller for performance of 
-                      all sub-processor obligations. Sub-processors are bound by the 
-                      same data protection requirements as SoftChat under this DPA.
+                      Eloity remains fully liable to Controller for performance of
+                      all sub-processor obligations. Sub-processors are bound by the
+                      same data protection requirements as Eloity under this DPA.
                     </p>
                   </div>
                 </div>
@@ -396,7 +396,7 @@ export default function DataProcessingAgreement() {
                 <div className="bg-red-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-red-800 mb-2">Breach Notification Timeline</h4>
                   <p className="text-sm text-red-700">
-                    SoftChat will notify Controller without undue delay and, where feasible, 
+                    Eloity will notify Controller without undue delay and, where feasible,
                     within 72 hours of becoming aware of a personal data breach.
                   </p>
                 </div>
@@ -617,11 +617,11 @@ export default function DataProcessingAgreement() {
                     <h4 className="font-semibold">Contact Information</h4>
                     <div className="bg-blue-50 p-3 rounded">
                       <ul className="text-sm space-y-1 text-blue-700">
-                        <li>• <strong>DPA Queries:</strong> dpa@softchat.com</li>
-                        <li>• <strong>Legal Team:</strong> legal@softchat.com</li>
-                        <li>• <strong>DPO Contact:</strong> dpo@softchat.com</li>
-                        <li>• <strong>Security Issues:</strong> security@softchat.com</li>
-                        <li>• <strong>Compliance:</strong> compliance@softchat.com</li>
+                        <li>• <strong>DPA Queries:</strong> dpa@eloity.com</li>
+                        <li>• <strong>Legal Team:</strong> legal@eloity.com</li>
+                        <li>• <strong>DPO Contact:</strong> dpo@eloity.com</li>
+                        <li>• <strong>Security Issues:</strong> security@eloity.com</li>
+                        <li>• <strong>Compliance:</strong> compliance@eloity.com</li>
                       </ul>
                     </div>
 

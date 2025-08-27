@@ -10,7 +10,7 @@ const LegalInformation = () => {
   const legalDocuments = [
     {
       title: "Terms of Service",
-      description: "General terms and conditions for using the SoftChat platform, including social features, marketplace, freelancing, and crypto services.",
+      description: "General terms and conditions for using the Eloity platform, including social features, marketplace, freelancing, and crypto services.",
       path: "/terms",
       icon: FileText,
       audience: "All users"
@@ -73,7 +73,7 @@ const LegalInformation = () => {
               Legal Information
             </CardTitle>
             <p className="text-muted-foreground">
-              Comprehensive legal documentation for the SoftChat platform
+              Comprehensive legal documentation for the Eloity platform
             </p>
           </CardHeader>
         </Card>
@@ -85,8 +85,8 @@ const LegalInformation = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              SoftChat provides comprehensive legal documentation to ensure transparency 
-              and clarity for all users of our platform. Our legal framework covers 
+              Eloity provides comprehensive legal documentation to ensure transparency
+              and clarity for all users of our platform. Our legal framework covers
               general platform usage, specialized services, and specific user roles.
             </p>
             <div className="bg-blue-50 p-4 rounded-lg">
@@ -139,8 +139,8 @@ const LegalInformation = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm">
-              Individuals applying to become delivery partners on SoftChat must review and 
-              agree to specialized legal documentation that governs their participation in 
+              Individuals applying to become delivery partners on Eloity must review and
+              agree to specialized legal documentation that governs their participation in
               our delivery network.
             </p>
             
@@ -189,17 +189,17 @@ const LegalInformation = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
                 <h4 className="font-semibold mb-2">General Legal Inquiries</h4>
-                <p><strong>Email:</strong> legal@softchat.com</p>
+                <p><strong>Email:</strong> legal@eloity.com</p>
                 <p><strong>Response Time:</strong> 5 business days</p>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">Dispatch Partner Support</h4>
-                <p><strong>Email:</strong> partners@softchat.com</p>
+                <p><strong>Email:</strong> partners@eloity.com</p>
                 <p><strong>Response Time:</strong> 4 hours</p>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">Privacy & Data Protection</h4>
-                <p><strong>Email:</strong> privacy@softchat.com</p>
+                <p><strong>Email:</strong> privacy@eloity.com</p>
                 <p><strong>Response Time:</strong> 30 days</p>
               </div>
               <div>

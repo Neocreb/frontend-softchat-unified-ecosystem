@@ -606,7 +606,7 @@ const UnifiedHeader = ({
             <Link to="/app/feed" className="flex items-center gap-2">
               <SoftchatLogo className="h-8 w-8" />
               <span className="font-bold text-lg hidden sm:block bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                SoftChat
+                Eloity
               </span>
             </Link>
           </div>
@@ -649,7 +649,7 @@ const UnifiedHeader = ({
                 <Input
                   ref={searchRef}
                   type="search"
-                  placeholder="Search across all features - users, products, jobs, videos, crypto..."
+                  placeholder="Search across Eloity - users, products, jobs, videos, crypto..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setShowSearchOverlay(true)}
