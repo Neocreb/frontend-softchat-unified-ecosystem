@@ -4,17 +4,17 @@ interface LogoProps {
   className?: string;
 }
 
-const SoftchatLogo = ({ className }: LogoProps) => {
+const EloityLogo = ({ className }: LogoProps) => {
   return (
     <div
       className={cn(
-        "flex items-center justify-center rounded-lg bg-gradient-to-br from-primary to-purple-600 text-white font-bold text-lg",
+        "flex items-center justify-center rounded-lg bg-gradient-to-br from-eloity-primary to-eloity-accent text-white font-bold text-lg",
         className
       )}
     >
-      SC
+      E
     </div>
   );
 };
 
-export default SoftchatLogo;
+export default EloityLogo;
