@@ -13,14 +13,14 @@ interface SponsoredPostCardProps {
 }
 
 export const SponsoredPostCard: React.FC<SponsoredPostCardProps> = ({ 
-  title = "Discover Softchat Premium",
-  content = "Unlock exclusive features, priority support, and enhanced creator tools. Join thousands of creators already earning more with Softchat Premium!",
+  title = "Discover Eloity Premium",
+  content = "Unlock exclusive features, priority support, and enhanced creator tools. Join thousands of creators already earning more with Eloity Premium!",
   imageUrl,
   ctaText = "Upgrade Now",
   onClick,
   className 
 }) => {
-  // This is for internal Softchat campaigns and promotions
+  // This is for internal Eloity campaigns and promotions
   if (!adSettings.enableAds) {
     return null;
   }
@@ -34,7 +34,7 @@ export const SponsoredPostCard: React.FC<SponsoredPostCardProps> = ({
       {/* Post Header */}
       <div className="flex items-center justify-between p-4 pb-3">
         <div className="flex items-center gap-3">
-          {/* Softchat Avatar */}
+          {/* Eloity Avatar */}
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
             <Crown className="w-5 h-5 text-white" />
           </div>
