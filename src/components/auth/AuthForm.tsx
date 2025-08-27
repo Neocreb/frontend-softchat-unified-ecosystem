@@ -29,7 +29,7 @@ const AuthForm = () => {
           mode === "signin"
             ? "Signed in successfully!"
             : "Account created successfully!",
-        description: "Welcome to Softchat",
+        description: "Welcome to Eloity",
       });
       navigate("/app/feed");
     }, 1500);

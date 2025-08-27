@@ -1,6 +1,6 @@
-const CACHE_NAME = "softchat-v1.0.0";
-const STATIC_CACHE = "softchat-static-v1.0.0";
-const DYNAMIC_CACHE = "softchat-dynamic-v1.0.0";
+const CACHE_NAME = "eloity-v1.0.0";
+const STATIC_CACHE = "eloity-static-v1.0.0";
+const DYNAMIC_CACHE = "eloity-dynamic-v1.0.0";
 
 // Files to cache for offline use
 const STATIC_FILES = [
@@ -277,7 +277,7 @@ self.addEventListener("push", (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || "Softchat", options),
+    self.registration.showNotification(data.title || "Eloity", options),
   );
 });
 

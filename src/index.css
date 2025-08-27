@@ -2,1823 +2,296 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Desktop Responsiveness Improvements */
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222.2 84% 4.9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221.2 83.2% 53.3%;
+  --chart-1: 12 76% 61%;
+  --chart-2: 173 58% 39%;
+  --chart-3: 197 37% 24%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 27 87% 67%;
+  --radius: 0.75rem;
+  
+  /* Eloity Brand Colors - Fixed for proper contrast */
+  --eloity-primary: 200 100% 45%;
+  --eloity-cyan: 192 100% 50%;
+  --eloity-purple: 273 100% 65%;
+  --eloity-dark: 220 15% 12%;
+  --eloity-accent: 200 100% 45%;
+  --eloity-600: 200 100% 35%;
+  --eloity-700: 200 100% 25%;
 
-  body {
-    overflow-x: hidden;
-  }
-
-  /* Ensure proper scaling on large screens */
-  @media (min-width: 1920px) {
-    .container {
-      max-width: 1600px;
-    }
-  }
-
-  /* Prevent horizontal overflow */
-  * {
-    box-sizing: border-box;
-  }
+  /* Additional Eloity color variants */
+  --eloity-50: 190 100% 95%;
+  --eloity-100: 190 100% 85%;
+  --eloity-200: 190 100% 75%;
+  --eloity-300: 190 100% 65%;
+  --eloity-400: 190 100% 55%;
+  --eloity-500: 190 100% 45%;
+  
+  /* Legacy Softchat colors for compatibility - using same values as primary */
+  --softchat-primary: 221.2 83.2% 53.3%;
+  --softchat-accent: 221.2 83.2% 53.3%;
+  --softchat-600: 221.2 83.2% 43.3%;
+  --softchat-700: 221.2 83.2% 33.3%;
+  
+  /* Sidebar */
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 240 5.9% 10%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 4.8% 95.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
-/* Scrollbar hiding utilities */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217.2 91.2% 59.8%;
+  --primary-foreground: 222.2 84% 4.9%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 224.3 76.3% 94.1%;
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+  
+  /* Dark mode Eloity colors - Better contrast */
+  --eloity-primary: 200 100% 60%;
+  --eloity-accent: 200 100% 60%;
+  --eloity-600: 200 100% 50%;
+  --eloity-700: 200 100% 40%;
+  
+  /* Sidebar dark */
+  --sidebar-background: 240 5.9% 10%;
+  --sidebar-foreground: 240 4.8% 95.9%;
+  --sidebar-primary: 224.3 76.3% 94.1%;
+  --sidebar-primary-foreground: 240 5.9% 10%;
+  --sidebar-accent: 240 3.7% 15.9%;
+  --sidebar-accent-foreground: 240 4.8% 95.9%;
+  --sidebar-border: 240 3.7% 15.9%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
-/* Modern Tab Enhancements */
-@keyframes tab-glow {
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Eloity Brand Gradients - Fixed colors */
+.eloity-gradient {
+  background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
+}
+
+.eloity-text-gradient {
+  background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom scrollbar with Eloity theme */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #00B8E6 0%, #A040E6 100%);
+}
+
+/* Loading animations with Eloity colors */
+.eloity-pulse {
+  animation: eloity-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes eloity-pulse {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(59, 130, 246, 0.25), 0 0 35px rgba(59, 130, 246, 0.1);
-  }
-}
-
-@keyframes tab-pulse-ring {
-  0% {
-    transform: scale(0.8);
     opacity: 1;
   }
-  100% {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-}
-
-@keyframes tab-float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
   50% {
-    transform: translateY(-2px);
+    opacity: .5;
   }
 }
 
-.tab-glow-active {
-  animation: tab-glow 2s ease-in-out infinite;
+.eloity-spin {
+  animation: eloity-spin 1s linear infinite;
 }
 
-.tab-float-hover:hover {
-  animation: tab-float 0.6s ease-in-out infinite;
-}
-
-/* Gradient backgrounds for tabs */
-.bg-gradient-radial {
-  background: radial-gradient(circle, var(--tw-gradient-stops));
-}
-
-/* Smooth hover scale effect */
-.hover\:scale-102:hover {
-  transform: scale(1.02);
-}
-
-/* Tab content fade in animation */
-@keyframes tab-content-fade-in {
+@keyframes eloity-spin {
   from {
-    opacity: 0;
-    transform: translateY(10px);
+    transform: rotate(0deg);
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: rotate(360deg);
   }
 }
 
-.tab-content-animate {
-  animation: tab-content-fade-in 0.3s ease-out;
+/* Glassmorphism effect for Eloity UI */
+.eloity-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Beautiful scroll indicator */
-@keyframes scroll-indicator-pulse {
-  0%, 100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
+.dark .eloity-glass {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.scroll-indicator {
-  animation: scroll-indicator-pulse 2s ease-in-out infinite;
+/* Landing Page Utility Classes */
+.container-wide {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-/* Accessibility enhancements */
-.high-contrast {
-  --background: 0 0% 0%;
-  --foreground: 0 0% 100%;
-  --card: 0 0% 10%;
-  --card-foreground: 0 0% 100%;
-  --border: 0 0% 30%;
-}
-
-.large-text {
-  font-size: 1.125rem;
-}
-
-.large-text h1 { font-size: 2.5rem; }
-.large-text h2 { font-size: 2rem; }
-.large-text h3 { font-size: 1.75rem; }
-.large-text .text-sm { font-size: 1rem; }
-.large-text .text-xs { font-size: 0.875rem; }
-
-.reduced-motion,
-.reduced-motion *,
-.reduced-motion *:before,
-.reduced-motion *:after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-  scroll-behavior: auto !important;
-}
-
-/* Screen reader only content */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.sr-only:focus {
-  position: static;
-  width: auto;
-  height: auto;
-  padding: inherit;
-  margin: inherit;
-  overflow: visible;
-  clip: auto;
-  white-space: normal;
-}
-
-/* Focus indicators */
-.focus\:not-sr-only:focus {
-  position: static;
-  width: auto;
-  height: auto;
-  padding: inherit;
-  margin: inherit;
-  overflow: visible;
-  clip: auto;
-  white-space: normal;
-}
-
-/* Global layout fixes */
-@layer base {
-  html {
-    /* Default font size set to 13px */
-    font-size: 13px;
-    overflow-x: hidden;
-    max-width: 100vw;
-  }
-
-  body {
-    overflow-x: hidden;
-    max-width: 100vw;
-    font-weight: 400; /* Ensure normal font weight */
-    font-size: 1rem; /* 13px base */
-    line-height: 1.5;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-  /* Responsive font sizes - maintain 13px base */
-  @media (min-width: 768px) {
-    html {
-      font-size: 13px; /* Keep consistent 13px base */
-    }
-  }
-
-  /* Mobile-specific optimizations */
-  @media (max-width: 767px) {
-    html {
-      font-size: 13px; /* Consistent 13px base on mobile */
-    }
-
-    body {
-      font-size: 1rem; /* 13px equivalent in rem */
-      line-height: 1.4;
-    }
-
-    /* Ensure text doesn't overflow containers on mobile */
-    h1, h2, h3, h4, h5, h6 {
-      word-break: break-word;
-      hyphens: auto;
-    }
-
-    /* Make sure buttons and interactive elements are properly sized for touch */
-    button, [role="button"] {
-      min-height: 44px;
-      min-width: 44px;
-    }
-  }
-}
-
-/* Mobile optimizations and responsive utilities */
-@layer utilities {
-  /* Mobile-first responsive text utilities - 13px base */
-  .text-responsive-xs {
-    font-size: 0.69rem; /* ~9px */
-  }
-
-  .text-responsive-sm {
-    font-size: 0.85rem; /* ~11px */
-  }
-
-  .text-responsive-base {
-    font-size: 1rem; /* 13px base */
-  }
-
-  .text-responsive-lg {
-    font-size: 1.15rem; /* ~15px */
-  }
-
-  @media (min-width: 768px) {
-    .text-responsive-xs {
-      font-size: 0.77rem; /* ~10px */
-    }
-
-    .text-responsive-sm {
-      font-size: 0.92rem; /* ~12px */
-    }
-
-    .text-responsive-base {
-      font-size: 1rem; /* 13px base */
-    }
-
-    .text-responsive-lg {
-      font-size: 1.23rem; /* ~16px */
-    }
-  }
-
-  /* Font weight normalization for mobile */
-  .font-normal-mobile {
-    font-weight: 400;
-  }
-
-  @media (max-width: 767px) {
-    .font-normal-mobile {
-      font-weight: 400 !important;
-    }
-  }
-
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Custom scrollbar styles */
-  .scrollbar-thin {
-    scrollbar-width: thin;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  .scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
-    background-color: rgb(209 213 219);
-    border-radius: 3px;
-  }
-
-  .scrollbar-track-gray-100::-webkit-scrollbar-track {
-    background-color: rgb(243 244 246);
-  }
-
-  .dark .scrollbar-thumb-gray-600::-webkit-scrollbar-thumb {
-    background-color: rgb(75 85 99);
-  }
-
-  .dark .scrollbar-track-gray-800::-webkit-scrollbar-track {
-    background-color: rgb(31 41 55);
-  }
-
-  /* Mobile-first responsive text handling */
-  .text-responsive {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    line-height: 1.5;
-  }
-
-  /* Enhanced crypto page animations */
-  .crypto-card-hover {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .crypto-card-hover:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow:
-      0 20px 25px -5px rgba(0, 0, 0, 0.1),
-      0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  }
-
-  /* Premium Fintech Crypto Styling */
-  .crypto-fintech-dark {
-    background: linear-gradient(135deg, 
-      rgba(15, 23, 42, 0.95) 0%,
-      rgba(30, 41, 59, 0.95) 25%,
-      rgba(51, 65, 85, 0.95) 50%,
-      rgba(30, 41, 59, 0.95) 75%,
-      rgba(15, 23, 42, 0.95) 100%
-    );
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(148, 163, 184, 0.1);
-  }
-
-  .crypto-card-fintech {
-    background: linear-gradient(145deg,
-      rgba(30, 41, 59, 0.9) 0%,
-      rgba(51, 65, 85, 0.8) 50%,
-      rgba(30, 41, 59, 0.9) 100%
-    );
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(148, 163, 184, 0.15);
-    box-shadow: 
-      0 8px 32px rgba(15, 23, 42, 0.3),
-      0 4px 16px rgba(30, 41, 59, 0.2),
-      inset 0 1px 0 rgba(148, 163, 184, 0.1);
-  }
-
-  .crypto-text-primary {
-    color: rgba(248, 250, 252, 0.95);
-  }
-
-  .crypto-text-secondary {
-    color: rgba(203, 213, 225, 0.8);
-  }
-
-  .crypto-text-muted {
-    color: rgba(148, 163, 184, 0.7);
-  }
-
-  .crypto-border {
-    border-color: rgba(148, 163, 184, 0.2);
-  }
-
-  .crypto-gradient-blue {
-    background: linear-gradient(135deg,
-      #1e40af 0%,
-      #3b82f6 25%,
-      #60a5fa 50%,
-      #3b82f6 75%,
-      #1e40af 100%
-    );
-  }
-
-  .crypto-gradient-accent {
-    background: linear-gradient(135deg,
-      rgba(59, 130, 246, 0.1) 0%,
-      rgba(147, 197, 253, 0.05) 50%,
-      rgba(59, 130, 246, 0.1) 100%
-    );
-  }
-
-  /* Glassmorphism effect */
-  .glass-effect {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .dark .glass-effect {
-    background: rgba(30, 41, 59, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  /* Smooth gradient animations */
-  .gradient-animation {
-    background-size: 200% 200%;
-    animation: gradientShift 6s ease infinite;
-  }
-
-  @keyframes gradientShift {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  /* Custom focus styles for crypto elements */
-  .crypto-focus:focus {
-    outline: 2px solid rgb(59 130 246);
-    outline-offset: 2px;
-    border-radius: 0.5rem;
-  }
-
-  /* Price animation pulse */
-  .price-pulse {
-    animation: pricePulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pricePulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.8;
-    }
-  }
-
-  /* Mobile tab scroll indicator */
-  .mobile-tabs-indicator {
-    position: relative;
-  }
-
-  .mobile-tabs-indicator::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 20px;
-    background: linear-gradient(
-      to right,
-      transparent,
-      rgba(255, 255, 255, 0.8)
-    );
-    pointer-events: none;
-  }
-
-  .dark .mobile-tabs-indicator::after {
-    background: linear-gradient(to right, transparent, rgba(30, 41, 59, 0.8));
-  }
-
-  /* Touch optimization utilities */
-  .touch-optimized {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-
-  .touch-pan-y {
-    touch-action: pan-y;
-  }
-
-  .touch-pan-x {
-    touch-action: pan-x;
-  }
-
-  /* Mobile chat optimizations */
-  .chat-message-bubble {
-    max-width: min(85vw, 320px);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-
-  .chat-input-mobile {
-    font-size: 16px; /* Keep 16px for iOS to prevent zoom */
-    min-height: 44px; /* iOS minimum touch target */
-  }
-
-  .chat-scroll-area {
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Enhanced horizontal scrolling tabs */
-  .horizontal-tabs-scroll {
-    scroll-behavior: smooth;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .horizontal-tabs-scroll::-webkit-scrollbar {
-    display: none;
-  }
-
-  .horizontal-tab-item {
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  /* Mobile-friendly tabs */
-  .mobile-tabs-container {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .mobile-tabs-scroll {
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .mobile-tabs-scroll::-webkit-scrollbar {
-    display: none;
-  }
-
-  .mobile-tab-item {
-    min-width: 0;
-    flex-shrink: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* Enhanced touch targets for mobile */
-  .touch-target {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* Responsive grid fallback for tabs */
-  .responsive-tabs-grid {
-    display: grid;
-    gap: 4px;
-    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-  }
-
-  @media (max-width: 640px) {
-    .responsive-tabs-grid {
-      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-      gap: 2px;
-    }
-  }
-
-  /* Mobile video content constraints */
-  @media (max-width: 640px) {
-    .video-content-safe {
-      max-width: calc(100vw - 80px);
-    }
-
-    .video-actions-safe {
-      width: 64px;
-    }
-
-    .video-text-safe {
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      hyphens: auto;
-    }
-
-    /* Mobile-friendly touch targets */
-    .touch-target {
-      min-height: 44px;
-      min-width: 44px;
-    }
-
-    /* Mobile dialog optimizations */
-    .mobile-dialog-content {
-      margin: 8px;
-      max-height: calc(100vh - 16px);
-      overflow-y: auto;
-    }
-
-    /* Mobile card spacing */
-    .mobile-card-spacing {
-      margin: 4px;
-      padding: 12px;
-    }
-
-    /* Mobile text sizing */
-    .mobile-text-scale {
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    /* Mobile button sizing */
-    .mobile-button-size {
-      min-height: 40px;
-      padding: 8px 16px;
-      font-size: 13px;
-    }
-
-    /* Mobile form spacing */
-    .mobile-form-spacing > * + * {
-      margin-top: 12px;
-    }
-
-    /* Mobile safe areas */
-    .mobile-safe-top {
-      padding-top: env(safe-area-inset-top, 8px);
-    }
-
-    .mobile-safe-bottom {
-      padding-bottom: env(safe-area-inset-bottom, 8px);
-    }
-
-    /* Mobile full-width containers */
-    .mobile-full-width {
-      width: 100vw;
-      margin-left: calc(-50vw + 50%);
-    }
-  }
-
-  /* Fix viewport height on mobile browsers */
-  .h-screen-mobile {
-    height: 100vh;
-    height: 100dvh; /* Dynamic viewport height for mobile browsers */
-  }
-
-  /* Mobile-optimized spacing */
-  .mobile-space-y > * + * {
-    margin-top: 0.75rem;
-  }
-
-  @media (min-width: 640px) {
-    .mobile-space-y > * + * {
-      margin-top: 1rem;
-    }
-  }
-
-  /* Mobile-optimized text truncation */
-  .mobile-truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  @media (max-width: 640px) {
-    .mobile-truncate {
-      white-space: normal;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-  }
-
-  /* Mobile-optimized grid layouts */
-  .mobile-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .mobile-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .mobile-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  /* Prevent text selection on touch devices for UI elements */
-  .touch-manipulation {
-    touch-action: manipulation;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-
-  /* Mobile-friendly focus styles */
-  .mobile-focus:focus-visible {
-    outline: 2px solid #3b82f6;
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
-}
-
-@layer base {
-  :root {
-    /* Enhanced background with subtle warmth */
-    --background: 210 20% 98%;
-    --foreground: 222.2 84% 4.9%;
-
-    /* Cards with soft gradient hints */
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    /* Vibrant SoftChat primary with gradient support */
-    --primary: 265 100% 58%;
-    --primary-foreground: 210 40% 98%;
-
-    /* Enhanced secondary with purple hints */
-    --secondary: 265 30% 95%;
-    --secondary-foreground: 265 15% 25%;
-
-    /* Improved muted tones with better contrast */
-    --muted: 220 15% 95%;
-    --muted-foreground: 220 15% 35%;
-
-    /* Accent with SoftChat vibes */
-    --accent: 280 60% 95%;
-    --accent-foreground: 280 15% 25%;
-
-    /* Enhanced destructive */
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    /* Softer borders */
-    --border: 220 15% 88%;
-    --input: 220 15% 92%;
-    --ring: 265 100% 58%;
-
-    /* Enhanced chart colors */
-    --chart-1: 265 85% 65%;
-    --chart-2: 195 70% 50%;
-    --chart-3: 290 75% 60%;
-    --chart-4: 25 85% 60%;
-    --chart-5: 340 75% 55%;
-
-    --radius: 0.75rem;
-
-    /* Enhanced sidebar with personality */
-    --sidebar-background: 265 15% 97%;
-    --sidebar-foreground: 265 15% 20%;
-    --sidebar-primary: 265 100% 58%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 265 20% 93%;
-    --sidebar-accent-foreground: 265 15% 25%;
-    --sidebar-border: 265 15% 88%;
-    --sidebar-ring: 265 100% 58%;
-
-    /* Enhanced SoftChat brand colors */
-    --softchat-primary: 265 100% 58%;
-    --softchat-accent: 297 83% 72%;
-    --softchat-600: 265 89% 48%;
-    --softchat-700: 265 100% 40%;
-
-    /* New gradient variables for dynamic elements */
-    --gradient-start: 265 100% 58%;
-    --gradient-middle: 280 85% 65%;
-    --gradient-end: 295 80% 70%;
-
-    /* Success and warning colors */
-    --success: 142 76% 45%;
-    --success-foreground: 0 0% 98%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 222.2 84% 4.9%;
-
-    /* Interactive states */
-    --hover-overlay: 265 100% 58% / 0.1;
-    --focus-ring: 265 100% 58% / 0.3;
-
-    /* Fintech Crypto Variables */
-    --crypto-bg-primary: 15 23 42;
-    --crypto-bg-secondary: 30 41 59;
-    --crypto-text-primary: 248 250 252;
-    --crypto-text-secondary: 203 213 225;
-    --crypto-text-muted: 148 163 184;
-    --crypto-border: 148 163 184;
-    --crypto-accent: 59 130 246;
-  }
-
-  .dark {
-    /* Premium Fintech Dark Mode - Dark Blue Gradient Theme */
-    --background: 210 100% 4%; /* Very dark blue */
-    --foreground: 210 40% 98%; /* Almost white text */
-
-    /* Dark cards with premium blue undertones */
-    --card: 215 25% 8%; /* Dark blue card background */
-    --card-foreground: 210 40% 98%; /* White text on cards */
-    --popover: 215 25% 8%;
-    --popover-foreground: 210 40% 98%;
-
-    /* Vibrant primary that pops in dark mode */
-    --primary: 217 91% 60%; /* Bright blue primary */
-    --primary-foreground: 210 100% 4%; /* Dark text on primary */
-
-    /* Enhanced secondary with blue undertones */
-    --secondary: 215 25% 12%; /* Slightly lighter blue */
-    --secondary-foreground: 210 30% 85%; /* Light blue text */
-
-    /* Improved dark muted with better contrast */
-    --muted: 215 25% 12%; /* Dark blue muted */
-    --muted-foreground: 215 20% 75%; /* Lighter blue text for better contrast */
-
-    /* Dark accent with blue theme */
-    --accent: 215 25% 12%;
-    --accent-foreground: 210 30% 85%;
-
-    /* Enhanced destructive for dark */
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 210 40% 98%;
-
-    /* Dark blue borders and inputs */
-    --border: 215 25% 18%; /* Lighter borders for better visibility */
-    --input: 215 25% 12%; /* Lighter inputs for better contrast */
-    --ring: 217 91% 60%; /* Bright blue ring */
-
-    /* Enhanced dark chart colors with blue theme */
-    --chart-1: 217 91% 65%;
-    --chart-2: 195 70% 60%;
-    --chart-3: 240 75% 65%;
-    --chart-4: 25 85% 65%;
-    --chart-5: 340 75% 60%;
-
-    /* Enhanced dark sidebar with blue theme */
-    --sidebar-background: 210 100% 3%; /* Darker blue sidebar */
-    --sidebar-foreground: 210 30% 90%; /* Light text */
-    --sidebar-primary: 217 91% 60%; /* Bright blue primary */
-    --sidebar-primary-foreground: 210 100% 4%; /* Dark text on primary */
-    --sidebar-accent: 215 25% 10%; /* Dark blue accent */
-    --sidebar-accent-foreground: 210 30% 90%; /* Light text */
-    --sidebar-border: 215 25% 12%; /* Dark blue border */
-    --sidebar-ring: 217 91% 60%; /* Bright blue ring */
-
-    /* Enhanced SoftChat brand colors for dark with blue theme */
-    --softchat-primary: 217 91% 60%;
-    --softchat-accent: 240 83% 70%;
-    --softchat-600: 217 89% 55%;
-    --softchat-700: 217 100% 45%;
-
-    /* Dark gradient variables with blue theme */
-    --gradient-start: 217 91% 60%;
-    --gradient-middle: 230 85% 65%;
-    --gradient-end: 240 80% 70%;
-
-    /* Dark success and warning */
-    --success: 142 76% 55%;
-    --success-foreground: 142 76% 10%;
-    --warning: 38 92% 60%;
-    --warning-foreground: 38 92% 10%;
-
-    /* Dark interactive states with blue theme */
-    --hover-overlay: 217 91% 60% / 0.15;
-    --focus-ring: 217 91% 60% / 0.4;
-
-    /* Premium Fintech Dark Variables */
-    --crypto-bg-primary: 15 23 42; /* Very dark blue */
-    --crypto-bg-secondary: 30 41 59; /* Dark blue */
-    --crypto-text-primary: 248 250 252; /* Almost white */
-    --crypto-text-secondary: 203 213 225; /* Light gray-blue */
-    --crypto-text-muted: 148 163 184; /* Medium gray-blue */
-    --crypto-border: 148 163 184; /* Gray-blue borders */
-    --crypto-accent: 59 130 246; /* Bright blue accent */
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply text-foreground;
-    background: hsl(var(--background));
-    min-height: 100vh;
-  }
-
-  /* Modern app container with proper theme support */
-  #root {
-    background: hsl(var(--background));
-    min-height: 100vh;
-  }
-
-  /* Light mode specific backgrounds */
-  :root:not(.dark) body,
-  :root:not(.dark) #root {
-    background: linear-gradient(135deg,
-      hsl(220 15% 97%) 0%,
-      hsl(240 20% 98%) 25%,
-      hsl(260 15% 97%) 50%,
-      hsl(240 20% 98%) 75%,
-      hsl(220 15% 97%) 100%
-    );
-  }
-
-  /* Premium Fintech Dark Mode Background */
-  .dark body,
-  .dark #root {
-    background: linear-gradient(135deg,
-      hsl(210 100% 4%) 0%,   /* Very dark blue */
-      hsl(215 25% 6%) 15%,   /* Dark blue */
-      hsl(220 30% 8%) 30%,   /* Medium dark blue */
-      hsl(215 25% 6%) 70%,   /* Dark blue */
-      hsl(210 100% 4%) 100%  /* Very dark blue */
-    ) !important;
-    
-    /* Add a subtle overlay for depth */
-    position: relative;
-  }
-
-  .dark body::before,
-  .dark #root::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-      ellipse at center,
-      rgba(59, 130, 246, 0.03) 0%,
-      rgba(30, 58, 138, 0.02) 50%,
-      rgba(15, 23, 42, 0.05) 100%
-    );
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  /* Force dark mode styling for crypto components */
-  .dark .bg-white {
-    background: linear-gradient(145deg,
-      hsl(215 25% 8%) 0%,
-      hsl(220 30% 10%) 50%,
-      hsl(215 25% 8%) 100%
-    ) !important;
-    color: hsl(var(--crypto-text-primary)) !important;
-  }
-
-  .dark .bg-gray-50 {
-    background: linear-gradient(135deg,
-      hsl(215 25% 10%) 0%,
-      hsl(220 30% 12%) 100%
-    ) !important;
-  }
-
-  .dark .bg-gray-100 {
-    background: linear-gradient(135deg,
-      hsl(215 25% 12%) 0%,
-      hsl(220 30% 14%) 100%
-    ) !important;
-  }
-
-  .dark .text-gray-900 {
-    color: hsl(var(--crypto-text-primary)) !important;
-  }
-
-  .dark .text-gray-800 {
-    color: hsl(var(--crypto-text-primary)) !important;
-  }
-
-  .dark .text-gray-700 {
-    color: hsl(var(--crypto-text-secondary)) !important;
-  }
-
-  .dark .text-gray-600 {
-    color: hsl(var(--crypto-text-muted)) !important;
-  }
-
-  .dark .text-muted-foreground {
-    color: hsl(var(--crypto-text-muted)) !important;
-  }
-
-  /* Enhanced card backgrounds with fintech styling */
-  .bg-card {
-    background: hsl(var(--card)) !important;
-  }
-
-  /* Light mode card gradients */
-  :root:not(.dark) .bg-card {
-    background: linear-gradient(145deg,
-      hsl(0 0% 100%) 0%,
-      hsl(240 30% 98%) 50%,
-      hsl(260 25% 97%) 100%
-    ) !important;
-  }
-
-  /* Premium Fintech Dark mode card gradients */
-  .dark .bg-card {
-    background: linear-gradient(145deg,
-      hsl(215 25% 8%) 0%,
-      hsl(220 30% 10%) 30%,
-      hsl(225 35% 12%) 70%,
-      hsl(215 25% 8%) 100%
-    ) !important;
-    border: 1px solid rgba(148, 163, 184, 0.1) !important;
-    box-shadow: 
-      0 8px 32px rgba(15, 23, 42, 0.4),
-      0 4px 16px rgba(30, 41, 59, 0.3),
-      inset 0 1px 0 rgba(148, 163, 184, 0.1) !important;
-  }
-
-  /* Enhanced muted backgrounds */
-  .bg-muted {
-    background: hsl(var(--muted)) !important;
-  }
-
-  /* Light mode muted gradients */
-  :root:not(.dark) .bg-muted {
-    background: linear-gradient(135deg,
-      hsl(240 20% 96%) 0%,
-      hsl(260 15% 95%) 100%
-    ) !important;
-  }
-
-  /* Premium Fintech Dark mode muted gradients */
-  .dark .bg-muted {
-    background: linear-gradient(135deg,
-      hsl(215 25% 10%) 0%,
-      hsl(220 30% 12%) 50%,
-      hsl(215 25% 10%) 100%
-    ) !important;
-    border: 1px solid rgba(148, 163, 184, 0.08) !important;
-  }
-
-  /* Modern button gradients - maintain for both themes */
-  .bg-primary {
-    background: linear-gradient(135deg,
-      hsl(var(--primary)) 0%,
-      hsl(280 85% 60%) 50%,
-      hsl(var(--primary)) 100%
-    ) !important;
-  }
-
-  /* Consistent 13px font size across all devices */
-  html {
-    font-size: 13px !important; /* Ensure 13px base everywhere */
-  }
-}
-
-/* Mobile-specific optimizations */
-@layer utilities {
-  /* Prevent horizontal overflow on mobile */
-  .prevent-mobile-overflow {
-    overflow-x: hidden;
-    max-width: 100vw;
-    word-wrap: break-word;
-    word-break: break-word;
-  }
-
-  /* Better touch targets for mobile */
-  .touch-target {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* Mobile-optimized scrollbars */
-  .mobile-scroll {
-    scrollbar-width: thin;
-    scrollbar-color: hsl(var(--border)) transparent;
-  }
-
-  .mobile-scroll::-webkit-scrollbar {
-    height: 4px;
-    width: 4px;
-  }
-
-  .mobile-scroll::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .mobile-scroll::-webkit-scrollbar-thumb {
-    background-color: hsl(var(--border));
-    border-radius: 2px;
-  }
-
-  /* Responsive text truncation */
-  .mobile-text {
-    @apply text-sm leading-tight;
-  }
-
-  @screen md {
-    .mobile-text {
-      @apply text-base leading-normal;
-    }
-  }
-
-  /* Better mobile card spacing */
-  .mobile-card {
-    @apply p-3 gap-3;
-  }
-
-  @screen md {
-    .mobile-card {
-      @apply p-6 gap-6;
-    }
-  }
-
-  /* Mobile-optimized flexbox layouts */
-  .mobile-flex {
-    @apply flex flex-col gap-2;
-  }
-
-  @screen sm {
-    .mobile-flex {
-      @apply flex-row gap-4;
-    }
-  }
-
-  /* Better button sizing for mobile */
-  .mobile-button {
-    @apply h-8 px-3 text-xs;
-  }
-
-  @screen md {
-    .mobile-button {
-      @apply h-10 px-4 text-sm;
-    }
-  }
-
-  /* Mobile-first grid system */
-  .mobile-grid-1 {
-    @apply grid grid-cols-1 gap-3;
-  }
-
-  @screen sm {
-    .mobile-grid-1 {
-      @apply grid-cols-2 gap-4;
-    }
-  }
-
-  @screen lg {
-    .mobile-grid-1 {
-      @apply grid-cols-3 gap-6;
-    }
-  }
-
-  .mobile-grid-2 {
-    @apply grid grid-cols-1 gap-3;
-  }
-
-  @screen md {
-    .mobile-grid-2 {
-      @apply grid-cols-2 gap-4;
-    }
-  }
-
-  @screen lg {
-    .mobile-grid-2 {
-      @apply grid-cols-4 gap-6;
-    }
-  }
-
-  /* Better spacing system for mobile */
-  .mobile-space-y {
-    @apply space-y-3;
-  }
-
-  @screen md {
-    .mobile-space-y {
-      @apply space-y-6;
-    }
-  }
-
-  /* Mobile-optimized container */
-  .mobile-container {
-    @apply w-full max-w-7xl mx-auto px-3;
-  }
-
-  @screen md {
-    .mobile-container {
-      @apply px-6;
-    }
-  }
-
-  /* Tab navigation optimizations */
-  .mobile-tabs {
-    @apply overflow-x-auto scrollbar-hide;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .mobile-tab {
-    @apply whitespace-nowrap px-3 py-2 text-sm flex-shrink-0;
-  }
-
-  /* Hide scrollbars but keep functionality */
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* TikTok-style animations */
-  .tiktok-heart-animation {
-    animation: heartBeat 0.6s ease-in-out;
-  }
-
-  @keyframes heartBeat {
-    0% {
-      transform: scale(1);
-    }
-    14% {
-      transform: scale(1.3);
-    }
-    28% {
-      transform: scale(1);
-    }
-    42% {
-      transform: scale(1.3);
-    }
-    70% {
-      transform: scale(1);
-    }
-  }
-
-  .tiktok-follow-pulse {
-    animation: followPulse 2s infinite;
-  }
-
-  @keyframes followPulse {
-    0%,
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(1.05);
-      opacity: 0.8;
-    }
-  }
-
-  .tiktok-disc-spin {
-    animation: discSpin 3s linear infinite;
-  }
-
-  @keyframes discSpin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-}
-
-/* Animation improvements for mobile */
-@layer components {
-  .animate-in {
-    animation-duration: 0.2s;
-    animation-fill-mode: both;
-  }
-
-  .slide-in-from-bottom-80 {
-    animation-name: slideInFromBottom;
-  }
-
-  @keyframes slideInFromBottom {
-    from {
-      transform: translateY(80px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  /* Improved focus states for mobile */
-  .focus-visible-mobile {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary;
-  }
-
-  /* Better loading states */
-  .skeleton-mobile {
-    @apply animate-pulse bg-muted rounded;
-  }
-}
-
-/* Performance optimizations */
-@layer base {
-  /* Enable hardware acceleration for smoother animations */
-  .gpu-accelerated {
-    transform: translateZ(0);
-    will-change: transform;
-  }
-
-  /* Optimize scroll performance */
-  .scroll-optimized {
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-  }
-}
-
-/* Landing Page Styles */
-@layer components {
-  /* Container styles */
+@media (min-width: 640px) {
   .container-wide {
-    @apply container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
+}
 
-  /* Typography styles */
+@media (min-width: 1024px) {
+  .container-wide {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Typography Classes */
+.heading-xl {
+  font-size: 3rem;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
   .heading-xl {
-    @apply text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight;
+    font-size: 4rem;
   }
+}
 
+@media (min-width: 1024px) {
+  .heading-xl {
+    font-size: 5rem;
+  }
+}
+
+.heading-lg {
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
   .heading-lg {
-    @apply text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight;
+    font-size: 2.5rem;
   }
+}
 
-  .heading-md {
-    @apply text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight;
+@media (min-width: 1024px) {
+  .heading-lg {
+    font-size: 3rem;
   }
+}
 
-  .heading-sm {
-    @apply text-xl sm:text-2xl lg:text-3xl font-semibold;
-  }
+.body-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
 
+@media (min-width: 640px) {
   .body-lg {
-    @apply text-lg sm:text-xl leading-relaxed;
+    font-size: 1.25rem;
   }
+}
 
+.body-md {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (min-width: 640px) {
   .body-md {
-    @apply text-base sm:text-lg leading-relaxed;
-  }
-
-  .body-sm {
-    @apply text-sm sm:text-base leading-relaxed;
-  }
-
-  /* Gradient text */
-  .gradient-text {
-    @apply bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent;
-  }
-
-  /* Button styles */
-  .btn-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-all duration-200 shadow-lg hover:shadow-xl;
-  }
-
-  .btn-secondary {
-    @apply bg-white border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-50 transition-all duration-200;
-  }
-
-  /* Gradient backgrounds */
-  .bg-gradient-radial {
-    background: radial-gradient(circle, var(--tw-gradient-stops));
-  }
-
-  /* Enhanced SoftChat color utilities */
-  .text-softchat-700 {
-    color: hsl(var(--softchat-700));
-  }
-
-  .bg-softchat-50 {
-    background-color: hsl(265 100% 97%);
-  }
-
-  .border-softchat-200 {
-    border-color: hsl(265 60% 85%);
-  }
-
-  .from-softchat-500-40 {
-    --tw-gradient-from: hsl(265 100% 50% / 0.4);
-    --tw-gradient-to: hsl(265 100% 50% / 0);
-    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-  }
-
-  /* Modern gradient backgrounds */
-  .bg-gradient-softchat {
-    background: linear-gradient(135deg,
-      hsl(var(--gradient-start)),
-      hsl(var(--gradient-middle)),
-      hsl(var(--gradient-end))
-    );
-  }
-
-  .bg-gradient-softchat-subtle {
-    background: linear-gradient(135deg,
-      hsl(var(--gradient-start) / 0.1),
-      hsl(var(--gradient-middle) / 0.05),
-      hsl(var(--gradient-end) / 0.1)
-    );
-  }
-
-  /* Wallet specific gradients with proper contrast */
-  .bg-gradient-wallet {
-    background: linear-gradient(135deg,
-      hsl(217 91% 60%),
-      hsl(230 85% 65%),
-      hsl(240 80% 70%)
-    );
-  }
-
-  .bg-gradient-card {
-    background: linear-gradient(145deg,
-      hsl(var(--card)),
-      hsl(var(--card)) 50%,
-      hsl(var(--primary) / 0.02)
-    );
-  }
-
-  .bg-gradient-primary {
-    background: linear-gradient(135deg,
-      hsl(var(--primary)),
-      hsl(280 85% 60%),
-      hsl(var(--primary))
-    );
-  }
-
-  /* Enhanced card styling */
-  .card-enhanced {
-    @apply bg-card/80 backdrop-blur-sm border-border/60 shadow-lg;
-    background: linear-gradient(145deg,
-      hsl(var(--card)),
-      hsl(var(--card)) 50%,
-      hsl(var(--gradient-start) / 0.02)
-    );
-  }
-
-  /* Text visibility utilities */
-  .text-high-contrast {
-    color: hsl(var(--foreground));
-  }
-
-  .text-medium-contrast {
-    color: hsl(var(--muted-foreground));
-  }
-
-  .text-on-primary {
-    color: hsl(var(--primary-foreground));
-  }
-
-  .text-on-card {
-    color: hsl(var(--card-foreground));
-  }
-
-  /* Improved overlay text */
-  .text-overlay-light {
-    color: rgba(255, 255, 255, 0.95);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-
-  .text-overlay-medium {
-    color: rgba(255, 255, 255, 0.85);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-  }
-
-  .text-overlay-subtle {
-    color: rgba(255, 255, 255, 0.75);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Interactive elements */
-  .interactive-element {
-    @apply transition-all duration-200 hover:scale-[1.02] hover:shadow-lg;
-    transition-property: transform, box-shadow, background-color, border-color;
-  }
-
-  .interactive-element:hover {
-    background: linear-gradient(145deg,
-      hsl(var(--hover-overlay)),
-      hsl(var(--primary) / 0.05)
-    );
-  }
-
-  /* Modern button styles */
-  .btn-modern-primary {
-    @apply bg-gradient-softchat text-primary-foreground font-semibold;
-    @apply hover:shadow-lg hover:scale-[1.02] transition-all duration-200;
-    @apply focus:ring-4 focus:ring-focus-ring;
-  }
-
-  .btn-modern-secondary {
-    @apply bg-gradient-softchat-subtle border border-primary/20 text-primary;
-    @apply hover:bg-gradient-softchat hover:text-primary-foreground;
-    @apply transition-all duration-200 hover:scale-[1.02];
-  }
-
-  /* Additional button gradient utilities */
-  .btn-gradient {
-    background: linear-gradient(135deg,
-      hsl(var(--primary)),
-      hsl(280 85% 60%),
-      hsl(var(--primary))
-    );
-    @apply text-primary-foreground font-semibold shadow-md hover:shadow-lg transition-all duration-200;
-  }
-
-  .btn-gradient:hover {
-    background: linear-gradient(135deg,
-      hsl(var(--primary) / 0.9),
-      hsl(280 85% 60% / 0.9),
-      hsl(var(--primary) / 0.9)
-    );
-    transform: translateY(-1px);
-  }
-
-  /* Section spacing */
-  .section-spacing {
-    @apply py-16 md:py-24 lg:py-32;
-  }
-
-  .section-spacing-sm {
-    @apply py-12 md:py-16 lg:py-20;
-  }
-
-  /* Card improvements */
-  .card-hover {
-    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
-  }
-
-  /* Feature grid */
-  .feature-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12;
-  }
-
-  /* Responsive images */
-  .responsive-image {
-    @apply w-full h-auto object-cover rounded-lg shadow-lg;
-  }
-
-  /* Smooth scroll behavior */
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* Custom scrollbar for landing page */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 3px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #a1a1a1;
-  }
-
-  /* Landing page animations */
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Hover effects for cards */
-  .hover-lift {
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
-  }
-
-  .hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow:
-      0 20px 25px -5px rgba(0, 0, 0, 0.1),
-      0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  }
-
-  /* Softchat color utilities */
-  .text-softchat-600 {
-    color: hsl(var(--softchat-600));
-  }
-
-  .bg-softchat-600 {
-    background-color: hsl(var(--softchat-600));
+    font-size: 1.125rem;
   }
 }
 
-/* Accessibility improvements for mobile */
-@media (prefers-reduced-motion: reduce) {
-  .animate-in {
-    animation: none;
-  }
-
-  .scroll-optimized {
-    scroll-behavior: auto;
-  }
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .mobile-card {
-    @apply border-2;
-  }
+/* Button Variants */
+.btn-primary {
+  background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
 }
 
-/* Better mobile input styling */
-@layer components {
-  .mobile-input {
-    @apply text-base;
-    font-size: 16px; /* Keep 16px to prevent zoom on iOS */
-  }
-
-  .mobile-select {
-    @apply text-base;
-    font-size: 16px; /* Keep 16px to prevent zoom on iOS */
-  }
-
-  /* General text elements use 13px base */
-  .mobile-text-content {
-    font-size: 1rem; /* 13px with our base */
-    line-height: 1.5;
-  }
+.btn-primary:hover {
+  background: linear-gradient(135deg, #00B8E6 0%, #A040E6 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(0, 210, 255, 0.3);
 }
 
-/* TikTok-style animations */
-.tiktok-heart-animation {
-  animation: heartBeat 0.6s ease-in-out;
-}
-
-@keyframes heartBeat {
-  0% { transform: scale(1); }
-  25% { transform: scale(1.2); }
-  50% { transform: scale(1.3); }
-  75% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-.tiktok-follow-pulse {
-  animation: followPulse 2s ease-in-out infinite;
-}
-
-@keyframes followPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.tiktok-disc-spin {
-  animation: discSpin 10s linear infinite;
-}
-
-@keyframes discSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Final mobile responsiveness and 13px font enforcement */
-@layer base {
-  /* Ensure all text elements inherit the 13px base */
-  *:not(input):not(textarea):not(select) {
-    font-size: inherit;
-  }
-
-  /* Mobile-first approach with 13px base */
-  html, body {
-    font-size: 13px !important;
-    line-height: 1.5;
-  }
-
-  /* Improve mobile text readability */
-  @media (max-width: 480px) {
-    body {
-      line-height: 1.4;
-      word-spacing: 0.1em;
-    }
-
-    /* Ensure proper spacing on very small devices */
-    * {
-      margin: 0;
-      padding: 0;
-    }
-
-    /* Better button sizing for small mobile devices */
-    button, [role="button"] {
-      min-height: 44px;
-      min-width: 44px;
-      padding: 8px 12px;
-      font-size: 1rem; /* 13px */
-    }
-  }
-
-  /* Tablet responsiveness */
-  @media (min-width: 481px) and (max-width: 768px) {
-    html, body {
-      font-size: 13px; /* Keep 13px on tablets too */
-    }
-  }
-
-  /* Desktop - still maintain 13px base */
-  @media (min-width: 769px) {
-    html, body {
-      font-size: 13px; /* Consistent 13px across all devices */
-    }
-  }
-}
-
-/* Premium Fintech Crypto Component Styles */
-@layer components {
-  .crypto-page-container {
-    @apply min-h-screen;
-  }
-
-  .dark .crypto-page-container {
-    background: linear-gradient(135deg,
-      hsl(210 100% 4%) 0%,
-      hsl(215 25% 6%) 25%,
-      hsl(220 30% 8%) 50%,
-      hsl(215 25% 6%) 75%,
-      hsl(210 100% 4%) 100%
-    );
-  }
-
-  .crypto-card-premium {
-    @apply relative overflow-hidden;
-  }
-
-  .dark .crypto-card-premium {
-    background: linear-gradient(145deg,
-      rgba(30, 41, 59, 0.9) 0%,
-      rgba(51, 65, 85, 0.8) 50%,
-      rgba(30, 41, 59, 0.9) 100%
-    );
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(148, 163, 184, 0.15);
-    box-shadow: 
-      0 8px 32px rgba(15, 23, 42, 0.3),
-      0 4px 16px rgba(30, 41, 59, 0.2),
-      inset 0 1px 0 rgba(148, 163, 184, 0.1);
-  }
-
-  .crypto-card-premium::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg,
-      rgba(59, 130, 246, 0.03) 0%,
-      transparent 50%,
-      rgba(59, 130, 246, 0.03) 100%
-    );
-    pointer-events: none;
-  }
-
-  .crypto-text-premium {
-    @apply relative z-10;
-  }
-
-  .dark .crypto-text-premium {
-    color: rgba(248, 250, 252, 0.95);
-  }
-
-  .crypto-text-secondary-premium {
-    @apply relative z-10;
-  }
-
-  .dark .crypto-text-secondary-premium {
-    color: rgba(203, 213, 225, 0.85);
-  }
-
-  .crypto-text-muted-premium {
-    @apply relative z-10;
-  }
-
-  .dark .crypto-text-muted-premium {
-    color: rgba(148, 163, 184, 0.75);
-  }
-
-  .crypto-gradient-bg {
-    background: linear-gradient(135deg,
-      rgba(59, 130, 246, 0.1) 0%,
-      rgba(147, 197, 253, 0.05) 50%,
-      rgba(59, 130, 246, 0.1) 100%
-    );
-  }
-
-  .crypto-border-premium {
-    border: 1px solid rgba(148, 163, 184, 0.2);
-  }
-
-  .crypto-hover-effect {
-    @apply transition-all duration-300 ease-out;
-  }
-
-  .crypto-hover-effect:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-      0 12px 40px rgba(15, 23, 42, 0.4),
-      0 6px 20px rgba(30, 41, 59, 0.3),
-      inset 0 1px 0 rgba(148, 163, 184, 0.15);
-  }
+/* Gradient Backgrounds */
+.bg-gradient-radial {
+  background-image: radial-gradient(circle, var(--tw-gradient-stops));
 }

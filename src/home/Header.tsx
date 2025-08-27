@@ -34,7 +34,7 @@ const Header = () => {
       <div className="container-wide flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <span className="text-2xl font-bold text-softchat-700 dark:text-softchat-accent">Softchat</span>
+          <span className="text-2xl font-bold eloity-text-gradient">Eloity</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -42,13 +42,9 @@ const Header = () => {
           <NavLinks />
           <ThemeToggle />
           <Button className="btn-primary" asChild>
-            <a
-              href="https://app.softchat.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Link to="/auth">
               Launch App
-            </a>
+            </Link>
           </Button>
         </nav>
 
@@ -75,13 +71,9 @@ const Header = () => {
               <ThemeToggle />
             </div>
             <Button className="btn-primary w-full" asChild>
-              <a
-                href="https://app.softchat.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link to="/auth">
                 Launch App
-              </a>
+              </Link>
             </Button>
           </nav>
         </div>
@@ -109,7 +101,7 @@ const NavLinks = ({ mobile = false, closeMenu = () => {} }) => {
           href={link.href}
           className={`${
             mobile ? "block py-2 text-lg" : "text-sm font-medium"
-          } text-foreground dark:text-foreground hover:text-softchat-600 dark:hover:text-softchat-accent transition-colors`}
+          } text-foreground dark:text-foreground hover:text-eloity-primary dark:hover:text-eloity-accent transition-colors`}
           onClick={closeMenu}
         >
           {link.text}

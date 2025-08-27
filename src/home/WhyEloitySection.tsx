@@ -51,13 +51,12 @@ const WhyEloitySection = () => {
   return (
     <section className="py-24 bg-gray-50" id="why-eloity">
       <div className="container-wide">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center mb-16">
           <h2 className="heading-lg mb-6">
             Why Choose <span className="gradient-text">Eloity</span>
           </h2>
-          <p className="body-md text-gray-600">
-            We've built the most advanced social platform using cutting-edge
-            technology. Here's what sets us apart from the competition.
+          <p className="body-md text-muted-foreground max-w-2xl mx-auto">
+            Experience the next generation of social platforms with features that put you in control.
           </p>
         </div>
 
@@ -65,13 +64,13 @@ const WhyEloitySection = () => {
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+              className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300"
             >
               <div className="inline-flex items-center justify-center p-3 bg-eloity-50 text-eloity-600 rounded-lg mb-5">
                 {benefit.icon}
               </div>
               <h3 className="text-xl font-semibold mb-3">{benefit.title}</h3>
-              <p className="text-gray-600">{benefit.description}</p>
+              <p className="text-gray-600 leading-relaxed">{benefit.description}</p>
             </div>
           ))}
         </div>

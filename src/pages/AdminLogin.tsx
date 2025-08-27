@@ -111,7 +111,7 @@ const AdminLogin = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@softchat.com"
+                  placeholder="admin@eloity.com"
                   value={credentials.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   required
@@ -215,7 +215,7 @@ const AdminLogin = () => {
           </div>
 
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            SoftChat Admin Panel v2.0 • Unauthorized access is prohibited
+            Eloity Admin Panel v2.0 • Unauthorized access is prohibited
           </p>
         </div>
       </div>

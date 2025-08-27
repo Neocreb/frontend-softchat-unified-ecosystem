@@ -5,7 +5,7 @@ import ProblemSolutionSection from "@/home/ProblemSolutionSection";
 import FeaturesSection from "@/home/FeaturesSection";
 import AdvancedFeaturesSection from "@/home/AdvancedFeaturesSection";
 import ScreenshotCarousel from "@/home/ScreenshotCarousel";
-import WhySoftchatSection from "@/home/WhySoftchatSection";
+import WhyEloitySection from "@/home/WhyEloitySection";
 import NewsletterSection from "@/home/NewsletterSection";
 import Layout from "@/home/Layout";
 import ReactTest from "@/components/debug/ReactTest";
@@ -21,7 +21,7 @@ const LandingPage = () => {
       <FeaturesSection />
       <AdvancedFeaturesSection />
       <ScreenshotCarousel />
-      <WhySoftchatSection />
+      <WhyEloitySection />
       <NewsletterSection />
     </Layout>
   );

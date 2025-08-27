@@ -11,17 +11,17 @@ module.exports = {
         '4xl': "1920px", // Ultra wide desktop
       },
       fontSize: {
-        '2xs': ['0.625rem', { lineHeight: '0.75rem' }], // 8px with 13px base
-        'xs': ['0.75rem', { lineHeight: '1rem' }],      // 10px with 13px base
-        'sm': ['0.875rem', { lineHeight: '1.25rem' }],  // 11px with 13px base
-        'base': ['1rem', { lineHeight: '1.5rem' }],     // 13px base
-        'lg': ['1.125rem', { lineHeight: '1.75rem' }],  // 15px with 13px base
-        'xl': ['1.25rem', { lineHeight: '1.75rem' }],   // 16px with 13px base
-        '2xl': ['1.5rem', { lineHeight: '2rem' }],      // 19px with 13px base
-        '3xl': ['1.875rem', { lineHeight: '2.25rem' }], // 24px with 13px base
-        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],   // 29px with 13px base
-        '5xl': ['3rem', { lineHeight: '1' }],           // 39px with 13px base
-        '6xl': ['3.75rem', { lineHeight: '1' }],        // 49px with 13px base
+        '2xs': ['0.625rem', { lineHeight: '0.75rem' }], // 10px
+        'xs': ['0.75rem', { lineHeight: '1rem' }],      // 12px
+        'sm': ['0.875rem', { lineHeight: '1.25rem' }],  // 14px
+        'base': ['1rem', { lineHeight: '1.5rem' }],     // 16px - restored to normal
+        'lg': ['1.125rem', { lineHeight: '1.75rem' }],  // 18px
+        'xl': ['1.25rem', { lineHeight: '1.75rem' }],   // 20px
+        '2xl': ['1.5rem', { lineHeight: '2rem' }],      // 24px
+        '3xl': ['1.875rem', { lineHeight: '2.25rem' }], // 30px
+        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],   // 36px
+        '5xl': ['3rem', { lineHeight: '1' }],           // 48px
+        '6xl': ['3.75rem', { lineHeight: '1' }],        // 60px
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -78,6 +78,22 @@ module.exports = {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        eloity: {
+          DEFAULT: "hsl(var(--eloity-primary))",
+          primary: "hsl(var(--eloity-primary))",
+          cyan: "#00D2FF",
+          purple: "#B84FFF",
+          dark: "#1A1B23",
+          accent: "hsl(var(--eloity-accent))",
+          50: "hsl(var(--eloity-50))",
+          100: "hsl(var(--eloity-100))",
+          200: "hsl(var(--eloity-200))",
+          300: "hsl(var(--eloity-300))",
+          400: "hsl(var(--eloity-400))",
+          500: "hsl(var(--eloity-500))",
+          600: "hsl(var(--eloity-600))",
+          700: "hsl(var(--eloity-700))",
         },
         softchat: {
           DEFAULT: "hsl(var(--softchat-primary))",
