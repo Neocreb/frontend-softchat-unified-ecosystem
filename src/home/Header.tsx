@@ -34,7 +34,8 @@ const Header = () => {
     >
       <div className="container-wide flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center gap-2">
+          <EloityLogo className="h-8 w-8" />
           <span className="text-2xl font-bold text-eloity-700 dark:text-eloity-accent">Eloity</span>
         </Link>
 
