@@ -98,7 +98,7 @@ async function sendSMSWithAfricasTalking(data: SMSNotificationData, messageId: s
           username: process.env.AFRICAS_TALKING_USERNAME,
           to: data.phoneNumber,
           message: data.message,
-          from: 'SOFTCHAT'
+          from: 'ELOITY'
         })
       });
       
