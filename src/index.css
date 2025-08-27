@@ -769,16 +769,16 @@
     --sidebar-border: 265 15% 88%;
     --sidebar-ring: 265 100% 58%;
 
-    /* Enhanced SoftChat brand colors */
-    --softchat-primary: 265 100% 58%;
-    --softchat-accent: 297 83% 72%;
-    --softchat-600: 265 89% 48%;
-    --softchat-700: 265 100% 40%;
+    /* Enhanced Eloity brand colors */
+    --eloity-primary: 248 100% 68%; /* #7D5FFF - Neon Bluish Purple */
+    --eloity-accent: 213 100% 58%; /* #2979FF - Electrifying Blue */
+    --eloity-600: 248 89% 58%;
+    --eloity-700: 248 100% 50%;
 
     /* New gradient variables for dynamic elements */
-    --gradient-start: 265 100% 58%;
-    --gradient-middle: 280 85% 65%;
-    --gradient-end: 295 80% 70%;
+    --gradient-start: 248 100% 68%; /* Neon Bluish Purple */
+    --gradient-middle: 230 100% 63%; /* Transition color */
+    --gradient-end: 213 100% 58%; /* Electrifying Blue */
 
     /* Success and warning colors */
     --success: 142 76% 45%;
@@ -853,16 +853,16 @@
     --sidebar-border: 215 25% 12%; /* Dark blue border */
     --sidebar-ring: 217 91% 60%; /* Bright blue ring */
 
-    /* Enhanced SoftChat brand colors for dark with blue theme */
-    --softchat-primary: 217 91% 60%;
-    --softchat-accent: 240 83% 70%;
-    --softchat-600: 217 89% 55%;
-    --softchat-700: 217 100% 45%;
+    /* Enhanced Eloity brand colors for dark with blue theme */
+    --eloity-primary: 248 100% 68%; /* #7D5FFF - Neon Bluish Purple */
+    --eloity-accent: 213 100% 58%; /* #2979FF - Electrifying Blue */
+    --eloity-600: 248 89% 58%;
+    --eloity-700: 248 100% 50%;
 
     /* Dark gradient variables with blue theme */
-    --gradient-start: 217 91% 60%;
-    --gradient-middle: 230 85% 65%;
-    --gradient-end: 240 80% 70%;
+    --gradient-start: 248 100% 68%; /* Neon Bluish Purple */
+    --gradient-middle: 230 100% 63%; /* Transition color */
+    --gradient-end: 213 100% 58%; /* Electrifying Blue */
 
     /* Dark success and warning */
     --success: 142 76% 55%;
@@ -1371,27 +1371,27 @@
     background: radial-gradient(circle, var(--tw-gradient-stops));
   }
 
-  /* Enhanced SoftChat color utilities */
-  .text-softchat-700 {
-    color: hsl(var(--softchat-700));
+  /* Enhanced Eloity color utilities */
+  .text-eloity-700 {
+    color: hsl(var(--eloity-700));
   }
 
-  .bg-softchat-50 {
-    background-color: hsl(265 100% 97%);
+  .bg-eloity-50 {
+    background-color: hsl(248 100% 97%);
   }
 
-  .border-softchat-200 {
-    border-color: hsl(265 60% 85%);
+  .border-eloity-200 {
+    border-color: hsl(248 60% 85%);
   }
 
-  .from-softchat-500-40 {
-    --tw-gradient-from: hsl(265 100% 50% / 0.4);
-    --tw-gradient-to: hsl(265 100% 50% / 0);
+  .from-eloity-500-40 {
+    --tw-gradient-from: hsl(248 100% 68% / 0.4);
+    --tw-gradient-to: hsl(248 100% 68% / 0);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   }
 
   /* Modern gradient backgrounds */
-  .bg-gradient-softchat {
+  .bg-gradient-eloity {
     background: linear-gradient(135deg,
       hsl(var(--gradient-start)),
       hsl(var(--gradient-middle)),
@@ -1399,7 +1399,7 @@
     );
   }
 
-  .bg-gradient-softchat-subtle {
+  .bg-gradient-eloity-subtle {
     background: linear-gradient(135deg,
       hsl(var(--gradient-start) / 0.1),
       hsl(var(--gradient-middle) / 0.05),
@@ -1490,14 +1490,14 @@
 
   /* Modern button styles */
   .btn-modern-primary {
-    @apply bg-gradient-softchat text-primary-foreground font-semibold;
+    @apply bg-gradient-eloity text-primary-foreground font-semibold;
     @apply hover:shadow-lg hover:scale-[1.02] transition-all duration-200;
     @apply focus:ring-4 focus:ring-focus-ring;
   }
 
   .btn-modern-secondary {
-    @apply bg-gradient-softchat-subtle border border-primary/20 text-primary;
-    @apply hover:bg-gradient-softchat hover:text-primary-foreground;
+    @apply bg-gradient-eloity-subtle border border-primary/20 text-primary;
+    @apply hover:bg-gradient-eloity hover:text-primary-foreground;
     @apply transition-all duration-200 hover:scale-[1.02];
   }
 
