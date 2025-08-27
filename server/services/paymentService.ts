@@ -37,7 +37,7 @@ export async function processFlutterwavePayment(data: FlutterwavePaymentData) {
         name: user.full_name || user.username
       },
       customizations: {
-        title: "Softchat Payment",
+        title: "Eloity Payment",
         description: purpose,
         logo: `${process.env.FRONTEND_URL}/logo.png`
       },
@@ -260,7 +260,7 @@ export async function processMTNMoMoPayment(data: MTNMoMoPaymentData) {
         partyId: phoneNumber.replace('+', '')
       },
       payerMessage: narration,
-      payeeNote: "Softchat platform payment"
+      payeeNote: "Eloity platform payment"
     };
 
     if (process.env.NODE_ENV === 'production') {
@@ -379,7 +379,7 @@ export async function processOrangeMoneyPayment(data: OrangeMoneyPaymentData) {
       cancel_url: cancelUrl,
       notif_url: `${process.env.BACKEND_URL}/api/payments/orange-money/webhook`,
       lang: language,
-      reference: `SOFTCHAT_${Date.now()}`
+      reference: `ELOITY_${Date.now()}`
     };
 
     if (process.env.NODE_ENV === 'production') {
