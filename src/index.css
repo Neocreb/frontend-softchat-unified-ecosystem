@@ -1420,6 +1420,10 @@
     color: hsl(var(--eloity-700));
   }
 
+  .text-eloity-600 {
+    color: hsl(var(--eloity-600));
+  }
+
   .bg-eloity-50 {
     background-color: hsl(248 100% 97%);
   }
