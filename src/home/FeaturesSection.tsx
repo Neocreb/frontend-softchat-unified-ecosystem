@@ -88,8 +88,8 @@ const FeaturesSection = () => {
             Experience the <span className="gradient-text">Full Suite</span>
           </h2>
           <p className="body-md text-gray-600">
-            Five powerful tools in one seamless experience. Softchat redefines
-            what an app can do in emerging markets.
+            Six powerful tools in one seamless experience. Eloity redefines
+            what an app can do - where everything connects.
           </p>
         </div>
 
