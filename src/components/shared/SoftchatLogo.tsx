@@ -1,14 +1,13 @@
-
 import { cn } from "@/utils/utils";
 
-type SoftchatLogoProps = {
+type EloityLogoProps = {
   className?: string;
 };
 
-const SoftchatLogo = ({ className }: SoftchatLogoProps) => {
+const EloityLogo = ({ className }: EloityLogoProps) => {
   return (
     <div className={cn("relative", className)}>
-      <div className="absolute inset-0 bg-softchat-accent rounded-full blur-sm opacity-30"></div>
+      <div className="absolute inset-0 bg-eloity-accent rounded-full blur-sm opacity-30"></div>
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -50,4 +49,4 @@ const SoftchatLogo = ({ className }: SoftchatLogoProps) => {
   );
 };
 
-export default SoftchatLogo;
+export default EloityLogo;

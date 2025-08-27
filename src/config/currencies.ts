@@ -208,9 +208,9 @@ export const SUPPORTED_CURRENCIES: Currency[] = [
   
   // Platform Tokens
   {
-    code: 'SOFT',
-    name: 'SoftChat Token',
-    symbol: 'SOFT',
+    code: 'ELOITY',
+    name: 'Eloity Token',
+    symbol: 'ELOITY',
     country: 'Platform',
     flag: '🚀',
     decimals: 18,
