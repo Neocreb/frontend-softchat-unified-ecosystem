@@ -6,22 +6,22 @@ const HeroSection = () => {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-background to-muted dark:from-background dark:to-muted py-16 sm:py-20 md:py-32">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-0 -z-10 h-[600px] w-[600px] sm:h-[800px] sm:w-[800px] -translate-x-1/2 opacity-20 bg-gradient-radial from-softchat-500/40 to-transparent"></div>
+        <div className="absolute left-1/2 top-0 -z-10 h-[600px] w-[600px] sm:h-[800px] sm:w-[800px] -translate-x-1/2 opacity-20 bg-gradient-radial from-eloity-500/40 to-transparent"></div>
         <div className="absolute right-0 bottom-0 -z-10 h-[400px] w-[400px] sm:h-[600px] sm:w-[600px] translate-x-1/3 translate-y-1/3 opacity-20 bg-gradient-radial from-teal-400/40 to-transparent"></div>
       </div>
 
       <div className="container-wide relative z-10">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="heading-xl mb-6">
-            <span className="gradient-text">AI-Powered Everything:</span>{" "}
-            Social, Crypto, Commerce, Freelance & More.
+            <span className="gradient-text">Eloity</span>{" "}
+            <span className="text-muted-foreground">- where everything connects</span>
           </h1>
 
           <p className="body-lg mb-10 text-muted-foreground dark:text-muted-foreground">
-            The most advanced social platform with AI recommendations,
-            comprehensive analytics, gamification, and full accessibility.
-            Connect, trade, freelance, and innovate with secure crypto escrow
-            and intelligent matching.
+            Experience seamless connection and smart interaction in a modern,
+            values-driven community. AI-powered social platform with marketplace,
+            crypto trading, freelancing, and delivery services - all unified
+            through eloquent design and intelligent features.
           </p>
 
           {/* Primary Action Buttons */}
@@ -109,9 +109,9 @@ const HeroSection = () => {
           <div className="mt-8 pt-8 border-t border-border/50">
             <div className="text-center mb-6">
               <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-2">
-                Why Choose Softchat?
+                Why Choose Eloity?
               </h3>
-              <p className="text-sm text-muted-foreground dark:text-muted-foreground">Everything you need in one intelligent platform</p>
+              <p className="text-sm text-muted-foreground dark:text-muted-foreground">Where everything connects - eloquence meets unity</p>
             </div>
 
             {/* Feature highlights grid */}
@@ -160,7 +160,7 @@ const HeroSection = () => {
             <div className="relative rounded-xl bg-card dark:bg-card shadow-xl overflow-hidden border border-border dark:border-border">
               <img
                 src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=1280"
-                alt="Softchat app interface"
+                alt="Eloity app interface"
                 className="w-full h-auto"
               />
             </div>
