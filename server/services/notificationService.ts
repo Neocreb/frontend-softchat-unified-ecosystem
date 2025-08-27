@@ -808,7 +808,7 @@ async function sendEmailWithSendGrid(data: EmailNotificationData, messageId: str
         personalizations: data.to.map(email => ({ to: [{ email }] })),
         from: { 
           email: process.env.SENDGRID_FROM_EMAIL, 
-          name: process.env.SENDGRID_FROM_NAME || 'Softchat' 
+          name: process.env.SENDGRID_FROM_NAME || 'Eloity' 
         },
         subject: data.subject,
         content: [
