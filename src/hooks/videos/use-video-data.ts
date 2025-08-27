@@ -66,7 +66,7 @@ export const useVideoData = () => {
   const handleShare = (videoId: string) => {
     console.log("Sharing video:", videoId);
     // In a real app, this would open a share dialog or copy link
-    navigator.clipboard?.writeText(`https://softchat.com/video/${videoId}`);
+    navigator.clipboard?.writeText(`https://eloity.com/video/${videoId}`);
   };
 
   const nextVideo = () => {
