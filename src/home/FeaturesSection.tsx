@@ -110,7 +110,7 @@ const FeaturesSection = () => {
                     }
                   `}
                 >
-                  <div className="mb-2 text-softchat-600">{feature.icon}</div>
+                  <div className="mb-2 text-eloity-600">{feature.icon}</div>
                   <h3 className="text-base font-medium">{feature.title}</h3>
                   <p className="text-sm text-gray-500 hidden md:block mt-1">
                     {feature.tagline}
