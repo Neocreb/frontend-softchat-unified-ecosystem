@@ -1365,19 +1365,23 @@
 
   /* Typography styles */
   .heading-xl {
-    @apply text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight;
+    @apply eloity-heading-primary;
+    font-family: 'Montserrat', 'Poppins', sans-serif;
   }
 
   .heading-lg {
-    @apply text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight;
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight font-eloity-heading;
+    font-family: 'Montserrat', 'Poppins', sans-serif;
   }
 
   .heading-md {
-    @apply text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight;
+    @apply eloity-heading-secondary;
+    font-family: 'Montserrat', 'Poppins', sans-serif;
   }
 
   .heading-sm {
-    @apply text-xl sm:text-2xl lg:text-3xl font-semibold;
+    @apply text-xl sm:text-2xl lg:text-3xl font-semibold font-eloity-heading;
+    font-family: 'Montserrat', 'Poppins', sans-serif;
   }
 
   .body-lg {
