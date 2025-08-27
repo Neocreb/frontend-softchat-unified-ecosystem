@@ -34,7 +34,7 @@ const Header = () => {
       <div className="container-wide flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <span className="text-2xl font-bold text-softchat-700 dark:text-softchat-accent">Softchat</span>
+          <span className="text-2xl font-bold text-eloity-700 dark:text-eloity-accent">Eloity</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -43,7 +43,7 @@ const Header = () => {
           <ThemeToggle />
           <Button className="btn-primary" asChild>
             <a
-              href="https://app.softchat.com"
+              href="https://app.eloity.com"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -76,7 +76,7 @@ const Header = () => {
             </div>
             <Button className="btn-primary w-full" asChild>
               <a
-                href="https://app.softchat.com"
+                href="https://app.eloity.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
