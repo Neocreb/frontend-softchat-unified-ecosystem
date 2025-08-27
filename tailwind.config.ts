@@ -23,6 +23,13 @@ module.exports = {
         '5xl': ['3rem', { lineHeight: '1' }],           // 39px with 13px base
         '6xl': ['3.75rem', { lineHeight: '1' }],        // 49px with 13px base
       },
+      fontFamily: {
+        'eloity-heading': ['Montserrat', 'Poppins', 'sans-serif'],
+        'eloity-body': ['Inter', 'Lato', 'sans-serif'],
+        'eloity-tech': ['Orbitron', 'Exo 2', 'monospace'],
+        'sans': ['Inter', 'Lato', 'system-ui', 'sans-serif'],
+        'mono': ['Orbitron', 'Exo 2', 'ui-monospace', 'monospace'],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
