@@ -1,8 +1,8 @@
 import EnhancedAuthForm from "@/components/auth/EnhancedAuthForm";
 
 const ChecklistItem = ({ text }: { text: string }) => (
-  <li className="flex items-center gap-2 text-softchat-primary">
-    <CheckIcon className="h-5 w-5 text-softchat-accent" />
+  <li className="flex items-center gap-2 text-eloity-primary">
+    <CheckIcon className="h-5 w-5 text-eloity-accent" />
     <span>{text}</span>
   </li>
 );
