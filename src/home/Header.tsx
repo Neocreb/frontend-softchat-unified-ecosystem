@@ -109,7 +109,7 @@ const NavLinks = ({ mobile = false, closeMenu = () => {} }) => {
           href={link.href}
           className={`${
             mobile ? "block py-2 text-lg" : "text-sm font-medium"
-          } text-foreground dark:text-foreground hover:text-softchat-600 dark:hover:text-softchat-accent transition-colors`}
+          } text-foreground dark:text-foreground hover:text-eloity-600 dark:hover:text-eloity-accent transition-colors`}
           onClick={closeMenu}
         >
           {link.text}
