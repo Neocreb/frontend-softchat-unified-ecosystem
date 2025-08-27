@@ -79,12 +79,12 @@ module.exports = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        softchat: {
-          DEFAULT: "hsl(var(--softchat-primary))",
-          primary: "hsl(var(--softchat-primary))",
-          accent: "hsl(var(--softchat-accent))",
-          600: "hsl(var(--softchat-600))",
-          700: "hsl(var(--softchat-700))",
+        eloity: {
+          DEFAULT: "hsl(var(--eloity-primary))",
+          primary: "hsl(var(--eloity-primary))",
+          accent: "hsl(var(--eloity-accent))",
+          600: "hsl(var(--eloity-600))",
+          700: "hsl(var(--eloity-700))",
         },
       },
       keyframes: {
