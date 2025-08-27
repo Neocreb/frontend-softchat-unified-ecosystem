@@ -347,15 +347,15 @@ const generateUnifiedFeed = (): UnifiedFeedItem[] => {
       priority: 4,
       author: {
         id: "sponsor-1",
-        name: "SoftChat Premium",
-        username: "softchat",
+        name: "Eloity Premium",
+        username: "eloity",
         avatar: "https://api.dicebear.com/7.x/initials/svg?seed=SC",
         verified: true,
         badges: ["Official"],
       },
       content: {
         title: "Unlock Your Creative Potential",
-        description: "Join SoftChat Premium and get access to exclusive creator tools, priority support, and advanced analytics.",
+        description: "Join Eloity Premium and get access to exclusive creator tools, priority support, and advanced analytics.",
         ctaText: "Upgrade Now",
         benefits: [
           "Advanced Analytics",
