@@ -75,7 +75,7 @@ const PostCard = ({ post }: PostCardProps) => {
           <div className="flex items-center">
             <span className="font-semibold truncate">{post.author.name}</span>
             {post.author.verified && (
-              <Badge variant="default" className="ml-1 px-1 py-0 h-5 bg-softchat-primary hover:bg-softchat-primary/90 flex-shrink-0">
+              <Badge variant="default" className="ml-1 px-1 py-0 h-5 bg-eloity-primary hover:bg-eloity-primary/90 flex-shrink-0">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -119,7 +119,7 @@ const PostCard = ({ post }: PostCardProps) => {
           size="sm"
           className={cn(
             "flex items-center gap-1 text-muted-foreground",
-            liked && "text-softchat-accent"
+            liked && "text-eloity-accent"
           )}
           onClick={handleLike}
         >
@@ -147,7 +147,7 @@ const PostCard = ({ post }: PostCardProps) => {
           size="sm"
           className={cn(
             "text-muted-foreground",
-            bookmarked && "text-softchat-primary"
+            bookmarked && "text-eloity-primary"
           )}
           onClick={handleBookmark}
         >
