@@ -1319,6 +1319,42 @@
   }
 }
 
+/* Eloity Typography System */
+@layer components {
+  /* Eloity Font Families */
+  .font-eloity-heading {
+    font-family: 'Montserrat', 'Poppins', sans-serif;
+    font-weight: 700;
+  }
+
+  .font-eloity-body {
+    font-family: 'Inter', 'Lato', sans-serif;
+    font-weight: 400;
+  }
+
+  .font-eloity-tech {
+    font-family: 'Orbitron', 'Exo 2', monospace;
+    font-weight: 400;
+  }
+
+  /* Eloity-specific heading styles */
+  .eloity-heading-primary {
+    @apply font-eloity-heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight;
+  }
+
+  .eloity-heading-secondary {
+    @apply font-eloity-heading text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight;
+  }
+
+  .eloity-body-text {
+    @apply font-eloity-body text-base leading-relaxed;
+  }
+
+  .eloity-tech-accent {
+    @apply font-eloity-tech text-sm font-semibold tracking-wider;
+  }
+}
+
 /* Landing Page Styles */
 @layer components {
   /* Container styles */
