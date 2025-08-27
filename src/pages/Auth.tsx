@@ -29,8 +29,8 @@ const Auth = () => {
       <div className="flex flex-col md:flex-row w-full max-w-6xl rounded-2xl shadow-2xl overflow-hidden">
         {/* Left Side */}
         <div className="hidden md:block w-full md:w-1/2 ml-5 p-6 sm:p-8 rounded-lg object-cover">
-          <h2 className="text-2xl sm:text-4xl font-bold text-softchat-primary mb-2">Welcome to Softchat</h2>
-          <p className="text-gray-800 mb-6 sm:mb-8">The unified ecosystem for social media, e-commerce, crypto, and rewards.</p>
+          <h2 className="text-2xl sm:text-4xl font-bold text-eloity-primary mb-2">Welcome to Eloity</h2>
+          <p className="text-gray-800 mb-6 sm:mb-8">Where everything connects - experience the unified ecosystem for social media, marketplace, crypto, and rewards.</p>
 
           <ul className="space-y-4">
             <ChecklistItem text="Connect with friends and create content." />
