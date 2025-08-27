@@ -20,7 +20,7 @@ import {
   Mail,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import SoftchatLogo from "@/components/ui/logo";
+import EloityLogo from "@/components/ui/logo";
 
 const DesktopFooter = () => {
   return (
@@ -30,15 +30,15 @@ const DesktopFooter = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <SoftchatLogo className="h-6 w-6" />
-              <span className="font-bold text-lg text-primary">Softchat</span>
+              <EloityLogo className="h-6 w-6" />
+              <span className="font-bold text-lg text-primary">Eloity</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              The ultimate social platform for creators, traders, and
-              professionals.
+              Where everything connects - the ultimate platform for creators,
+              traders, and professionals.
             </p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>© 2024 Softchat</span>
+              <span>© 2024 Eloity</span>
             </div>
           </div>
 
