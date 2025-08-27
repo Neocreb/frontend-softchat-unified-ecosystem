@@ -86,9 +86,9 @@ const EnhancedAccessibilityFeatures: React.FC<EnhancedAccessibilityFeaturesProps
   // Get initial font size based on device
   const getInitialFontSize = () => {
     if (typeof window !== 'undefined') {
-      return window.innerWidth < 768 ? 14 : 16; // 14px for mobile, 16px for desktop
+      return window.innerWidth < 768 ? 13 : 13; // 13px for both mobile and desktop
     }
-    return 14;
+    return 13;
   };
 
   const [settings, setSettings] = useState<AccessibilitySettings>({
