@@ -894,9 +894,10 @@
   }
 
   body {
-    @apply text-foreground;
+    @apply text-foreground font-eloity-body;
     background: hsl(var(--background));
     min-height: 100vh;
+    font-family: 'Inter', 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   }
 
   /* Modern app container with proper theme support */
