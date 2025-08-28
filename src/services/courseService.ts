@@ -11,6 +11,8 @@ import {
   Download
 } from "lucide-react";
 import { getCompleteCoursesWithExtendedData } from "./courseDataExtension";
+import { ActivityRewardService } from './activityRewardService';
+import { PlatformRewardIntegration } from './platformRewardIntegration';
 
 export interface Lesson {
   id: string;
@@ -23,6 +25,10 @@ export interface Lesson {
   quizQuestions?: QuizQuestion[];
   completed: boolean;
   order: number;
+  rewardPoints?: {
+    completion: number;
+    bonus?: number;
+  };
 }
 
 export interface QuizQuestion {
@@ -58,6 +64,11 @@ export interface Course {
   progress: number; // 0-100
   completedLessons: number;
   certificate: boolean;
+  rewardPoints: {
+    enrollment: number;
+    completion: number;
+    certificate: number;
+  };
 }
 
 export interface UserProgress {
@@ -67,6 +78,12 @@ export interface UserProgress {
   lastAccessed: Date;
   timeSpent: number; // in minutes
   quizScores: { [lessonId: string]: number };
+  rewardsEarned: {
+    enrollment: boolean;
+    lessonCompletions: string[]; // lesson IDs
+    courseCompletion: boolean;
+    certificate: boolean;
+  };
 }
 
 // Mock course data with comprehensive lessons
@@ -104,6 +121,11 @@ const mockCourses: Course[] = [
     progress: 0,
     completedLessons: 0,
     certificate: true,
+    rewardPoints: {
+      enrollment: 10,
+      completion: 100,
+      certificate: 150
+    },
     lessons: [
       {
         id: "lesson-1",
@@ -114,7 +136,8 @@ const mockCourses: Course[] = [
         content: "Cryptocurrency is a digital or virtual form of currency that uses cryptography for security...",
         videoUrl: "https://example.com/crypto-intro.mp4",
         completed: false,
-        order: 1
+        order: 1,
+        rewardPoints: { completion: 10 }
       },
       {
         id: "lesson-2",
@@ -125,7 +148,8 @@ const mockCourses: Course[] = [
         content: "Blockchain is a distributed ledger technology that maintains a continuously growing list of records...",
         videoUrl: "https://example.com/blockchain-intro.mp4",
         completed: false,
-        order: 2
+        order: 2,
+        rewardPoints: { completion: 15 }
       },
       {
         id: "lesson-3",
@@ -135,7 +159,8 @@ const mockCourses: Course[] = [
         duration: 12,
         content: "Bitcoin was created in 2009 by an anonymous person or group known as Satoshi Nakamoto...",
         completed: false,
-        order: 3
+        order: 3,
+        rewardPoints: { completion: 10 }
       },
       {
         id: "lesson-4",
@@ -145,7 +170,8 @@ const mockCourses: Course[] = [
         duration: 18,
         content: "Learn about various cryptocurrency categories including coins, tokens, stablecoins, and NFTs...",
         completed: false,
-        order: 4
+        order: 4,
+        rewardPoints: { completion: 15 }
       },
       {
         id: "lesson-5",
@@ -171,7 +197,8 @@ const mockCourses: Course[] = [
           }
         ],
         completed: false,
-        order: 5
+        order: 5,
+        rewardPoints: { completion: 20, bonus: 10 }
       },
       {
         id: "lesson-6",
@@ -182,7 +209,8 @@ const mockCourses: Course[] = [
         content: "A cryptocurrency wallet is a software program or physical device that stores your private keys...",
         videoUrl: "https://example.com/crypto-wallets.mp4",
         completed: false,
-        order: 6
+        order: 6,
+        rewardPoints: { completion: 15 }
       },
       {
         id: "lesson-7",
@@ -192,7 +220,8 @@ const mockCourses: Course[] = [
         duration: 20,
         content: "Learn how to safely send and receive cryptocurrency transactions...",
         completed: false,
-        order: 7
+        order: 7,
+        rewardPoints: { completion: 15 }
       },
       {
         id: "lesson-8",
@@ -506,7 +535,8 @@ Remember: The goal isn't to eliminate all risk (which is impossible) but to redu
 The cryptocurrency space is still young, and security practices continue to evolve. Stay informed, stay cautious, and always prioritize the security of your assets over convenience. Your future self will thank you for the time and effort you invest in security today.
         `,
         completed: false,
-        order: 8
+        order: 8,
+        rewardPoints: { completion: 20 }
       }
     ]
   },
@@ -543,6 +573,11 @@ The cryptocurrency space is still young, and security practices continue to evol
     progress: 0,
     completedLessons: 0,
     certificate: true,
+    rewardPoints: {
+      enrollment: 15,
+      completion: 150,
+      certificate: 200
+    },
     lessons: [
       {
         id: "ta-lesson-1",
@@ -553,7 +588,8 @@ The cryptocurrency space is still young, and security practices continue to evol
         content: "Technical analysis is the study of price movements to predict future market behavior...",
         videoUrl: "https://example.com/ta-intro.mp4",
         completed: false,
-        order: 1
+        order: 1,
+        rewardPoints: { completion: 12 }
       },
       {
         id: "ta-lesson-2",
@@ -563,7 +599,8 @@ The cryptocurrency space is still young, and security practices continue to evol
         duration: 25,
         content: "Candlestick charts provide crucial information about market sentiment...",
         completed: false,
-        order: 2
+        order: 2,
+        rewardPoints: { completion: 15 }
       },
       {
         id: "ta-lesson-3",
@@ -574,7 +611,8 @@ The cryptocurrency space is still young, and security practices continue to evol
         content: "Support and resistance levels are fundamental concepts in technical analysis...",
         videoUrl: "https://example.com/support-resistance.mp4",
         completed: false,
-        order: 3
+        order: 3,
+        rewardPoints: { completion: 12 }
       },
       {
         id: "ta-lesson-4",
@@ -780,7 +818,8 @@ Success with moving averages comes from:
 Remember that no single indicator is perfect, and moving averages work best as part of a comprehensive trading strategy that includes multiple forms of analysis and sound risk management principles.
         `,
         completed: false,
-        order: 4
+        order: 4,
+        rewardPoints: { completion: 18 }
       },
       {
         id: "ta-lesson-5",
@@ -791,7 +830,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
         content: "RSI and other momentum indicators help identify overbought and oversold conditions...",
         videoUrl: "https://example.com/rsi-indicators.mp4",
         completed: false,
-        order: 5
+        order: 5,
+        rewardPoints: { completion: 15 }
       },
       {
         id: "ta-lesson-6",
@@ -810,7 +850,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
           }
         ],
         completed: false,
-        order: 6
+        order: 6,
+        rewardPoints: { completion: 20, bonus: 15 }
       },
       {
         id: "ta-lesson-7",
@@ -820,7 +861,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
         duration: 30,
         content: "Chart patterns reveal market psychology and potential price movements...",
         completed: false,
-        order: 7
+        order: 7,
+        rewardPoints: { completion: 18 }
       },
       {
         id: "ta-lesson-8",
@@ -831,7 +873,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
         content: "Volume analysis helps confirm the strength of price movements...",
         videoUrl: "https://example.com/volume-analysis.mp4",
         completed: false,
-        order: 8
+        order: 8,
+        rewardPoints: { completion: 12 }
       },
       {
         id: "ta-lesson-9",
@@ -841,7 +884,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
         duration: 20,
         content: "Risk management is the most important aspect of successful trading...",
         completed: false,
-        order: 9
+        order: 9,
+        rewardPoints: { completion: 15 }
       },
       {
         id: "ta-lesson-10",
@@ -851,7 +895,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
         duration: 28,
         content: "Learn to combine multiple technical analysis tools into coherent trading strategies...",
         completed: false,
-        order: 10
+        order: 10,
+        rewardPoints: { completion: 20 }
       },
       {
         id: "ta-lesson-11",
@@ -862,7 +907,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
         content: "Backtesting helps validate trading strategies before risking real money...",
         videoUrl: "https://example.com/backtesting.mp4",
         completed: false,
-        order: 11
+        order: 11,
+        rewardPoints: { completion: 15 }
       },
       {
         id: "ta-lesson-12",
@@ -881,7 +927,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
           }
         ],
         completed: false,
-        order: 12
+        order: 12,
+        rewardPoints: { completion: 25, bonus: 20 }
       }
     ]
   },
@@ -919,6 +966,11 @@ Remember that no single indicator is perfect, and moving averages work best as p
     progress: 0,
     completedLessons: 0,
     certificate: true,
+    rewardPoints: {
+      enrollment: 20,
+      completion: 200,
+      certificate: 300
+    },
     lessons: [
       {
         id: "defi-lesson-1",
@@ -929,7 +981,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
         content: "DeFi represents a paradigm shift from traditional finance to decentralized protocols...",
         videoUrl: "https://example.com/defi-intro.mp4",
         completed: false,
-        order: 1
+        order: 1,
+        rewardPoints: { completion: 15 }
       },
       {
         id: "defi-lesson-2",
@@ -939,7 +992,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
         duration: 22,
         content: "Automated Market Makers revolutionize how trading works in DeFi...",
         completed: false,
-        order: 2
+        order: 2,
+        rewardPoints: { completion: 20 }
       },
       // Add more DeFi lessons...
       {
@@ -950,7 +1004,8 @@ Remember that no single indicator is perfect, and moving averages work best as p
         duration: 20,
         content: "DeFi offers great opportunities but comes with unique risks that must be understood...",
         completed: false,
-        order: 10
+        order: 10,
+        rewardPoints: { completion: 25 }
       }
     ]
   },
@@ -979,6 +1034,11 @@ Remember that no single indicator is perfect, and moving averages work best as p
     progress: 0,
     completedLessons: 0,
     certificate: true,
+    rewardPoints: {
+      enrollment: 12,
+      completion: 120,
+      certificate: 180
+    },
     lessons: []
   },
   {
@@ -1005,6 +1065,11 @@ Remember that no single indicator is perfect, and moving averages work best as p
     progress: 0,
     completedLessons: 0,
     certificate: true,
+    rewardPoints: {
+      enrollment: 8,
+      completion: 80,
+      certificate: 120
+    },
     lessons: []
   },
   {
@@ -1031,6 +1096,11 @@ Remember that no single indicator is perfect, and moving averages work best as p
     progress: 0,
     completedLessons: 0,
     certificate: true,
+    rewardPoints: {
+      enrollment: 18,
+      completion: 180,
+      certificate: 250
+    },
     lessons: []
   }
 ];
@@ -1061,8 +1131,8 @@ class CourseService {
     return mockCourses.filter(course => enrolledCourseIds.includes(course.id));
   }
 
-  // Enroll user in course
-  enrollInCourse(userId: string, courseId: string): boolean {
+  // Enroll user in course with reward
+  async enrollInCourse(userId: string, courseId: string): Promise<boolean> {
     try {
       const course = this.getCourseById(courseId);
       if (!course) return false;
@@ -1083,13 +1153,23 @@ class CourseService {
         progress: 0,
         lastAccessed: new Date(),
         timeSpent: 0,
-        quizScores: {}
+        quizScores: {},
+        rewardsEarned: {
+          enrollment: false,
+          lessonCompletions: [],
+          courseCompletion: false,
+          certificate: false
+        }
       };
 
       userProgressData[userId].push(newProgress);
       
       // Update course enrollment status
       course.enrolled = true;
+
+      // Award enrollment reward
+      await this.awardEnrollmentReward(userId, courseId, course.rewardPoints.enrollment);
+      newProgress.rewardsEarned.enrollment = true;
       
       return true;
     } catch (error) {
@@ -1098,11 +1178,17 @@ class CourseService {
     }
   }
 
-  // Mark lesson as completed
-  markLessonCompleted(userId: string, courseId: string, lessonId: string): boolean {
+  // Mark lesson as completed with reward
+  async markLessonCompleted(userId: string, courseId: string, lessonId: string): Promise<boolean> {
     try {
       const userProgress = this.getUserProgressForCourse(userId, courseId);
       if (!userProgress) return false;
+
+      const course = this.getCourseById(courseId);
+      if (!course) return false;
+
+      const lesson = course.lessons.find(l => l.id === lessonId);
+      if (!lesson) return false;
 
       // Add lesson to completed if not already there
       if (!userProgress.completedLessons.includes(lessonId)) {
@@ -1110,24 +1196,219 @@ class CourseService {
       }
 
       // Update progress percentage
-      const course = this.getCourseById(courseId);
-      if (course) {
-        userProgress.progress = (userProgress.completedLessons.length / course.totalLessons) * 100;
-        course.progress = userProgress.progress;
-        course.completedLessons = userProgress.completedLessons.length;
-        
-        // Mark lesson as completed in course data
-        const lesson = course.lessons.find(l => l.id === lessonId);
-        if (lesson) {
-          lesson.completed = true;
+      userProgress.progress = (userProgress.completedLessons.length / course.totalLessons) * 100;
+      course.progress = userProgress.progress;
+      course.completedLessons = userProgress.completedLessons.length;
+      
+      // Mark lesson as completed in course data
+      lesson.completed = true;
+      userProgress.lastAccessed = new Date();
+
+      // Award lesson completion reward if not already earned
+      if (!userProgress.rewardsEarned.lessonCompletions.includes(lessonId)) {
+        await this.awardLessonCompletionReward(userId, courseId, lessonId, lesson.rewardPoints?.completion || 10);
+        userProgress.rewardsEarned.lessonCompletions.push(lessonId);
+      }
+
+      // Check if course is completed (all lessons done)
+      if (userProgress.progress === 100 && !userProgress.rewardsEarned.courseCompletion) {
+        await this.awardCourseCompletionReward(userId, courseId, course.rewardPoints.completion);
+        userProgress.rewardsEarned.courseCompletion = true;
+
+        // Award certificate if applicable
+        if (course.certificate && !userProgress.rewardsEarned.certificate) {
+          await this.awardCertificateReward(userId, courseId, course.rewardPoints.certificate);
+          userProgress.rewardsEarned.certificate = true;
         }
       }
 
-      userProgress.lastAccessed = new Date();
       return true;
     } catch (error) {
       console.error('Error marking lesson completed:', error);
       return false;
+    }
+  }
+
+  // Save quiz score with reward
+  async saveQuizScore(userId: string, courseId: string, lessonId: string, score: number): Promise<boolean> {
+    try {
+      const userProgress = this.getUserProgressForCourse(userId, courseId);
+      if (!userProgress) return false;
+
+      const course = this.getCourseById(courseId);
+      if (!course) return false;
+
+      const lesson = course.lessons.find(l => l.id === lessonId);
+      if (!lesson) return false;
+
+      userProgress.quizScores[lessonId] = score;
+      userProgress.lastAccessed = new Date();
+      
+      // If quiz passed (score >= 70), mark lesson as completed
+      if (score >= 70) {
+        await this.markLessonCompleted(userId, courseId, lessonId);
+
+        // Award perfect score bonus if applicable
+        if (score === 100 && lesson.rewardPoints?.bonus) {
+          await this.awardPerfectScoreReward(userId, courseId, lessonId, lesson.rewardPoints.bonus);
+        }
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error saving quiz score:', error);
+      return false;
+    }
+  }
+
+  // Reward functions
+  private async awardEnrollmentReward(userId: string, courseId: string, points: number) {
+    try {
+      const course = this.getCourseById(courseId);
+      await PlatformRewardIntegration.trackCourseEnrollment({
+        userId,
+        courseId,
+        courseName: course?.title || '',
+        difficulty: course?.level || 'Beginner'
+      });
+
+      await ActivityRewardService.logActivity({
+        userId,
+        actionType: "enroll_course",
+        targetId: courseId,
+        targetType: "course",
+        value: points,
+        metadata: {
+          rewardType: "enrollment",
+          courseName: course?.title,
+          difficulty: course?.level,
+          points
+        }
+      });
+
+      console.log(`📚 Enrollment reward earned! +${points} points for enrolling in: ${course?.title}`);
+    } catch (error) {
+      console.error('Error awarding enrollment reward:', error);
+    }
+  }
+
+  private async awardLessonCompletionReward(userId: string, courseId: string, lessonId: string, points: number) {
+    try {
+      const course = this.getCourseById(courseId);
+      const lesson = course?.lessons.find(l => l.id === lessonId);
+      
+      await PlatformRewardIntegration.trackLessonProgress({
+        userId,
+        courseId,
+        lessonId,
+        lessonType: lesson?.type || 'text',
+        timeSpent: lesson?.duration || 0,
+        completed: true,
+        pointsEarned: points
+      });
+
+      await ActivityRewardService.logActivity({
+        userId,
+        actionType: "complete_lesson",
+        targetId: lessonId,
+        targetType: "lesson",
+        value: points,
+        metadata: {
+          rewardType: "lesson_completion",
+          courseId,
+          courseName: course?.title,
+          lessonTitle: lesson?.title,
+          lessonType: lesson?.type,
+          points
+        }
+      });
+
+      console.log(`📖 Lesson completion reward earned! +${points} points for completing: ${lesson?.title}`);
+    } catch (error) {
+      console.error('Error awarding lesson completion reward:', error);
+    }
+  }
+
+  private async awardCourseCompletionReward(userId: string, courseId: string, points: number) {
+    try {
+      const course = this.getCourseById(courseId);
+      
+      await ActivityRewardService.logActivity({
+        userId,
+        actionType: "complete_course",
+        targetId: courseId,
+        targetType: "course",
+        value: points,
+        metadata: {
+          rewardType: "course_completion",
+          courseName: course?.title,
+          difficulty: course?.level,
+          points
+        }
+      });
+
+      console.log(`🎓 Course completion reward earned! +${points} points for completing: ${course?.title}`);
+    } catch (error) {
+      console.error('Error awarding course completion reward:', error);
+    }
+  }
+
+  private async awardCertificateReward(userId: string, courseId: string, points: number) {
+    try {
+      const course = this.getCourseById(courseId);
+      
+      await PlatformRewardIntegration.trackCertificateEarned({
+        userId,
+        courseId,
+        courseName: course?.title || '',
+        difficulty: course?.level || 'Beginner'
+      });
+
+      await ActivityRewardService.logActivity({
+        userId,
+        actionType: "achieve_milestone",
+        targetId: courseId,
+        targetType: "course_certificate",
+        value: points,
+        metadata: {
+          rewardType: "certificate",
+          milestone: "course_certificate",
+          courseName: course?.title,
+          difficulty: course?.level,
+          points
+        }
+      });
+
+      console.log(`🏆 Certificate reward earned! +${points} points for certificate: ${course?.title}`);
+    } catch (error) {
+      console.error('Error awarding certificate reward:', error);
+    }
+  }
+
+  private async awardPerfectScoreReward(userId: string, courseId: string, lessonId: string, points: number) {
+    try {
+      const course = this.getCourseById(courseId);
+      const lesson = course?.lessons.find(l => l.id === lessonId);
+      
+      await ActivityRewardService.logActivity({
+        userId,
+        actionType: "achieve_milestone",
+        targetId: lessonId,
+        targetType: "lesson_quiz",
+        value: points,
+        metadata: {
+          rewardType: "perfect_score",
+          milestone: "perfect_quiz_score",
+          courseId,
+          courseName: course?.title,
+          lessonTitle: lesson?.title,
+          points
+        }
+      });
+
+      console.log(`⭐ Perfect score bonus earned! +${points} points for 100% on: ${lesson?.title}`);
+    } catch (error) {
+      console.error('Error awarding perfect score reward:', error);
     }
   }
 
@@ -1142,27 +1423,6 @@ class CourseService {
     return userProgress.find(p => p.courseId === courseId) || null;
   }
 
-  // Save quiz score
-  saveQuizScore(userId: string, courseId: string, lessonId: string, score: number): boolean {
-    try {
-      const userProgress = this.getUserProgressForCourse(userId, courseId);
-      if (!userProgress) return false;
-
-      userProgress.quizScores[lessonId] = score;
-      userProgress.lastAccessed = new Date();
-      
-      // If quiz passed (score >= 70), mark lesson as completed
-      if (score >= 70) {
-        this.markLessonCompleted(userId, courseId, lessonId);
-      }
-
-      return true;
-    } catch (error) {
-      console.error('Error saving quiz score:', error);
-      return false;
-    }
-  }
-
   // Update time spent on course
   updateTimeSpent(userId: string, courseId: string, additionalMinutes: number): void {
     const userProgress = this.getUserProgressForCourse(userId, courseId);
@@ -1172,13 +1432,15 @@ class CourseService {
     }
   }
 
-  // Get course completion statistics
+  // Get course completion statistics with rewards
   getCourseStats(userId: string): {
     totalCourses: number;
     enrolledCourses: number;
     completedCourses: number;
     totalTimeSpent: number;
     averageProgress: number;
+    totalPointsEarned: number;
+    certificatesEarned: number;
   } {
     const userProgress = this.getUserProgress(userId);
     const enrolledCourses = userProgress.length;
@@ -1188,12 +1450,38 @@ class CourseService {
       ? userProgress.reduce((total, p) => total + p.progress, 0) / enrolledCourses 
       : 0;
 
+    // Calculate total points earned
+    let totalPointsEarned = 0;
+    let certificatesEarned = 0;
+
+    userProgress.forEach(progress => {
+      const course = this.getCourseById(progress.courseId);
+      if (course) {
+        if (progress.rewardsEarned.enrollment) totalPointsEarned += course.rewardPoints.enrollment;
+        if (progress.rewardsEarned.courseCompletion) totalPointsEarned += course.rewardPoints.completion;
+        if (progress.rewardsEarned.certificate) {
+          totalPointsEarned += course.rewardPoints.certificate;
+          certificatesEarned++;
+        }
+
+        // Add lesson completion points
+        progress.rewardsEarned.lessonCompletions.forEach(lessonId => {
+          const lesson = course.lessons.find(l => l.id === lessonId);
+          if (lesson?.rewardPoints?.completion) {
+            totalPointsEarned += lesson.rewardPoints.completion;
+          }
+        });
+      }
+    });
+
     return {
       totalCourses: mockCourses.length,
       enrolledCourses,
       completedCourses,
       totalTimeSpent,
-      averageProgress
+      averageProgress,
+      totalPointsEarned,
+      certificatesEarned
     };
   }
 
@@ -1214,6 +1502,30 @@ class CourseService {
     
     // Simple recommendation: suggest courses not enrolled in
     return mockCourses.filter(course => !enrolledCourseIds.includes(course.id));
+  }
+
+  // Get learning leaderboard for gamification
+  getLearningLeaderboard(timeframe: 'week' | 'month' | 'all' = 'month'): Array<{
+    userId: string;
+    points: number;
+    coursesCompleted: number;
+    certificatesEarned: number;
+  }> {
+    const leaderboard: { [userId: string]: { points: number; coursesCompleted: number; certificatesEarned: number } } = {};
+
+    Object.entries(userProgressData).forEach(([userId, progressArray]) => {
+      const stats = this.getCourseStats(userId);
+      leaderboard[userId] = {
+        points: stats.totalPointsEarned,
+        coursesCompleted: stats.completedCourses,
+        certificatesEarned: stats.certificatesEarned
+      };
+    });
+
+    return Object.entries(leaderboard)
+      .map(([userId, stats]) => ({ userId, ...stats }))
+      .sort((a, b) => b.points - a.points)
+      .slice(0, 10); // Top 10
   }
 }
 
