@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "db:migrate:reward-sharing": "npx tsx scripts/create-reward-sharing-migration.ts",
+    "migrate:all": "npm run db:migrate && npm run db:migrate:reward-sharing"
+  }
+}
