@@ -90,6 +90,32 @@ const SafeReferralComponent: React.FC = () => {
         </Button>
       </div>
 
+      {/* Automatic Reward Sharing Info */}
+      <Alert className="border-blue-200 bg-blue-50">
+        <Gift className="h-4 w-4 text-blue-600" />
+        <AlertDescription className="text-blue-800">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <strong>Automatic Reward Sharing is Active!</strong>
+              <p className="text-sm mt-1">
+                When you earn rewards from content creation, engagement, and platform activities,
+                0.5% is automatically shared with your referrals as a thank you for growing our community.
+                This only applies to creator economy earnings, not personal transactions.
+              </p>
+            </div>
+            <div className="ml-4 text-right">
+              <p className="text-xs text-blue-600">This Month</p>
+              <p className="font-semibold text-blue-800">
+                {isLoading ? "..." : formatCurrency(sharingStats?.thisMonthShared || 0)} shared
+              </p>
+              <p className="font-semibold text-blue-800">
+                {isLoading ? "..." : formatCurrency(sharingStats?.thisMonthReceived || 0)} received
+              </p>
+            </div>
+          </div>
+        </AlertDescription>
+      </Alert>
+
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
