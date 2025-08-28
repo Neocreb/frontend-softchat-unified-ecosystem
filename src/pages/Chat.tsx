@@ -9,7 +9,7 @@ const Chat = () => {
   return (
     <>
       <Helmet>
-        <title>Messages | Softchat</title>
+        <title>Messages | Eloity</title>
         <meta
           name="description"
           content="Unified messaging for social chats, freelance projects, marketplace communications, crypto P2P trading, and AI assistance"

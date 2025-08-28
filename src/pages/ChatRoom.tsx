@@ -436,7 +436,7 @@ const ChatRoomContent = () => {
   };
 
   const getPageTitle = () => {
-    if (!chat) return "Chat | Softchat";
+    if (!chat) return "Chat | Eloity";
     
     const contextPrefix = chatType === "freelance" ? "Work Chat" :
                          chatType === "marketplace" ? "Marketplace Chat" :
@@ -446,7 +446,7 @@ const ChatRoomContent = () => {
       ? (chat as GroupChatThread).groupName 
       : chat.participant_profile?.name;
     
-    return `${contextPrefix} with ${chatName} | Softchat`;
+    return `${contextPrefix} with ${chatName} | Eloity`;
   };
 
   const handleSendMessage = async () => {
