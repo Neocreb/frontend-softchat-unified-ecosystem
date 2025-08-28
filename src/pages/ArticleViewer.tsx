@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
+import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
@@ -23,7 +23,9 @@ import {
   ThumbsUp,
   ListChecks,
   Trophy,
-  RotateCcw
+  RotateCcw,
+  Star,
+  Gift
 } from "lucide-react";
 import { 
   educationalArticleService, 
