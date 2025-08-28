@@ -613,6 +613,275 @@ const ReferralDashboard: React.FC = () => {
           </div>
         </TabsContent>
 
+        {/* Revenue Sharing Tab */}
+        <TabsContent value="sharing" className="space-y-6">
+          {/* Sharing Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="bg-gradient-to-r from-emerald-50 to-emerald-100 border-emerald-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-emerald-700">
+                      Total Shared
+                    </p>
+                    <p className="text-2xl font-bold text-emerald-900">
+                      {formatCurrency(revenueSharingStats?.shared?.total || 0)}
+                    </p>
+                    <p className="text-xs text-emerald-600">
+                      {revenueSharingStats?.shared?.count || 0} transactions
+                    </p>
+                  </div>
+                  <div className="p-3 bg-emerald-200 rounded-full">
+                    <ArrowUp className="w-6 h-6 text-emerald-700" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-blue-700">
+                      Total Received
+                    </p>
+                    <p className="text-2xl font-bold text-blue-900">
+                      {formatCurrency(revenueSharingStats?.received?.total || 0)}
+                    </p>
+                    <p className="text-xs text-blue-600">
+                      {revenueSharingStats?.received?.count || 0} transactions
+                    </p>
+                  </div>
+                  <div className="p-3 bg-blue-200 rounded-full">
+                    <ArrowDown className="w-6 h-6 text-blue-700" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-purple-700">
+                      Net Impact
+                    </p>
+                    <p className="text-2xl font-bold text-purple-900">
+                      {formatCurrency(
+                        (revenueSharingStats?.received?.total || 0) -
+                        (revenueSharingStats?.shared?.total || 0)
+                      )}
+                    </p>
+                    <p className="text-xs text-purple-600">
+                      Received - Shared
+                    </p>
+                  </div>
+                  <div className="p-3 bg-purple-200 rounded-full">
+                    <ArrowUpDown className="w-6 h-6 text-purple-700" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Revenue Sharing Settings */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Settings className="w-5 h-5" />
+                  Sharing Settings
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Configure how much of your earnings you want to share with users you referred
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {referralLinks.map((link) => (
+                    <div key={link.id} className="p-4 border rounded-lg space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">{link.description || "Referral Link"}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {link.signupCount} signups • {link.clickCount} clicks
+                          </p>
+                        </div>
+                        <Badge variant="outline">
+                          {link.revenueSharePercentage}% sharing
+                        </Badge>
+                      </div>
+
+                      {editingLinkId === link.id ? (
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <Input
+                              type="number"
+                              min="0"
+                              max="100"
+                              value={newSharePercentage}
+                              onChange={(e) => setNewSharePercentage(Number(e.target.value))}
+                              placeholder="Percentage (0-100)"
+                              className="flex-1"
+                            />
+                            <span className="text-sm text-muted-foreground">%</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              size="sm"
+                              onClick={() => updateRevenueShare(link.id, newSharePercentage)}
+                              disabled={isUpdatingShare || newSharePercentage < 0 || newSharePercentage > 100}
+                            >
+                              {isUpdatingShare ? "Updating..." : "Save"}
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={cancelEditingShare}
+                              disabled={isUpdatingShare}
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            You'll share {newSharePercentage}% of your referral earnings with users you referred through this link
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-muted-foreground">
+                            Sharing {link.revenueSharePercentage}% of earnings from this link
+                          </p>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => startEditingShare(link.id, link.revenueSharePercentage)}
+                          >
+                            <Settings className="w-4 h-4 mr-1" />
+                            Edit
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+
+                  {referralLinks.length === 0 && (
+                    <div className="text-center py-8">
+                      <Handshake className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground">
+                        Generate a referral link first to configure revenue sharing
+                      </p>
+                      <Button
+                        className="mt-4"
+                        onClick={generateNewLink}
+                        disabled={isGeneratingLink}
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Generate Link
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Recent Sharing Activity */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Heart className="w-5 h-5" />
+                  Recent Activity
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {revenueSharingHistory?.history?.slice(0, 10).map((transaction: any) => (
+                    <div key={transaction.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-full ${
+                          transaction.type === 'given'
+                            ? 'bg-emerald-100 text-emerald-600'
+                            : 'bg-blue-100 text-blue-600'
+                        }`}>
+                          {transaction.type === 'given' ? (
+                            <ArrowUp className="w-4 h-4" />
+                          ) : (
+                            <ArrowDown className="w-4 h-4" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">
+                            {transaction.type === 'given' ? 'Shared' : 'Received'}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(transaction.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className={`text-sm font-medium ${
+                          transaction.type === 'given' ? 'text-emerald-600' : 'text-blue-600'
+                        }`}>
+                          {transaction.type === 'given' ? '-' : '+'}
+                          {formatCurrency(transaction.amount)}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {transaction.currency}
+                        </p>
+                      </div>
+                    </div>
+                  )) || (
+                    <div className="text-center py-8">
+                      <ArrowUpDown className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground">
+                        No revenue sharing activity yet
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Configure sharing settings above to start sharing your earnings
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Revenue Sharing Benefits */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Handshake className="w-5 h-5" />
+                Why Share Your Earnings?
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <Heart className="w-8 h-8 text-blue-600 mb-3" />
+                  <h4 className="font-medium text-blue-800 mb-2">Build Community</h4>
+                  <p className="text-sm text-blue-600">
+                    Show appreciation to your community by sharing your success with them
+                  </p>
+                </div>
+                <div className="p-4 bg-emerald-50 rounded-lg">
+                  <Users className="w-8 h-8 text-emerald-600 mb-3" />
+                  <h4 className="font-medium text-emerald-800 mb-2">Increase Loyalty</h4>
+                  <p className="text-sm text-emerald-600">
+                    Users are more likely to engage and refer others when they benefit too
+                  </p>
+                </div>
+                <div className="p-4 bg-purple-50 rounded-lg">
+                  <TrendingUp className="w-8 h-8 text-purple-600 mb-3" />
+                  <h4 className="font-medium text-purple-800 mb-2">Long-term Growth</h4>
+                  <p className="text-sm text-purple-600">
+                    Happy referrals become advocates, creating sustainable growth
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Partnership Tab */}
         <TabsContent value="partnership" className="space-y-6">
           <div className="grid gap-6">
