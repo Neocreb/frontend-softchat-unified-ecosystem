@@ -190,108 +190,59 @@ const SecureReceiptDialog = ({ transaction, isOpen, onClose }: SecureReceiptProp
           </Card>
 
           {/* Receipt Content */}
-          <div className="bg-white border-2 border-gray-200 rounded-lg p-8 font-mono">
+          <div className="bg-white border border-gray-200 rounded-lg p-6 font-mono">
             {/* Header */}
-            <div className="text-center border-b-2 border-gray-300 pb-6 mb-6">
-              <h1 className="text-xl font-bold text-gray-800">ELOITY</h1>
-              <p className="text-xs text-gray-600">Digital Receipt</p>
-              <p className="text-xs text-gray-500">
-                {format(new Date(receiptData.timestamp), 'PPP')}
-              </p>
+            <div className="text-center border-b border-gray-200 pb-4 mb-4">
+              <h1 className="text-lg font-bold text-gray-800">ELOITY</h1>
+              <p className="text-xs text-gray-500">Digital Transaction Receipt</p>
+              <p className="text-xs text-gray-400">{format(new Date(receiptData.timestamp), 'MM/dd/yyyy HH:mm')}</p>
             </div>
 
-            {/* Receipt Details */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-              <div className="space-y-4">
-                <h3 className="font-bold text-lg border-b border-gray-300 pb-2">
-                  TRANSACTION DETAILS
-                </h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="font-medium">Receipt:</span>
-                    <span className="font-mono text-xs">{receiptData.id.slice(-8)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Transaction:</span>
-                    <span className="font-mono text-xs">{transaction.id.slice(-8)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Date/Time:</span>
-                    <span className="text-xs">{format(new Date(transaction.timestamp), 'MM/dd/yyyy HH:mm')}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Type:</span>
-                    <span className="capitalize">{transaction.type}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Source:</span>
-                    <span className="capitalize">{transaction.source}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Status:</span>
-                    <span className={`capitalize font-medium ${
-                      transaction.status === 'completed' ? 'text-green-600' :
-                      transaction.status === 'pending' ? 'text-yellow-600' :
-                      'text-red-600'
-                    }`}>
-                      {transaction.status}
-                    </span>
-                  </div>
-                </div>
+            {/* Transaction Summary */}
+            <div className="space-y-3 mb-4">
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">Amount:</span>
+                <span className="text-lg font-bold text-gray-900">${Math.abs(transaction.amount).toFixed(2)}</span>
               </div>
-
-              <div className="space-y-4">
-                <h3 className="font-bold text-lg border-b border-gray-300 pb-2">
-                  AMOUNT & DESCRIPTION
-                </h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="font-medium">Amount:</span>
-                    <span className="text-xl font-bold text-green-600">
-                      ${Math.abs(transaction.amount).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Description:</span>
-                    <span className="text-right max-w-48">{transaction.description}</span>
-                  </div>
-                  {user && (
-                    <>
-                      <div className="flex justify-between">
-                        <span className="font-medium">User ID:</span>
-                        <span className="font-mono text-xs">{user.id}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="font-medium">User Email:</span>
-                        <span className="text-xs">{user.email}</span>
-                      </div>
-                    </>
-                  )}
-                </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">Type:</span>
+                <span className="text-sm capitalize">{transaction.type}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">Status:</span>
+                <span className={`text-sm capitalize font-medium ${
+                  transaction.status === 'completed' ? 'text-green-600' :
+                  transaction.status === 'pending' ? 'text-yellow-600' :
+                  'text-red-600'
+                }`}>
+                  {transaction.status}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">Description:</span>
+                <span className="text-sm text-right max-w-48">{transaction.description}</span>
               </div>
             </div>
 
-            {/* Security Information */}
-            <div className="border-t border-gray-300 pt-4 mb-4">
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-600">Verification Code</p>
-                  <p className="font-mono text-sm font-bold bg-gray-100 p-2 rounded">
-                    {receiptData.verificationCode}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    Verify at: eloity.com/verify/{receiptData.verificationCode}
-                  </p>
-                </div>
+            {/* Transaction IDs */}
+            <div className="border-t border-gray-200 pt-3 mb-4 space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-gray-500">Receipt ID:</span>
+                <span className="font-mono">{receiptData.id.slice(-8)}</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-gray-500">Transaction ID:</span>
+                <span className="font-mono">{transaction.id.slice(-8)}</span>
+              </div>
             </div>
 
-            {/* Footer */}
-            <div className="border-t border-gray-300 mt-4 pt-2 text-center text-xs text-gray-500">
-              <p className="font-mono">
-                Generated by Eloity Security System v2.0
-              </p>
-              <p className="mt-4 font-mono">
-                Receipt Hash: {receiptData.hash}
-              </p>
+            {/* Verification */}
+            <div className="border-t border-gray-200 pt-3">
+              <div className="text-center">
+                <p className="text-xs text-gray-500 mb-1">Verification Code</p>
+                <p className="font-mono text-sm font-bold bg-gray-50 p-2 rounded">{receiptData.verificationCode}</p>
+                <p className="text-xs text-gray-400 mt-2">Verify at: eloity.com/verify/{receiptData.verificationCode}</p>
+              </div>
             </div>
           </div>
 
