@@ -85,10 +85,10 @@ const EnhancedWalletDashboardContent = () => {
             {/* Quick Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
               {[
-                { name: "E-commerce", value: walletBalance?.ecommerce || 8947.32 },
-                { name: "Crypto", value: walletBalance?.crypto || 125670.45 },
-                { name: "Rewards", value: walletBalance?.rewards || 3245.18 },
-                { name: "Freelance", value: walletBalance?.freelance || 12890.67 },
+                { name: "E-commerce", value: walletBalance?.ecommerce || 0 },
+                { name: "Crypto", value: walletBalance?.crypto || 0 },
+                { name: "Rewards", value: walletBalance?.rewards || 0 },
+                { name: "Freelance", value: walletBalance?.freelance || 0 },
               ].map((source) => (
                 <div key={source.name} className="text-center">
                   <div className="text-lg md:text-xl font-semibold text-white drop-shadow-sm">
