@@ -22,7 +22,6 @@ import AdvancedTransactionManager from "./AdvancedTransactionManager";
 import WalletSecurityCenter from "./WalletSecurityCenter";
 import QuickActionsWidget from "./QuickActionsWidget";
 import IntegrationManager from "./IntegrationManager";
-import CryptoWalletBalanceCard from "@/components/crypto/CryptoWalletBalanceCard";
 
 // Original components
 import WithdrawModal from "./WithdrawModal";
