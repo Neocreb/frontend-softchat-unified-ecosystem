@@ -537,7 +537,7 @@ const ActivityEconomyDashboard: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <p className="font-medium text-sm">
-                          {formatNumber(item.softPointsEarned)} SP
+                          {formatNumber(item.eloitsEarned)} ELO
                         </p>
                         {item.walletBonusEarned > 0 && (
                           <p className="text-xs text-green-600">
