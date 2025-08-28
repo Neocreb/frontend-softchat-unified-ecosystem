@@ -764,7 +764,7 @@ const ActivityEconomyAdmin: React.FC = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
                         <p className="text-muted-foreground">Base Reward</p>
-                        <p className="font-medium">{rule.baseSoftPoints} SP</p>
+                        <p className="font-medium">{rule.baseEloits} ELO</p>
                       </div>
                       <div>
                         <p className="text-muted-foreground">Wallet Bonus</p>
@@ -802,15 +802,15 @@ const ActivityEconomyAdmin: React.FC = () => {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="baseSoftPoints">Base SoftPoints</Label>
+                    <Label htmlFor="baseEloits">Base Eloits</Label>
                     <Input
-                      id="baseSoftPoints"
+                      id="baseEloits"
                       type="number"
-                      value={editingRule.baseSoftPoints}
+                      value={editingRule.baseEloits}
                       onChange={(e) =>
                         setEditingRule({
                           ...editingRule,
-                          baseSoftPoints: parseFloat(e.target.value) || 0,
+                          baseEloits: parseFloat(e.target.value) || 0,
                         })
                       }
                     />
