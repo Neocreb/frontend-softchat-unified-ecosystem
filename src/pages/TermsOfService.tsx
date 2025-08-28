@@ -325,7 +325,7 @@ const TermsOfService = () => {
           <CardContent className="space-y-4">
             <div>
               <h4 className="font-semibold mb-2">Acceptable Use</h4>
-              <p className="text-sm mb-2">You agree to use SoftChat responsibly and in compliance with:</p>
+              <p className="text-sm mb-2">You agree to use Eloity responsibly and in compliance with:</p>
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li>All applicable local, state, national, and international laws</li>
                 <li>These Terms of Service and our Community Guidelines</li>
