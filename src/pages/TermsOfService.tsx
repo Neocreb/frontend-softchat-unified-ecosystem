@@ -544,8 +544,8 @@ const TermsOfService = () => {
               If you have questions about these Terms of Service, please contact us:
             </p>
             <div className="space-y-2 text-sm">
-              <p><strong>Email:</strong> legal@softchat.com</p>
-              <p><strong>Address:</strong> SoftChat Legal Department</p>
+              <p><strong>Email:</strong> legal@eloity.com</p>
+              <p><strong>Address:</strong> Eloity Legal Department</p>
               <p><strong>Response Time:</strong> We aim to respond within 5 business days</p>
             </div>
           </CardContent>
