@@ -6,7 +6,7 @@ export interface Wallet {
   usdtBalance: string;
   ethBalance: string;
   btcBalance: string;
-  softPointsBalance: string;
+  eloitsBalance: string;
   isFrozen: boolean;
   createdAt: string;
 }
@@ -163,8 +163,8 @@ class WalletServiceClass {
         return `${amount.toFixed(4)} ETH`;
       case "BTC":
         return `${amount.toFixed(6)} BTC`;
-      case "SOFT_POINTS":
-        return `${amount.toLocaleString()} SP`;
+      case "ELOITS":
+        return `${amount.toLocaleString()} ELO`;
       default:
         return `${amount} ${currency}`;
     }
@@ -178,7 +178,7 @@ class WalletServiceClass {
         return "💎";
       case "BTC":
         return "₿";
-      case "SOFT_POINTS":
+      case "ELOITS":
         return "⭐";
       default:
         return "💰";
