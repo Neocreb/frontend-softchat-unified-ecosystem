@@ -324,9 +324,9 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
 
     // Update document title with unread count
     if (unread > 0) {
-      document.title = `(${unread}) Softchat`;
+      document.title = `(${unread}) Eloity`;
     } else {
-      document.title = "Softchat";
+      document.title = "Eloity";
     }
 
     // Save to localStorage
