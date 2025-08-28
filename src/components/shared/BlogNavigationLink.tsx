@@ -57,7 +57,7 @@ export default function BlogNavigationLink({
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4 text-blue-600" />
               <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-100">
-                SoftChat Learning Hub
+                Eloity Learning Hub
               </h4>
               <Badge
                 variant="outline"
@@ -112,7 +112,7 @@ export default function BlogNavigationLink({
       <div className="flex items-center gap-2">
         <BookOpen className="h-4 w-4 text-muted-foreground" />
         <div>
-          <p className="text-sm font-medium">SoftChat Blog</p>
+          <p className="text-sm font-medium">Eloity Blog</p>
           <p className="text-xs text-muted-foreground">
             Educational content & market insights
           </p>

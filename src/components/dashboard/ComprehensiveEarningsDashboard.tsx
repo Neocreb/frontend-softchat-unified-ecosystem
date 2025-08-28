@@ -459,7 +459,7 @@ const ComprehensiveEarningsDashboard: React.FC = () => {
         <div>
           <h1 className="text-3xl font-bold">Earnings Dashboard</h1>
           <p className="text-muted-foreground">
-            Complete view of your Softchat earnings across all modules
+            Complete view of your Eloity earnings across all modules
           </p>
         </div>
         <div className="flex items-center gap-2">

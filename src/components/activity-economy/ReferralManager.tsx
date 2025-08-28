@@ -181,7 +181,7 @@ const ReferralManager: React.FC = () => {
   };
 
   const shareReferralLink = (url: string, platform: string) => {
-    const message = "Join Softchat and start earning! Use my referral link:";
+    const message = "Join Eloity and start earning! Use my referral link:";
     const encodedMessage = encodeURIComponent(message);
     const encodedUrl = encodeURIComponent(url);
 
@@ -321,7 +321,7 @@ const ReferralManager: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold">Referral Program</h1>
           <p className="text-muted-foreground">
-            Earn rewards by inviting friends to join Softchat
+            Earn rewards by inviting friends to join Eloity
           </p>
         </div>
         <Button

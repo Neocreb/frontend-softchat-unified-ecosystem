@@ -99,7 +99,7 @@ export function ComprehensiveFeatureShowcase() {
           <Rocket className="h-6 w-6 text-white" />
         </div>
         <CardTitle className="text-2xl">
-          🚀 SoftChat Comprehensive Platform
+          🚀 Eloity Comprehensive Platform
         </CardTitle>
         <CardDescription className="text-lg">
           Complete multi-module backend with advanced admin controls

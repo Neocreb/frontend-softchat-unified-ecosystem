@@ -121,7 +121,7 @@ export const SponsoredStoryFull: React.FC<{
             {isInternal ? (
               <>
                 <Crown className="w-16 h-16 mx-auto mb-4 opacity-80" />
-                <h2 className="text-2xl font-bold mb-4">Softchat Premium</h2>
+                <h2 className="text-2xl font-bold mb-4">Eloity Premium</h2>
                 <p className="text-lg opacity-90 mb-6">
                   Unlock exclusive features and boost your earning potential
                 </p>

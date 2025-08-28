@@ -178,7 +178,7 @@ router.post('/mtn-momo/initiate', authenticateToken, async (req, res) => {
       amount: parseFloat(amount),
       currency: currency.toUpperCase(),
       phoneNumber: phoneNumber.replace(/\s+/g, ''),
-      narration: narration || 'Softchat platform payment'
+      narration: narration || 'Eloity platform payment'
     };
 
     const result = await processMTNMoMoPayment(paymentData);

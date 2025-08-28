@@ -254,7 +254,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ className = "" }) => {
                   Admin Panel
                 </h2>
                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                  SoftChat Control
+                  Eloity Control
                 </p>
               </div>
             </div>

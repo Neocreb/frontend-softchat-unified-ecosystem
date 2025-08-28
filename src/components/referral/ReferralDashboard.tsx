@@ -126,8 +126,8 @@ const ReferralDashboard: React.FC = () => {
   const shareLink = (url: string) => {
     if (navigator.share) {
       navigator.share({
-        title: "Join Softchat",
-        text: "Join me on Softchat and start earning from your activities!",
+        title: "Join Eloity",
+        text: "Join me on Eloity and start earning from your activities!",
         url: url,
       });
     } else {
@@ -218,7 +218,7 @@ const ReferralDashboard: React.FC = () => {
         <div>
           <h1 className="text-3xl font-bold">Referral Program</h1>
           <p className="text-muted-foreground">
-            Earn lifetime commissions by inviting friends to Softchat
+            Earn lifetime commissions by inviting friends to Eloity
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -653,7 +653,7 @@ const ReferralDashboard: React.FC = () => {
                       Share Authentically
                     </h4>
                     <p className="text-xs text-blue-600">
-                      Share your genuine experience with Softchat
+                      Share your genuine experience with Eloity
                     </p>
                   </div>
                   <div className="p-3 bg-green-50 rounded-lg">

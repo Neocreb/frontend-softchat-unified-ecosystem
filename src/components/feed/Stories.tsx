@@ -36,10 +36,10 @@ const Stories = ({ stories, onViewStory, onCreateStory }: StoriesProps) => {
       let sponsoredAdCounter = 0;
       let nativeAdCounter = 0;
 
-      // Add Softchat sponsored story as first item if ads are enabled
+      // Add Eloity sponsored story as first item if ads are enabled
       if (adSettings.enableAds) {
         storyItems.push({
-          id: 'softchat-sponsored-story',
+          id: 'eloity-sponsored-story',
           type: 'sponsored_story' as const
         });
       }
@@ -120,7 +120,7 @@ const Stories = ({ stories, onViewStory, onCreateStory }: StoriesProps) => {
                 return (
                   <SponsoredStory
                     key={item.id}
-                    title="Softchat"
+                    title="Eloity"
                     isInternal={true}
                     onClick={() => {
                       console.log('Sponsored story clicked');

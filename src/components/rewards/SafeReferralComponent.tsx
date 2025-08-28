@@ -18,7 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 const SafeReferralComponent: React.FC = () => {
   const { toast } = useToast();
 
-  const referralLink = "https://softchat.app/join?ref=DEMO123";
+  const referralLink = "https://eloity.app/join?ref=DEMO123";
   
   const copyReferralLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -29,7 +29,7 @@ const SafeReferralComponent: React.FC = () => {
   };
 
   const shareReferralLink = (platform: string) => {
-    const message = "Join Softchat and start earning! Use my referral link:";
+    const message = "Join Eloity and start earning! Use my referral link:";
     const url = encodeURIComponent(referralLink);
     const text = encodeURIComponent(message);
     
@@ -58,7 +58,7 @@ const SafeReferralComponent: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold">Referral Program</h1>
           <p className="text-muted-foreground">
-            Earn rewards by inviting friends to join Softchat
+            Earn rewards by inviting friends to join Eloity
           </p>
         </div>
         <Button className="bg-purple-600 hover:bg-purple-700">

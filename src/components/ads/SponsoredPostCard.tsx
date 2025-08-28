@@ -13,14 +13,14 @@ interface SponsoredPostCardProps {
 }
 
 export const SponsoredPostCard: React.FC<SponsoredPostCardProps> = ({ 
-  title = "Discover Softchat Premium",
-  content = "Unlock exclusive features, priority support, and enhanced creator tools. Join thousands of creators already earning more with Softchat Premium!",
+  title = "Discover Eloity Premium",
+  content = "Unlock exclusive features, priority support, and enhanced creator tools. Join thousands of creators already earning more with Eloity Premium!",
   imageUrl,
   ctaText = "Upgrade Now",
   onClick,
   className 
 }) => {
-  // This is for internal Softchat campaigns and promotions
+  // This is for internal Eloity campaigns and promotions
   if (!adSettings.enableAds) {
     return null;
   }
@@ -34,16 +34,16 @@ export const SponsoredPostCard: React.FC<SponsoredPostCardProps> = ({
       {/* Post Header */}
       <div className="flex items-center justify-between p-4 pb-3">
         <div className="flex items-center gap-3">
-          {/* Softchat Avatar */}
+          {/* Eloity Avatar */}
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
             <Crown className="w-5 h-5 text-white" />
           </div>
           
-          {/* Softchat Info */}
+          {/* Eloity Info */}
           <div>
             <div className="flex items-center gap-2">
               <span className="font-semibold text-sm text-gray-900 dark:text-white">
-                Softchat
+                Eloity
               </span>
               <div className="w-4 h-4 rounded-full bg-purple-600 flex items-center justify-center">
                 <span className="text-white text-xs">✓</span>
@@ -85,7 +85,7 @@ export const SponsoredPostCard: React.FC<SponsoredPostCardProps> = ({
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white">
               <Crown className="w-16 h-16 mx-auto mb-3 opacity-80" />
-              <h3 className="font-bold text-xl mb-2">Softchat Premium</h3>
+              <h3 className="font-bold text-xl mb-2">Eloity Premium</h3>
               <p className="text-sm opacity-90 max-w-sm">
                 Enhanced features for creators and businesses
               </p>
@@ -123,7 +123,7 @@ export const SponsoredPostCard: React.FC<SponsoredPostCardProps> = ({
         
         <div className="flex items-center gap-1 text-xs text-purple-600 dark:text-purple-400">
           <Crown className="w-3 h-3" />
-          <span>Softchat Official</span>
+          <span>Eloity Official</span>
         </div>
       </div>
     </div>

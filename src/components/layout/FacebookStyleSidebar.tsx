@@ -413,7 +413,7 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
                 More
               </Link>
               <span>·</span>
-              <span>SoftChat © 2024</span>
+              <span>Eloity © 2024</span>
             </div>
           </div>
         </div>

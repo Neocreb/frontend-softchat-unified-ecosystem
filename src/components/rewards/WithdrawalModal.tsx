@@ -123,7 +123,7 @@ const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
       <DialogContent className="max-w-[95vw] sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="flex items-center gap-2">
-            <Wallet className="h-5 w-5 text-softchat-primary" />
+            <Wallet className="h-5 w-5 text-eloity-primary" />
             Withdraw Rewards
           </DialogTitle>
           <DialogDescription>
@@ -135,8 +135,8 @@ const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           {isProcessing ? (
             <div className="space-y-6 py-4">
               <div className="text-center space-y-4">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-softchat-primary/10 rounded-full">
-                  <Clock className="h-8 w-8 text-softchat-primary animate-spin" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-eloity-primary/10 rounded-full">
+                  <Clock className="h-8 w-8 text-eloity-primary animate-spin" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Processing Withdrawal</h3>
@@ -151,7 +151,7 @@ const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
             <>
               <div className="flex-1 overflow-y-auto space-y-4 pr-2">
                 {/* Current Balance Display */}
-                <div className="bg-gradient-to-r from-softchat-primary/10 to-purple-500/10 rounded-lg p-3 sm:p-4 space-y-3">
+                <div className="bg-gradient-to-r from-eloity-primary/10 to-purple-500/10 rounded-lg p-3 sm:p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Star className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
@@ -277,7 +277,7 @@ const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                 <Button
                   onClick={handleWithdraw}
                   disabled={!canWithdraw}
-                  className="flex-1 bg-softchat-primary hover:bg-softchat-700"
+                  className="flex-1 bg-eloity-primary hover:bg-eloity-700"
                 >
                   <DollarSign className="h-4 w-4 mr-2" />
                   <span className="hidden sm:inline">Withdraw</span>

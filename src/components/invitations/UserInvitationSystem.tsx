@@ -92,7 +92,7 @@ export const UserInvitationSystem: React.FC<UserInvitationSystemProps> = ({
   const [pendingInvites, setPendingInvites] = useState<PendingInvitation[]>([]);
   const [referralRewards, setReferralRewards] = useState<ReferralReward[]>([]);
 
-  const referralLink = `https://softchat.app/join?ref=${currentUser.referralCode}`;
+  const referralLink = `https://eloity.app/join?ref=${currentUser.referralCode}`;
   
   useEffect(() => {
     // Initialize referral rewards
@@ -176,8 +176,8 @@ export const UserInvitationSystem: React.FC<UserInvitationSystemProps> = ({
 
   const shareReferralLink = async (platform: string) => {
     const shareData = {
-      title: "Join SoftChat!",
-      text: `Hey! Join me on SoftChat, the amazing social platform. Use my referral link to get started: ${referralLink}`,
+      title: "Join Eloity!",
+      text: `Hey! Join me on Eloity, the amazing social platform. Use my referral link to get started: ${referralLink}`,
       url: referralLink,
     };
 
@@ -327,7 +327,7 @@ export const UserInvitationSystem: React.FC<UserInvitationSystemProps> = ({
           Invite Friends & Earn Rewards
         </CardTitle>
         <p className="text-muted-foreground">
-          Share SoftChat with friends and earn amazing rewards together!
+          Share Eloity with friends and earn amazing rewards together!
         </p>
       </CardHeader>
       

@@ -283,7 +283,7 @@ const EarningsOverview = ({
                   Creator Program Member
                 </h3>
                 <p className="text-sm text-purple-700">
-                  You're earning through the Softchat Creator Economy
+                  You're earning through the Eloity Creator Economy
                 </p>
                 <div className="flex items-center gap-4 mt-2">
                   <Badge

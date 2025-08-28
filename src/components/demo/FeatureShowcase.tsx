@@ -177,7 +177,7 @@ export const FeatureShowcase: React.FC<FeatureShowcaseProps> = ({ className }) =
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold flex items-center justify-center gap-2">
           <Sparkles className="w-8 h-8 text-primary" />
-          SoftChat Enhanced Features
+          Eloity Enhanced Features
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Explore all the new and enhanced features including media creation, AI generation, 

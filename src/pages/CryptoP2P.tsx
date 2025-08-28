@@ -49,7 +49,7 @@ const CryptoP2P = () => {
   return (
     <>
       <Helmet>
-        <title>Crypto P2P Trading - Peer-to-Peer Marketplace | Softchat</title>
+        <title>Crypto P2P Trading - Peer-to-Peer Marketplace | Eloity</title>
         <meta name="description" content="Trade cryptocurrencies directly with other users in a secure peer-to-peer environment." />
       </Helmet>
 

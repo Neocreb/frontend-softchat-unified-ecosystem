@@ -98,7 +98,7 @@ async function sendSMSWithAfricasTalking(data: SMSNotificationData, messageId: s
           username: process.env.AFRICAS_TALKING_USERNAME,
           to: data.phoneNumber,
           message: data.message,
-          from: 'SOFTCHAT'
+          from: 'ELOITY'
         })
       });
       
@@ -149,7 +149,7 @@ async function sendSMSWithTermii(data: SMSNotificationData, messageId: string) {
         body: JSON.stringify({
           api_key: process.env.TERMII_API_KEY,
           to: data.phoneNumber,
-          from: 'Softchat',
+          from: 'Eloity',
           sms: data.message,
           type: 'plain',
           channel: getTermiiChannel(data.type)
@@ -262,7 +262,7 @@ async function sendSMSWithVonage(data: SMSNotificationData, messageId: string) {
           api_key: process.env.VONAGE_API_KEY,
           api_secret: process.env.VONAGE_API_SECRET,
           to: data.phoneNumber.replace('+', ''),
-          from: 'Softchat',
+          from: 'Eloity',
           text: data.message
         })
       });
@@ -808,7 +808,7 @@ async function sendEmailWithSendGrid(data: EmailNotificationData, messageId: str
         personalizations: data.to.map(email => ({ to: [{ email }] })),
         from: { 
           email: process.env.SENDGRID_FROM_EMAIL, 
-          name: process.env.SENDGRID_FROM_NAME || 'Softchat' 
+          name: process.env.SENDGRID_FROM_NAME || 'Eloity' 
         },
         subject: data.subject,
         content: [
@@ -1270,7 +1270,7 @@ function getTermiiChannel(type: string): string {
 
 function generateUSSDMenuText(menuStructure: any): string {
   // Generate USSD menu text from structure
-  let menuText = "Welcome to Softchat!\n";
+  let menuText = "Welcome to Eloity!\n";
   
   if (menuStructure.options) {
     menuStructure.options.forEach((option, index) => {

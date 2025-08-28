@@ -218,7 +218,7 @@ const Premium: React.FC = () => {
           <div className="flex items-center justify-center mb-4">
             <Crown className="h-12 w-12 text-yellow-500 mr-3" />
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Softchat Premium
+              Eloity Premium
             </h1>
           </div>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">

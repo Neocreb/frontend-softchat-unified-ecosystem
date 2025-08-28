@@ -273,7 +273,7 @@ const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
             <CardFooter className="flex-col items-start border-t crypto-border-premium pt-3 px-3 pb-3 md:p-6">
               <p className="text-xs md:text-sm font-medium crypto-text-premium">Need Help?</p>
               <p className="text-xs crypto-text-secondary-premium mb-2">
-                Check out our guides on using crypto in Softchat
+                Check out our guides on using crypto in Eloity
               </p>
               <Button variant="link" className="h-auto p-0 text-xs">
                 View Crypto Documentation

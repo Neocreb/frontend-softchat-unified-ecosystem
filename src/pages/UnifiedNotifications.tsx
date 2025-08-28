@@ -280,7 +280,7 @@ const UnifiedNotifications: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>{unreadCount > 0 ? `(${unreadCount}) ` : ""}Notifications | SoftChat</title>
+        <title>{unreadCount > 0 ? `(${unreadCount}) ` : ""}Notifications | Eloity</title>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50/50 dark:bg-gray-900/50">
