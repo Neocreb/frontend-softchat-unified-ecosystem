@@ -778,9 +778,9 @@ const ActivityEconomyDashboard: React.FC = () => {
                         <div>
                           <p className="text-sm font-medium">Rewards</p>
                           <div className="flex items-center gap-3 mt-1">
-                            {challenge.softPointsReward > 0 && (
+                            {challenge.eloitsReward > 0 && (
                               <span className="text-xs text-purple-600">
-                                {challenge.softPointsReward} SP
+                                {challenge.eloitsReward} SP
                               </span>
                             )}
                             {challenge.walletReward > 0 && (
