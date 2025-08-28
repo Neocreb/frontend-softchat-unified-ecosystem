@@ -37,6 +37,7 @@ const EnhancedWalletDashboardContent = () => {
     isLoading,
     refreshWallet,
   } = useWalletContext();
+  const { user } = useAuth();
 
   const [activeTab, setActiveTab] = useState("overview");
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
