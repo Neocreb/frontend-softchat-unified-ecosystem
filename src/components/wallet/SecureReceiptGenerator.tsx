@@ -216,12 +216,8 @@ const SecureReceiptDialog = ({ transaction, isOpen, onClose }: SecureReceiptProp
                     <span className="font-mono text-xs">{transaction.id.slice(-8)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="font-medium">Date:</span>
-                    <span>{format(new Date(transaction.timestamp), 'PPP')}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Time:</span>
-                    <span>{format(new Date(transaction.timestamp), 'pp')}</span>
+                    <span className="font-medium">Date/Time:</span>
+                    <span className="text-xs">{format(new Date(transaction.timestamp), 'MM/dd/yyyy HH:mm')}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="font-medium">Type:</span>
