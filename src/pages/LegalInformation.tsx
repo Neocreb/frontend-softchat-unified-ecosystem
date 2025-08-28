@@ -96,6 +96,8 @@ const LegalInformation = () => {
                 <li>Comprehensive data privacy protection across all services</li>
                 <li>Clear earnings and payment terms for service providers</li>
                 <li>Transparent policies for advertising and monetization</li>
+                <li>Automatic reward sharing system for community growth</li>
+                <li>Pioneer badge program for early active users</li>
                 <li>Regular updates to reflect platform evolution and legal requirements</li>
               </ul>
             </div>
