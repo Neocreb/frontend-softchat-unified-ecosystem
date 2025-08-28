@@ -295,3 +295,29 @@ body {
 .bg-gradient-radial {
   background-image: radial-gradient(circle, var(--tw-gradient-stops));
 }
+
+/* Dark mode compatibility layer: map common light-only utilities to tokens */
+/* Backgrounds */
+.dark .bg-white { background-color: hsl(var(--card)) !important; }
+.dark .bg-gray-50 { background-color: hsl(var(--background)) !important; }
+.dark .bg-gray-100 { background-color: hsl(var(--muted)) !important; }
+.dark .bg-slate-50 { background-color: hsl(var(--background)) !important; }
+.dark .bg-neutral-50 { background-color: hsl(var(--background)) !important; }
+
+/* Text colors */
+.dark .text-gray-900, .dark .text-black { color: hsl(var(--foreground)) !important; }
+.dark .text-gray-800, .dark .text-gray-700 { color: hsl(var(--foreground)) !important; }
+.dark .text-gray-600, .dark .text-gray-500, .dark .text-gray-400 { color: hsl(var(--muted-foreground)) !important; }
+
+/* Borders and dividers */
+.dark .border-gray-100, .dark .border-gray-200, .dark .border-gray-300 { border-color: hsl(var(--border)) !important; }
+.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-gray-300 > :not([hidden]) ~ :not([hidden]) { border-color: hsl(var(--border)) !important; }
+
+/* Hover states commonly used in light mode */
+.dark .hover\:bg-gray-50:hover { background-color: hsl(var(--muted)) !important; }
+.dark .hover\:bg-gray-100:hover { background-color: hsl(var(--muted)) !important; }
+
+/* Ring and outline fallbacks */
+.dark .ring-gray-200 { --tw-ring-color: hsl(var(--ring)) !important; }
