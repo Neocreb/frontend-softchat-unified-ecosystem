@@ -234,7 +234,7 @@ const CookiesPolicy = () => {
                 Analytics Cookies
               </h4>
               <p className="text-sm mb-2">
-                These cookies help us understand how users interact with SoftChat:
+                These cookies help us understand how users interact with Eloity:
               </p>
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li><strong>Usage Analytics:</strong> Track page views and user journeys</li>
