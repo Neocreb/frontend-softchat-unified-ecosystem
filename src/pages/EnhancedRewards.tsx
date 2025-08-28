@@ -300,7 +300,7 @@ export default function EnhancedRewards() {
         </div>
       ) : rewardData ? (
         <RewardsCard
-          currentSoftPoints={rewardData.currentSoftPoints}
+          currentEloits={rewardData.currentEloits}
           availableToWithdraw={rewardData.availableToWithdraw}
           totalEarnings={rewardData.totalEarnings}
           trustScore={rewardData.trustScore}
@@ -369,7 +369,7 @@ export default function EnhancedRewards() {
               <RewardsErrorBoundary>
                 <RewardsStats
                   totalEarnings={rewardData.totalEarnings}
-                  currentSoftPoints={rewardData.currentSoftPoints}
+                  currentEloits={rewardData.currentEloits}
                   trustScore={rewardData.trustScore}
                   activityStats={rewardData.activityStats}
                   earningsByType={rewardData.earningsByType}
@@ -460,7 +460,7 @@ export default function EnhancedRewards() {
         <WithdrawalModal
           isOpen={showWithdrawalModal}
           onClose={() => setShowWithdrawalModal(false)}
-          currentSoftPoints={rewardData.currentSoftPoints}
+          currentEloits={rewardData.currentEloits}
           availableToWithdraw={rewardData.availableToWithdraw}
           trustScore={rewardData.trustScore}
           onWithdrawalSuccess={handleWithdrawalSuccess}
