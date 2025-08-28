@@ -362,8 +362,8 @@ const PrivacyPolicy = () => {
               please contact us:
             </p>
             <div className="space-y-2 text-sm">
-              <p><strong>Email:</strong> privacy@softchat.com</p>
-              <p><strong>Address:</strong> SoftChat Privacy Team, Data Protection Office</p>
+              <p><strong>Email:</strong> privacy@eloity.com</p>
+              <p><strong>Address:</strong> Eloity Privacy Team, Data Protection Office</p>
               <p><strong>Response Time:</strong> We aim to respond within 30 days</p>
             </div>
           </CardContent>
