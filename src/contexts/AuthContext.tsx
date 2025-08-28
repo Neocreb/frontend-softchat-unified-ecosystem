@@ -134,6 +134,18 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setIsLoading(true);
         setError(null);
 
+        // Check if environment variables are available
+        if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+          console.error("Supabase environment variables are missing!");
+          console.log("VITE_SUPABASE_URL:", import.meta.env.VITE_SUPABASE_URL);
+          console.log("VITE_SUPABASE_PUBLISHABLE_KEY available:", !!import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
+          setError(new Error("Supabase configuration is missing"));
+          setIsLoading(false);
+          return;
+        }
+
+        console.log("Supabase client initialized with URL:", import.meta.env.VITE_SUPABASE_URL);
+
         // Get initial session with timeout
         const sessionPromise = supabase.auth.getSession();
         const timeoutPromise = new Promise((_, reject) =>
