@@ -304,7 +304,7 @@ const TermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Liability and Insurance</h4>
               <p className="text-sm mb-2">
-                SoftChat provides comprehensive delivery insurance coverage. Delivery providers
+                Eloity provides comprehensive delivery insurance coverage. Delivery providers
                 are covered under our commercial liability policy during active deliveries.
                 Claims for damaged, lost, or stolen items will be processed according to our
                 dispute resolution procedures. Maximum liability per package is limited to
