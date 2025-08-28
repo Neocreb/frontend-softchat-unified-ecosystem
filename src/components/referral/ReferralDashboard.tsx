@@ -21,6 +21,13 @@ import {
   Calendar,
   Star,
   RefreshCw,
+  Percent,
+  ArrowUpDown,
+  ArrowDown,
+  ArrowUp,
+  Settings,
+  Heart,
+  Handshake,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -49,6 +56,13 @@ const ReferralDashboard: React.FC = () => {
   const [isGeneratingLink, setIsGeneratingLink] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
 
+  // Revenue sharing state
+  const [revenueSharingStats, setRevenueSharingStats] = useState<any>(null);
+  const [revenueSharingHistory, setRevenueSharingHistory] = useState<any>(null);
+  const [isUpdatingShare, setIsUpdatingShare] = useState(false);
+  const [editingLinkId, setEditingLinkId] = useState<string | null>(null);
+  const [newSharePercentage, setNewSharePercentage] = useState<number>(0);
+
   useEffect(() => {
     if (user) {
       loadReferralData();
@@ -58,17 +72,21 @@ const ReferralDashboard: React.FC = () => {
   const loadReferralData = async () => {
     setIsLoading(true);
     try {
-      const [links, stats, tiers, status] = await Promise.all([
+      const [links, stats, tiers, status, shareStats, shareHistory] = await Promise.all([
         ReferralService.getReferralLinks(),
         ReferralService.getReferralStats(),
         ReferralService.getPartnershipTiers(),
         ReferralService.getPartnershipStatus(),
+        ReferralService.getRevenueSharingStats(),
+        ReferralService.getRevenueSharingHistory(),
       ]);
 
       setReferralLinks(links);
       setReferralStats(stats);
       setPartnershipTiers(tiers);
       setPartnershipStatus(status);
+      setRevenueSharingStats(shareStats);
+      setRevenueSharingHistory(shareHistory);
     } catch (error) {
       console.error("Error loading referral data:", error);
       toast({
@@ -378,9 +396,10 @@ const ReferralDashboard: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-6"
       >
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="links">My Links</TabsTrigger>
+          <TabsTrigger value="sharing">Sharing</TabsTrigger>
           <TabsTrigger value="partnership">Partnership</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
