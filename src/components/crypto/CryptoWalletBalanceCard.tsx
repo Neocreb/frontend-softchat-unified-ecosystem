@@ -109,39 +109,39 @@ export default function CryptoWalletBalanceCard({
         </div>
 
         {/* Main Content Row */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
           {/* Left: Balance */}
-          <div className="space-y-2 flex-1">
+          <div className="space-y-3 flex-1">
             <div>
-              <p className="text-white/80 text-2xs sm:text-xs font-medium uppercase tracking-wide mb-1">
+              <p className="text-white/90 text-2xs sm:text-xs font-semibold uppercase tracking-wider mb-2 drop-shadow-sm">
                 Total Portfolio Value
               </p>
-              <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white drop-shadow-lg">
+              <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white drop-shadow-lg tracking-tight">
                 {showBalance ? formatCurrency(totalBalance) : "••••••••"}
               </div>
             </div>
 
             {/* 24h Change */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <div className={cn(
-                "flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg font-medium text-2xs sm:text-sm backdrop-blur-sm",
+                "flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl font-semibold text-xs sm:text-sm backdrop-blur-md shadow-lg ring-1 transition-all duration-200 hover:scale-105",
                 isPositive
-                  ? "bg-green-500/20 text-green-100 border border-green-400/20"
-                  : "bg-red-500/20 text-red-100 border border-red-400/20"
+                  ? "bg-gradient-to-r from-green-500/25 to-emerald-500/25 text-green-50 border border-green-400/30 ring-green-400/20"
+                  : "bg-gradient-to-r from-red-500/25 to-rose-500/25 text-red-50 border border-red-400/30 ring-red-400/20"
               )}>
                 {isPositive ? (
-                  <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 drop-shadow-sm" />
                 ) : (
-                  <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <TrendingDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 drop-shadow-sm" />
                 )}
-                <span className="text-2xs sm:text-sm">
+                <span className="font-bold drop-shadow-sm">
                   {showBalance ? formatCurrency(Math.abs(totalBalance24hChange)) : "••••"}
                 </span>
-                <span className="text-2xs sm:text-xs">
+                <span className="text-xs font-medium opacity-90">
                   ({showBalance ? formatPercentage(totalBalance24hPercent) : "••••"})
                 </span>
               </div>
-              <span className="text-white/80 text-2xs sm:text-xs font-medium">24h</span>
+              <span className="text-white/85 text-xs sm:text-sm font-medium tracking-wide drop-shadow-sm">24h change</span>
             </div>
           </div>
 
