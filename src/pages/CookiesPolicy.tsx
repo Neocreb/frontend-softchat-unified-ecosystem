@@ -118,7 +118,7 @@ const CookiesPolicy = () => {
                     <h4 className="font-semibold">Analytics Cookies</h4>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Help us understand how you use SoftChat to improve our services.
+                    Help us understand how you use Eloity to improve our services.
                   </p>
                 </div>
                 <Switch 
