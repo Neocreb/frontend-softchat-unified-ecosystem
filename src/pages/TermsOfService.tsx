@@ -472,7 +472,7 @@ const TermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Limitation of Liability</h4>
               <p className="text-sm">
-                To the fullest extent permitted by law, SoftChat shall not be liable for any 
+                To the fullest extent permitted by law, Eloity shall not be liable for any 
                 indirect, incidental, special, consequential, or punitive damages, including 
                 but not limited to loss of profits, data, or business opportunities.
               </p>
