@@ -481,7 +481,7 @@ class I18nService {
     );
     if (supported) {
       this.currentLanguage = langCode;
-      localStorage.setItem("softchat_language", langCode);
+      localStorage.setItem("eloity_language", langCode);
       this.loadTranslations();
 
       // Update document direction for RTL languages
@@ -533,7 +533,7 @@ class I18nService {
     );
     if (supported) {
       this.currentCurrency = currencyCode;
-      localStorage.setItem("softchat_currency", currencyCode);
+      localStorage.setItem("eloity_currency", currencyCode);
     }
   }
 
@@ -557,7 +557,7 @@ class I18nService {
     const region = REGIONAL_CONFIG.find((r) => r.code === regionCode);
     if (region) {
       this.currentRegion = regionCode;
-      localStorage.setItem("softchat_region", regionCode);
+      localStorage.setItem("eloity_region", regionCode);
     }
   }
 
