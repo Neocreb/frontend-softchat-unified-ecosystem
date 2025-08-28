@@ -11,7 +11,7 @@ const ACTIVITY_TYPES = [
 export interface ActivityRewardResponse {
   success: boolean;
   status: string;
-  softPoints: number;
+  eloits: number;
   walletBonus: number;
   newTrustScore: number;
   riskScore: number;
@@ -49,7 +49,7 @@ export class ActivityRewardService {
         return {
           success: false,
           status: "no_auth",
-          softPoints: 0,
+          eloits: 0,
           walletBonus: 0,
           newTrustScore: 0,
           riskScore: 0,
