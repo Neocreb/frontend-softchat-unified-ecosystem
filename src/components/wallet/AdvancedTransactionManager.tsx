@@ -264,6 +264,35 @@ const AdvancedTransactionManager = () => {
     setShowReceiptDialog(true);
   }, []);
 
+  // Helper functions for transaction styling
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "completed":
+        return "bg-green-100 text-green-700 border-green-200";
+      case "pending":
+        return "bg-yellow-100 text-yellow-700 border-yellow-200";
+      case "failed":
+        return "bg-red-100 text-red-700 border-red-200";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-200";
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "earned":
+        return "text-green-600";
+      case "deposit":
+        return "text-blue-600";
+      case "withdrawal":
+        return "text-red-600";
+      case "transfer":
+        return "text-purple-600";
+      default:
+        return "text-gray-600";
+    }
+  };
+
   const printTransactions = useCallback(() => {
     const selectedData = selectedTransactions.length > 0 
       ? filteredTransactions.filter(t => selectedTransactions.includes(t.id))
