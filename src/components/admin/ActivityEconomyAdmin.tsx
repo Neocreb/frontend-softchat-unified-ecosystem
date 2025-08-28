@@ -527,10 +527,10 @@ const ActivityEconomyAdmin: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-purple-700">
-                  SoftPoints Issued
+                  Eloits Issued
                 </p>
                 <p className="text-2xl font-bold text-purple-900">
-                  {formatNumber(platformStats?.totalSoftPointsIssued || 0)}
+                  {formatNumber(platformStats?.totalEloitsIssued || 0)}
                 </p>
                 <p className="text-xs text-purple-600">Total distributed</p>
               </div>
