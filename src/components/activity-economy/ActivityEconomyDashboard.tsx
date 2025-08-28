@@ -378,7 +378,7 @@ const ActivityEconomyDashboard: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold">Activity Economy</h1>
           <p className="text-muted-foreground">
-            Earn SoftPoints and wallet bonuses for every meaningful action
+            Earn Eloits and wallet bonuses for every meaningful action
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -403,15 +403,15 @@ const ActivityEconomyDashboard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-purple-700">
-                  SoftPoints
+                  Eloits
                 </p>
                 <p className="text-2xl font-bold text-purple-900">
-                  {formatNumber(activitySummary?.currentSoftPoints || 0)}
+                  {formatNumber(activitySummary?.currentEloits || 0)}
                 </p>
                 <p className="text-xs text-purple-600">
                   +
                   {formatNumber(
-                    activitySummary?.period.totalSoftPointsEarned || 0,
+                    activitySummary?.period.totalEloitsEarned || 0,
                   )}{" "}
                   this week
                 </p>
