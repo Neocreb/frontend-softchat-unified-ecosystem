@@ -159,6 +159,7 @@ export const referral_links = pgTable('referral_links', {
   referrer_reward: numeric('referrer_reward', { precision: 10, scale: 2 }).default('20'),
   referee_reward: numeric('referee_reward', { precision: 10, scale: 2 }).default('35'),
   revenue_share_percentage: numeric('revenue_share_percentage', { precision: 5, scale: 2 }).default('0'),
+  automatic_sharing_enabled: boolean('automatic_sharing_enabled').default(true),
   is_active: boolean('is_active').default(true),
   max_uses: integer('max_uses'),
   current_uses: integer('current_uses').default(0),
@@ -183,6 +184,49 @@ export const referral_events = pgTable('referral_events', {
   ip_address: text('ip_address'),
   user_agent: text('user_agent'),
   referrer_url: text('referrer_url'),
+  created_at: timestamp('created_at').defaultNow(),
+});
+
+// Reward sharing transactions table
+export const reward_sharing_transactions = pgTable('reward_sharing_transactions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  sharer_id: uuid('sharer_id').notNull(),
+  recipient_id: uuid('recipient_id').notNull(),
+  original_reward_amount: numeric('original_reward_amount', { precision: 10, scale: 2 }).notNull(),
+  shared_amount: numeric('shared_amount', { precision: 10, scale: 2 }).notNull(),
+  sharing_percentage: numeric('sharing_percentage', { precision: 5, scale: 2 }).default('0.5'),
+  transaction_type: text('transaction_type').notNull(), // 'automatic_referral_share'
+  source_activity: text('source_activity').notNull(), // 'creator_economy', 'ad_revenue', etc.
+  activity_id: uuid('activity_id'),
+  status: text('status').default('completed'),
+  metadata: jsonb('metadata'),
+  created_at: timestamp('created_at').defaultNow(),
+});
+
+// Pioneer badges table
+export const pioneer_badges = pgTable('pioneer_badges', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  user_id: uuid('user_id').notNull(),
+  badge_number: integer('badge_number').notNull(), // 1-500
+  earned_at: timestamp('earned_at').defaultNow(),
+  eligibility_score: numeric('eligibility_score', { precision: 8, scale: 2 }).notNull(),
+  activity_metrics: jsonb('activity_metrics'),
+  verification_data: jsonb('verification_data'),
+  is_verified: boolean('is_verified').default(true),
+  created_at: timestamp('created_at').defaultNow(),
+});
+
+// User activity tracking for pioneer badge calculation
+export const user_activity_sessions = pgTable('user_activity_sessions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  user_id: uuid('user_id').notNull(),
+  session_start: timestamp('session_start').defaultNow(),
+  session_end: timestamp('session_end'),
+  total_time_minutes: integer('total_time_minutes').default(0),
+  activities_count: integer('activities_count').default(0),
+  quality_interactions: integer('quality_interactions').default(0),
+  device_info: jsonb('device_info'),
+  engagement_score: numeric('engagement_score', { precision: 5, scale: 2 }).default('0'),
   created_at: timestamp('created_at').defaultNow(),
 });
 
@@ -299,5 +343,32 @@ export const referralEventsRelations = relations(referral_events, ({ one }) => (
     fields: [referral_events.referee_id],
     references: [users.id],
     relationName: 'refereeEvents',
+  }),
+}));
+
+export const rewardSharingTransactionsRelations = relations(reward_sharing_transactions, ({ one }) => ({
+  sharer: one(users, {
+    fields: [reward_sharing_transactions.sharer_id],
+    references: [users.id],
+    relationName: 'sharerTransactions',
+  }),
+  recipient: one(users, {
+    fields: [reward_sharing_transactions.recipient_id],
+    references: [users.id],
+    relationName: 'recipientTransactions',
+  }),
+}));
+
+export const pioneerBadgesRelations = relations(pioneer_badges, ({ one }) => ({
+  user: one(users, {
+    fields: [pioneer_badges.user_id],
+    references: [users.id],
+  }),
+}));
+
+export const userActivitySessionsRelations = relations(user_activity_sessions, ({ one }) => ({
+  user: one(users, {
+    fields: [user_activity_sessions.user_id],
+    references: [users.id],
   }),
 }));

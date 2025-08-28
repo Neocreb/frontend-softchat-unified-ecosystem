@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Users,
   Copy,
@@ -11,14 +12,36 @@ import {
   TrendingUp,
   Star,
   ExternalLink,
+  Heart,
+  Info,
+  Gift,
 } from "lucide-react";
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { useToast } from "@/hooks/use-toast";
+import { AutomaticRewardSharingService } from "@/services/automaticRewardSharingService";
 
 const SafeReferralComponent: React.FC = () => {
   const { toast } = useToast();
+  const [sharingStats, setSharingStats] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const referralLink = "https://eloity.app/join?ref=DEMO123";
+
+  useEffect(() => {
+    loadSharingStats();
+  }, []);
+
+  const loadSharingStats = async () => {
+    try {
+      setIsLoading(true);
+      const stats = await AutomaticRewardSharingService.getSharingStats();
+      setSharingStats(stats);
+    } catch (error) {
+      console.error('Failed to load sharing stats:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   const copyReferralLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -67,8 +90,25 @@ const SafeReferralComponent: React.FC = () => {
         </Button>
       </div>
 
+      {/* Automatic Reward Sharing Info */}
+      <Alert className="border-blue-200 bg-blue-50">
+        <Gift className="h-4 w-4 text-blue-600" />
+        <AlertDescription className="text-blue-800">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <strong>Community Sharing Active:</strong> 0.5% of creator earnings automatically shared with your referrals.
+            </div>
+            <div className="text-right text-xs">
+              <div className="text-blue-600">This Month</div>
+              <div className="font-semibold">{isLoading ? "..." : formatCurrency(sharingStats?.thisMonthShared || 0)} shared</div>
+              <div className="font-semibold">{isLoading ? "..." : formatCurrency(sharingStats?.thisMonthReceived || 0)} received</div>
+            </div>
+          </div>
+        </AlertDescription>
+      </Alert>
+
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -98,6 +138,25 @@ const SafeReferralComponent: React.FC = () => {
               </div>
               <div className="p-3 bg-green-200 rounded-full">
                 <DollarSign className="w-6 h-6 text-green-700" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-pink-700">Reward Sharing</p>
+                <p className="text-2xl font-bold text-pink-900">
+                  {isLoading ? "..." : formatCurrency(sharingStats?.totalShared || 0)}
+                </p>
+                <p className="text-xs text-pink-600">
+                  0.5% auto-shared with referrals
+                </p>
+              </div>
+              <div className="p-3 bg-pink-200 rounded-full">
+                <Heart className="w-6 h-6 text-pink-700" />
               </div>
             </div>
           </CardContent>
@@ -259,6 +318,98 @@ const SafeReferralComponent: React.FC = () => {
               <p className="text-sm text-muted-foreground">
                 Both you and your friend earn rewards for activities and purchases
               </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Automatic Reward Sharing Details */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Heart className="w-5 h-5" />
+            Automatic Reward Sharing
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border border-blue-200">
+              <h3 className="font-semibold text-gray-900 mb-2">How It Works</h3>
+              <p className="text-sm text-gray-700 mb-3">
+                0.5% of creator economy earnings are automatically shared with your referrals.
+              </p>
+              <div className="grid grid-cols-2 gap-6 text-xs">
+                <div>
+                  <h4 className="font-medium text-gray-800 mb-1">✅ Included</h4>
+                  <p className="text-gray-600">Content, engagement, ads, challenges</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-800 mb-1">❌ Excluded</h4>
+                  <p className="text-gray-600">Freelance, marketplace, crypto trading</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                <h4 className="font-semibold text-green-800 mb-2">Your Sharing Impact</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-green-700">Total Shared:</span>
+                    <span className="font-medium text-green-900">
+                      {isLoading ? "Loading..." : formatCurrency(sharingStats?.totalShared || 0)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-green-700">Transactions:</span>
+                    <span className="font-medium text-green-900">
+                      {isLoading ? "..." : (sharingStats?.sharingTransactionsCount || 0)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-green-700">This Month:</span>
+                    <span className="font-medium text-green-900">
+                      {isLoading ? "..." : formatCurrency(sharingStats?.thisMonthShared || 0)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h4 className="font-semibold text-blue-800 mb-2">You've Received</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-blue-700">Total Received:</span>
+                    <span className="font-medium text-blue-900">
+                      {isLoading ? "Loading..." : formatCurrency(sharingStats?.totalReceived || 0)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-blue-700">From Others:</span>
+                    <span className="font-medium text-blue-900">
+                      {isLoading ? "..." : (sharingStats?.receivingTransactionsCount || 0)} people
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-blue-700">This Month:</span>
+                    <span className="font-medium text-blue-900">
+                      {isLoading ? "..." : formatCurrency(sharingStats?.thisMonthReceived || 0)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+              <div className="flex items-start gap-2">
+                <Info className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs text-yellow-700">
+                    Automatic sharing is part of our Terms of Service.
+                    <a href="/terms" className="underline hover:text-yellow-800 ml-1">Terms of Service</a>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </CardContent>

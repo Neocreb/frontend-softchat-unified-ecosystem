@@ -42,6 +42,7 @@ import AdvancedAnalytics from "@/components/rewards/AdvancedAnalytics";
 import RewardsErrorBoundary from "@/components/rewards/RewardsErrorBoundary";
 import SeasonalEvents from "@/components/rewards/SeasonalEvents";
 import EnhancedLoadingStates from "@/components/rewards/EnhancedLoadingStates";
+import PioneerBadgeWidget from "@/components/rewards/PioneerBadgeWidget";
 
 interface RewardData {
   totalEarnings: number;
@@ -376,12 +377,15 @@ export default function EnhancedRewards() {
                 />
               </RewardsErrorBoundary>
 
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <RewardsErrorBoundary>
                   <AchievementSystem />
                 </RewardsErrorBoundary>
                 <RewardsErrorBoundary>
                   <GoalTracking />
+                </RewardsErrorBoundary>
+                <RewardsErrorBoundary>
+                  <PioneerBadgeWidget />
                 </RewardsErrorBoundary>
               </div>
             </div>
@@ -448,9 +452,29 @@ export default function EnhancedRewards() {
               <div className="h-64 bg-gray-200 rounded-xl"></div>
             </div>
           ) : (
-            <RewardsErrorBoundary>
-              <SafeReferralManager />
-            </RewardsErrorBoundary>
+            <div className="space-y-6">
+              {/* Reward Sharing Notice */}
+              <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-purple-100 rounded-full">
+                    <Gift className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-medium text-purple-900">
+                      Community Sharing Active
+                    </h3>
+                    <p className="text-sm text-purple-700">
+                      0.5% of creator earnings automatically shared with referrals.
+                      <a href="/terms" className="underline hover:text-purple-800 ml-1">Terms</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <RewardsErrorBoundary>
+                <SafeReferralManager />
+              </RewardsErrorBoundary>
+            </div>
           )}
         </TabsContent>
       </Tabs>

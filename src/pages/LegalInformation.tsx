@@ -96,6 +96,7 @@ const LegalInformation = () => {
                 <li>Comprehensive data privacy protection across all services</li>
                 <li>Clear earnings and payment terms for service providers</li>
                 <li>Transparent policies for advertising and monetization</li>
+                <li>Community programs including automatic reward sharing and pioneer badges (detailed in Terms of Service)</li>
                 <li>Regular updates to reflect platform evolution and legal requirements</li>
               </ul>
             </div>
@@ -176,6 +177,7 @@ const LegalInformation = () => {
             </div>
           </CardContent>
         </Card>
+
 
         {/* Contact Information */}
         <Card>
