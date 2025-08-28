@@ -99,78 +99,13 @@ const CryptoLearn = () => {
     navigate("/app/crypto");
   };
 
+  const handleCourseClick = (courseId: string) => {
+    navigate(`/app/course/${courseId}`);
+  };
+
   if (!user) {
     return null; // Will redirect to auth
   }
-
-  const courses = [
-    { 
-      title: "Cryptocurrency Basics", 
-      description: "Learn the fundamentals of digital currencies and blockchain technology", 
-      level: "Beginner",
-      duration: "2 hours",
-      students: 1250,
-      rating: 4.8,
-      lessons: 8,
-      icon: BookOpen,
-      color: "from-green-500 to-emerald-600"
-    },
-    { 
-      title: "Technical Analysis Mastery", 
-      description: "Master chart patterns, indicators, and trading strategies", 
-      level: "Intermediate",
-      duration: "4 hours",
-      students: 890,
-      rating: 4.9,
-      lessons: 12,
-      icon: TrendingUp,
-      color: "from-blue-500 to-cyan-600"
-    },
-    { 
-      title: "DeFi Fundamentals", 
-      description: "Understand decentralized finance protocols and yield farming", 
-      level: "Advanced",
-      duration: "3 hours",
-      students: 567,
-      rating: 4.7,
-      lessons: 10,
-      icon: Target,
-      color: "from-purple-500 to-violet-600"
-    },
-    { 
-      title: "Risk Management", 
-      description: "Learn how to protect your investments and minimize losses", 
-      level: "Intermediate",
-      duration: "2.5 hours",
-      students: 750,
-      rating: 4.8,
-      lessons: 9,
-      icon: Shield,
-      color: "from-orange-500 to-red-600"
-    },
-    { 
-      title: "Crypto Security Best Practices", 
-      description: "Secure your digital assets with proper wallet and key management", 
-      level: "Beginner",
-      duration: "1.5 hours",
-      students: 980,
-      rating: 4.9,
-      lessons: 6,
-      icon: Shield,
-      color: "from-red-500 to-pink-600"
-    },
-    { 
-      title: "Advanced Trading Psychology", 
-      description: "Master the mental aspects of trading and emotional control", 
-      level: "Advanced",
-      duration: "3.5 hours",
-      students: 445,
-      rating: 4.6,
-      lessons: 11,
-      icon: Brain,
-      color: "from-indigo-500 to-purple-600"
-    },
-  ];
 
   const getLevelColor = (level: string) => {
     switch (level) {
