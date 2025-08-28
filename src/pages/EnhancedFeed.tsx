@@ -228,7 +228,7 @@ const initialMockPosts = [
       isVerified: true,
     },
     content:
-      "Just closed my first big crypto trade today! 🚀 The market has been incredible lately. Thanks to everyone who shared trading tips!",
+      "Just closed my first big crypto trade today! ���� The market has been incredible lately. Thanks to everyone who shared trading tips!",
     media: [
       {
         type: "image" as const,
@@ -533,7 +533,7 @@ const Stories = ({
           <Button
             variant="ghost"
             size="icon"
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-md hidden sm:flex h-8 w-8"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-gray-800 shadow-md hidden sm:flex h-8 w-8"
             onClick={() => scroll("left")}
           >
             <ChevronLeft className="h-4 w-4" />
@@ -633,7 +633,7 @@ const Stories = ({
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-md hidden sm:flex h-8 w-8"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-gray-800 shadow-md hidden sm:flex h-8 w-8"
             onClick={() => scroll("right")}
           >
             <ChevronRight className="h-4 w-4" />
@@ -742,10 +742,10 @@ const CreatePost = ({
               </AvatarFallback>
             </Avatar>
             <div
-              className="flex-1 bg-gray-100 rounded-full px-3 sm:px-4 py-2 sm:py-3 cursor-text touch-target min-w-0"
+              className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-full px-3 sm:px-4 py-2 sm:py-3 cursor-text touch-target min-w-0"
               onClick={() => setShowFullComposer(true)}
             >
-              <span className="text-gray-500 text-sm sm:text-base truncate">
+              <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base truncate">
                 What's on your mind, {user?.name?.split(" ")[0] || "User"}?
               </span>
             </div>
@@ -757,7 +757,7 @@ const CreatePost = ({
                 placeholder="What's on your mind?"
                 value={postText}
                 onChange={(e) => setPostText(e.target.value)}
-                className="min-h-[80px] sm:min-h-[100px] resize-none border-none text-lg sm:text-xl placeholder:text-gray-400 leading-relaxed"
+                className="min-h-[80px] sm:min-h-[100px] resize-none border-none text-lg sm:text-xl placeholder:text-gray-400 dark:placeholder:text-gray-500 leading-relaxed bg-transparent text-foreground"
                 autoFocus
               />
 
@@ -799,7 +799,7 @@ const CreatePost = ({
 
               {/* Selected Media */}
               {selectedMedia.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   {selectedMedia.map((media, index) => (
                     <div key={index} className="relative group">
                       <div className="aspect-square relative overflow-hidden rounded-lg">
@@ -877,7 +877,7 @@ const CreatePost = ({
                         e.target.value as "public" | "friends" | "private",
                       )
                     }
-                    className="text-xs sm:text-sm border rounded px-2 py-1 bg-white"
+                    className="text-xs sm:text-sm border rounded px-2 py-1 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-white"
                   >
                     <option value="public">🌍 Public</option>
                     <option value="friends">👥 Friends</option>
