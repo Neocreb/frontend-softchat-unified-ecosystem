@@ -43,20 +43,20 @@ import { useToast } from "@/hooks/use-toast";
 // =============================================================================
 
 interface ActivitySummary {
-  currentSoftPoints: number;
+  currentEloits: number;
   currentWalletBalance: {
     usdt: number;
     eth: number;
     btc: number;
   };
   period: {
-    totalSoftPointsEarned: number;
+    totalEloitsEarned: number;
     totalWalletBonusEarned: number;
     totalActivities: number;
   };
   breakdown: Array<{
     actionType: string;
-    softPointsEarned: number;
+    eloitsEarned: number;
     walletBonusEarned: number;
     activityCount: number;
   }>;
@@ -73,7 +73,7 @@ interface ActivityHistoryItem {
   actionType: string;
   targetId?: string;
   targetType?: string;
-  softPoints: number;
+  eloits: number;
   walletBonus: number;
   currency: string;
   status: string;
@@ -88,7 +88,7 @@ interface Challenge {
   targetAction: string;
   targetCount: number;
   targetValue?: number;
-  softPointsReward: number;
+  eloitsReward: number;
   walletReward: number;
   progress: {
     currentProgress: number;
