@@ -200,7 +200,311 @@ const mockCourses: Course[] = [
         description: "Protect your investments with proper security measures",
         type: "text",
         duration: 15,
-        content: "Security is paramount in the cryptocurrency world. Here are essential practices to protect your assets...",
+        content: `
+# Cryptocurrency Security Best Practices: Protecting Your Digital Assets
+
+## Introduction
+
+In the world of cryptocurrency, you are your own bank. This brings unprecedented freedom and control over your finances, but it also means you bear the full responsibility for keeping your assets secure. Unlike traditional banking, there's no customer service to call if something goes wrong, no central authority to reverse transactions, and no deposit insurance to protect you.
+
+This comprehensive guide will teach you the essential security practices that every cryptocurrency holder must know to protect their digital assets from theft, loss, and other security threats.
+
+## Understanding the Security Landscape
+
+### The Stakes Are High
+- **Irreversible Transactions**: Once a crypto transaction is confirmed, it cannot be reversed
+- **No Central Authority**: No bank or government can recover lost or stolen funds
+- **Anonymous Theft**: Cryptocurrency transactions can be difficult to trace
+- **Growing Attack Surface**: New attack vectors emerge as the space evolves
+
+### Common Threats
+1. **Exchange Hacks**: Centralized platforms can be compromised
+2. **Wallet Exploits**: Malicious software targeting crypto wallets
+3. **Phishing Attacks**: Fake websites and emails stealing credentials
+4. **Social Engineering**: Manipulating people to reveal sensitive information
+5. **Physical Theft**: Device theft or coercion for private keys
+6. **SIM Swapping**: Taking control of phone numbers for 2FA bypass
+
+## Fundamental Security Principles
+
+### 1. Defense in Depth
+Never rely on a single security measure. Layer multiple protections:
+- **Hardware Security**: Secure devices and storage
+- **Software Security**: Updated and legitimate applications
+- **Operational Security**: Safe practices and procedures
+- **Information Security**: Protecting sensitive data
+
+### 2. Principle of Least Privilege
+Only keep the minimum amount of cryptocurrency in "hot" (internet-connected) storage needed for immediate use. Store the majority in secure, offline storage.
+
+### 3. Trust But Verify
+Always verify addresses, transaction details, and software authenticity. Double-check everything before confirming transactions.
+
+## Wallet Security Hierarchy
+
+### Hot Wallets (Internet-Connected)
+
+#### Mobile Wallets
+**Security Level**: Moderate
+**Best For**: Small amounts for daily transactions
+**Security Measures**:
+- Use device lock screens with strong PINs/biometrics
+- Enable app-level security features
+- Keep operating system updated
+- Avoid public Wi-Fi for transactions
+
+#### Desktop Wallets
+**Security Level**: Moderate to High
+**Best For**: Regular trading and medium amounts
+**Security Measures**:
+- Use dedicated computer for crypto activities
+- Install reputable antivirus software
+- Enable full-disk encryption
+- Regular system updates and security patches
+
+#### Browser/Web Wallets
+**Security Level**: Lower
+**Best For**: Very small amounts only
+**Security Measures**:
+- Use only reputable, well-audited services
+- Enable all available security features
+- Use dedicated browser for crypto activities
+- Clear cache and cookies regularly
+
+### Cold Wallets (Offline Storage)
+
+#### Hardware Wallets
+**Security Level**: Highest
+**Best For**: Long-term storage of significant amounts
+**Security Measures**:
+- Purchase directly from manufacturer
+- Verify device authenticity and firmware
+- Use strong PIN and passphrase
+- Store recovery seed securely offline
+
+#### Paper Wallets
+**Security Level**: High (when properly created and stored)
+**Best For**: Long-term storage with minimal access
+**Security Measures**:
+- Generate on air-gapped computer
+- Use multiple physical copies
+- Store in secure, climate-controlled locations
+- Protect from physical damage and discovery
+
+## Essential Security Practices
+
+### 1. Strong Authentication
+
+#### Passwords
+- **Minimum 12 characters** with mix of types
+- **Unique passwords** for every account
+- **Password manager** to generate and store
+- **Regular updates** every 3-6 months
+
+#### Two-Factor Authentication (2FA)
+- **Authenticator apps** preferred over SMS
+- **Multiple backup methods** in case of device loss
+- **Backup codes** stored securely offline
+- **Avoid SMS 2FA** due to SIM swapping risk
+
+### 2. Private Key Management
+
+#### The Golden Rules
+- **Never share** your private keys with anyone
+- **Never store** private keys digitally unencrypted
+- **Multiple backups** in separate secure locations
+- **Test recovery** process with small amounts
+
+#### Seed Phrase Security
+- **Physical storage** only (no digital copies)
+- **Metal backup** for fire/water resistance
+- **Multiple locations** for redundancy
+- **Split storage** for very large amounts
+- **Regular verification** of backup integrity
+
+### 3. Transaction Security
+
+#### Before Every Transaction
+1. **Verify recipient address** character by character
+2. **Check transaction amount** and fees
+3. **Confirm network/blockchain** is correct
+4. **Review all details** before signing
+
+#### During Transactions
+1. **Use secure networks** (avoid public Wi-Fi)
+2. **Monitor for suspicious activity**
+3. **Keep transactions private**
+4. **Save transaction records**
+
+### 4. Software Security
+
+#### Wallet Software
+- **Download only** from official sources
+- **Verify checksums** and signatures
+- **Keep software updated** with latest security patches
+- **Use open-source** wallets when possible
+
+#### Operating System
+- **Regular security updates**
+- **Antivirus protection** (for Windows users)
+- **Firewall configuration**
+- **Minimal software installation**
+
+## Advanced Security Measures
+
+### Multi-Signature Wallets
+Require multiple private keys to authorize transactions:
+
+#### 2-of-3 Setup
+- You control 2 keys
+- Trusted third party holds 1 key
+- Any 2 keys can authorize transactions
+- Provides redundancy if one key is lost
+
+#### Benefits
+- **Shared control** for business accounts
+- **Inheritance planning** for family access
+- **Reduced single points of failure**
+- **Enhanced security** for large amounts
+
+### Hardware Security Modules (HSMs)
+For institutional or very high-value storage:
+- **FIPS 140-2 certified** devices
+- **Tamper-resistant** hardware
+- **Professional-grade** security
+- **Compliance requirements** for businesses
+
+### Air-Gapped Systems
+Complete isolation from internet-connected devices:
+- **Dedicated offline computer** for sensitive operations
+- **QR code or USB** for transaction transfer
+- **Maximum security** for large holdings
+- **Complex setup** requiring technical knowledge
+
+## Operational Security (OpSec)
+
+### Information Protection
+- **Avoid discussing** crypto holdings publicly
+- **Use pseudonyms** in crypto communities
+- **Limit social media** sharing about crypto activities
+- **Be aware of** data breaches affecting exchanges
+
+### Physical Security
+- **Secure storage** for hardware wallets and backups
+- **Home security** measures to prevent theft
+- **Travel precautions** when carrying devices
+- **Emergency procedures** for device loss
+
+### Social Engineering Defense
+- **Verify identities** of anyone requesting information
+- **Be skeptical** of unsolicited contact
+- **Never share** sensitive information over phone/email
+- **Use official channels** for support requests
+
+## Common Scams and How to Avoid Them
+
+### Phishing Attacks
+**Warning Signs**:
+- Urgent messages requesting immediate action
+- Suspicious URLs (check carefully for typos)
+- Requests for private keys or seed phrases
+- Too-good-to-be-true offers
+
+**Protection**:
+- Bookmark legitimate sites
+- Check URLs carefully
+- Never enter sensitive info from email links
+- Use official apps instead of browsers when possible
+
+### Fake Wallets and Apps
+**Warning Signs**:
+- Apps not from official app stores
+- Suspicious permissions requests
+- Poor reviews or new developer accounts
+- Promises of enhanced features
+
+**Protection**:
+- Only download from official sources
+- Verify developer credentials
+- Check reviews and ratings
+- Research before trying new wallets
+
+### Investment Scams
+**Warning Signs**:
+- Guaranteed high returns
+- Pressure to invest quickly
+- Celebrity endorsements
+- Pyramid or Ponzi structure
+
+**Protection**:
+- Research thoroughly before investing
+- Be skeptical of guaranteed returns
+- Never invest more than you can afford to lose
+- Verify all claims independently
+
+## Emergency Procedures
+
+### If Your Wallet is Compromised
+1. **Immediately** transfer funds to a new, secure wallet
+2. **Change all passwords** associated with crypto accounts
+3. **Review transaction history** for unauthorized activity
+4. **Report** to relevant authorities if significant loss
+5. **Learn from the incident** to prevent future occurrences
+
+### Recovery Planning
+- **Document your assets** and storage methods
+- **Create recovery instructions** for trusted family members
+- **Test recovery procedures** regularly with small amounts
+- **Update inheritance plans** to include crypto assets
+
+### If You Lose Access
+1. **Don't panic** - rushed decisions often make things worse
+2. **Systematically check** all possible recovery methods
+3. **Contact support** for services you were using
+4. **Consider professional recovery** services for large amounts
+5. **Learn from the experience** to improve future security
+
+## Security Checklist
+
+### Daily Practices
+- [ ] Check account balances for unauthorized activity
+- [ ] Use secure networks for crypto activities
+- [ ] Verify all transaction details before confirming
+- [ ] Keep devices locked when not in use
+
+### Weekly Practices
+- [ ] Review transaction history
+- [ ] Check for software updates
+- [ ] Verify backup integrity
+- [ ] Monitor news for security threats
+
+### Monthly Practices
+- [ ] Review and update passwords
+- [ ] Test 2FA backup methods
+- [ ] Audit security settings
+- [ ] Review portfolio allocation between hot/cold storage
+
+### Quarterly Practices
+- [ ] Full security audit of all accounts
+- [ ] Update recovery documentation
+- [ ] Review and test emergency procedures
+- [ ] Evaluate new security tools and practices
+
+## Conclusion
+
+Cryptocurrency security is not a one-time setup but an ongoing practice that requires vigilance, education, and adaptation to new threats. The decentralized nature of cryptocurrencies means that security is primarily your responsibility, but this also gives you complete control over your financial security.
+
+### Key Takeaways
+1. **Layer your security** - use multiple protection methods
+2. **Keep learning** - security threats constantly evolve
+3. **Start small** - practice with small amounts first
+4. **Plan for recovery** - have procedures for various scenarios
+5. **Stay paranoid** - healthy skepticism prevents costly mistakes
+
+Remember: The goal isn't to eliminate all risk (which is impossible) but to reduce risk to acceptable levels while still being able to benefit from cryptocurrency's advantages. Good security practices become habits over time, and the investment in learning and implementing these practices will pay dividends in protecting your digital wealth.
+
+The cryptocurrency space is still young, and security practices continue to evolve. Stay informed, stay cautious, and always prioritize the security of your assets over convenience. Your future self will thank you for the time and effort you invest in security today.
+        `,
         completed: false,
         order: 8
       }
