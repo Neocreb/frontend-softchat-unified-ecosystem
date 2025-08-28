@@ -176,7 +176,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
       ]
     },
     {
-      name: "Video Content",
+      name: "Video",
       icon: Video,
       color: "bg-red-500",
       growth: 31.8,
