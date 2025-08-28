@@ -305,7 +305,7 @@ const CookiesPolicy = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm">
-              SoftChat integrates with various third-party services that may set their own cookies:
+              Eloity integrates with various third-party services that may set their own cookies:
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
