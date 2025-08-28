@@ -80,20 +80,59 @@ const EnhancedWalletDashboardContent = () => {
         </h1>
       </div>
 
-      {/* Enhanced Professional Balance Card - Always render with fallback data */}
-      <CryptoWalletBalanceCard
-        totalBalance={totalBalance}
-        totalBalance24hChange={change24h}
-        totalBalance24hPercent={changePercent}
-        primaryAsset={{
-          symbol: "BTC",
-          balance: btcAmount,
-          value: cryptoBalance
-        }}
-        onDeposit={() => setShowDepositModal(true)}
-        onWithdraw={() => setShowWithdrawModal(true)}
-        className="mb-6"
-      />
+      {/* Main Balance Card - Fixed CSS for visibility */}
+      <Card className="overflow-hidden card-enhanced">
+        <CardContent className="p-6 md:p-8 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+          <div className="text-center space-y-4">
+            <div>
+              <h2 className="text-lg font-medium text-white drop-shadow-sm">
+                Total Balance
+              </h2>
+              <div className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+                ${totalBalance.toFixed(2)}
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+              {[
+                { name: "E-commerce", value: walletBalance?.ecommerce || 8947.32 },
+                { name: "Crypto", value: walletBalance?.crypto || 125670.45 },
+                { name: "Rewards", value: walletBalance?.rewards || 3245.18 },
+                { name: "Freelance", value: walletBalance?.freelance || 12890.67 },
+              ].map((source) => (
+                <div key={source.name} className="text-center">
+                  <div className="text-lg md:text-xl font-semibold text-white drop-shadow-sm">
+                    ${source.value.toFixed(2)}
+                  </div>
+                  <div className="text-xs text-white/90 drop-shadow-sm">
+                    {source.name}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Primary Action Buttons */}
+      <div className="flex gap-3 justify-center sm:justify-start">
+        <Button
+          onClick={() => setShowDepositModal(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white flex-1 sm:flex-none sm:min-w-[120px]"
+          size="lg"
+        >
+          Deposit
+        </Button>
+        <Button
+          onClick={() => setShowWithdrawModal(true)}
+          variant="outline"
+          className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white flex-1 sm:flex-none sm:min-w-[120px]"
+          size="lg"
+        >
+          Withdraw
+        </Button>
+      </div>
 
 
       {/* Main Tabbed Interface */}
