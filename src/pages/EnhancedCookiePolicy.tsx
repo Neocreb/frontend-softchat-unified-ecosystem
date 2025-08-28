@@ -92,7 +92,7 @@ export default function EnhancedCookiePolicy() {
                         <ul className="text-sm space-y-1 text-gray-600">
                           <li>• <strong>Session Cookies:</strong> Deleted when browser closes</li>
                           <li>• <strong>Persistent Cookies:</strong> Remain until expiration</li>
-                          <li>• <strong>First-Party Cookies:</strong> Set by SoftChat directly</li>
+                          <li>• <strong>First-Party Cookies:</strong> Set by Eloity directly</li>
                           <li>• <strong>Third-Party Cookies:</strong> Set by external services</li>
                         </ul>
                       </div>
@@ -452,7 +452,7 @@ export default function EnhancedCookiePolicy() {
                         <div className="text-sm space-y-1 text-gray-600">
                           <div>• <strong>Control:</strong> External service policies</div>
                           <div>• <strong>Purpose:</strong> Ads, social widgets</div>
-                          <div>• <strong>Blocking:</strong> Browser or extension controls</div>
+                          <div>��� <strong>Blocking:</strong> Browser or extension controls</div>
                           <div>• <strong>Privacy:</strong> ITP and similar protections</div>
                         </div>
                       </div>
