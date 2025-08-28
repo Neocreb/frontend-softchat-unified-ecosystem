@@ -344,3 +344,30 @@ export const referralEventsRelations = relations(referral_events, ({ one }) => (
     relationName: 'refereeEvents',
   }),
 }));
+
+export const rewardSharingTransactionsRelations = relations(reward_sharing_transactions, ({ one }) => ({
+  sharer: one(users, {
+    fields: [reward_sharing_transactions.sharer_id],
+    references: [users.id],
+    relationName: 'sharerTransactions',
+  }),
+  recipient: one(users, {
+    fields: [reward_sharing_transactions.recipient_id],
+    references: [users.id],
+    relationName: 'recipientTransactions',
+  }),
+}));
+
+export const pioneerBadgesRelations = relations(pioneer_badges, ({ one }) => ({
+  user: one(users, {
+    fields: [pioneer_badges.user_id],
+    references: [users.id],
+  }),
+}));
+
+export const userActivitySessionsRelations = relations(user_activity_sessions, ({ one }) => ({
+  user: one(users, {
+    fields: [user_activity_sessions.user_id],
+    references: [users.id],
+  }),
+}));
