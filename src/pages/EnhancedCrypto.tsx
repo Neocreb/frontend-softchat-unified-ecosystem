@@ -82,6 +82,7 @@ export default function EnhancedCrypto() {
   const [isCryptoDetailOpen, setIsCryptoDetailOpen] = useState(false);
 
   const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
     loadCryptoData();
