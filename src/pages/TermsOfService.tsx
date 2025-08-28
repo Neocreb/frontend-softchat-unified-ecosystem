@@ -408,7 +408,7 @@ const TermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Platform Rights</h4>
               <ul className="list-disc list-inside space-y-1 text-sm">
-                <li>SoftChat and related marks are our intellectual property</li>
+                <li>Eloity and related marks are our intellectual property</li>
                 <li>Our AI algorithms and recommendation systems are proprietary</li>
                 <li>Platform software and infrastructure are protected by copyright</li>
                 <li>Users may not reverse engineer or copy our technology</li>
