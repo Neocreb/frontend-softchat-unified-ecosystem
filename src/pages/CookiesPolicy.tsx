@@ -443,7 +443,7 @@ const CookiesPolicy = () => {
               If you have questions about our use of cookies, please contact us:
             </p>
             <div className="space-y-2 text-sm">
-              <p><strong>Email:</strong> privacy@softchat.com</p>
+              <p><strong>Email:</strong> privacy@eloity.com</p>
               <p><strong>Subject:</strong> Cookie Policy Inquiry</p>
               <p><strong>Response Time:</strong> We aim to respond within 30 days</p>
             </div>
