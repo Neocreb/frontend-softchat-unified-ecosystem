@@ -64,7 +64,7 @@ const TermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Free vs Premium Plans</h4>
               <p className="text-sm">
-                SoftChat offers both free and premium subscription tiers. Free users have access to all
+                Eloity offers both free and premium subscription tiers. Free users have access to all
                 core features with certain limitations (10 video uploads/month, 5GB storage, 90-day content
                 retention). Premium users ($9.99/month or $99.99/year) receive enhanced features including
                 verified badges, unlimited uploads, 100GB storage, and priority support.
