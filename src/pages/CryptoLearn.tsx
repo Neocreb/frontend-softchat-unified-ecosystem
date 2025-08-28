@@ -109,6 +109,10 @@ const CryptoLearn = () => {
     navigate(`/app/course/${courseId}`);
   };
 
+  const handleArticleClick = (articleId: string) => {
+    navigate(`/app/article/${articleId}`);
+  };
+
   if (!user) {
     return null; // Will redirect to auth
   }
