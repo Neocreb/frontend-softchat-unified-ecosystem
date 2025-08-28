@@ -71,8 +71,8 @@ const EnhancedShareDialog: React.FC<ShareDialogProps> = ({
       // Track reward for sharing
       if (user?.id) {
         const reward = await UnifiedActivityService.trackShare(user.id, postId, 'copy_link');
-        if (reward.success && reward.softPoints > 0) {
-          notification.success(`+${reward.softPoints} SoftPoints earned!`, {
+        if (reward.success && reward.eloits > 0) {
+          notification.success(`+${reward.eloits} Eloits earned!`, {
             description: 'Thanks for sharing!'
           });
         }
@@ -108,8 +108,8 @@ const EnhancedShareDialog: React.FC<ShareDialogProps> = ({
     // Track reward for external sharing
     if (user?.id) {
       const reward = await UnifiedActivityService.trackShare(user.id, postId, platform);
-      if (reward.success && reward.softPoints > 0) {
-        notification.success(`+${reward.softPoints} SoftPoints earned!`, {
+      if (reward.success && reward.eloits > 0) {
+        notification.success(`+${reward.eloits} Eloits earned!`, {
           description: `Thanks for sharing to ${platform}!`
         });
       }
@@ -128,8 +128,8 @@ const EnhancedShareDialog: React.FC<ShareDialogProps> = ({
     // Track reward for reposting
     if (user?.id) {
       const reward = await UnifiedActivityService.trackShare(user.id, postId, 'repost');
-      if (reward.success && reward.softPoints > 0) {
-        notification.success(`+${reward.softPoints} SoftPoints earned!`, {
+      if (reward.success && reward.eloits > 0) {
+        notification.success(`+${reward.eloits} Eloits earned!`, {
           description: 'Thanks for reposting!'
         });
       }
@@ -148,8 +148,8 @@ const EnhancedShareDialog: React.FC<ShareDialogProps> = ({
     // Track reward for quote posting
     if (user?.id) {
       const reward = await UnifiedActivityService.trackShare(user.id, postId, 'quote_post');
-      if (reward.success && reward.softPoints > 0) {
-        notification.success(`+${reward.softPoints} SoftPoints earned!`, {
+      if (reward.success && reward.eloits > 0) {
+        notification.success(`+${reward.eloits} Eloits earned!`, {
           description: 'Thanks for creating a quote post!'
         });
       }
