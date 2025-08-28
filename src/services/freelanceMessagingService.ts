@@ -284,7 +284,7 @@ export const freelanceMessagingService = {
       createdAt: new Date(),
       sender: {
         id: "system",
-        name: "SoftChat System",
+        name: "Eloity System",
         avatar: "/system-avatar.svg",
       },
     };
