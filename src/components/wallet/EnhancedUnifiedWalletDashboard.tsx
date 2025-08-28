@@ -41,13 +41,8 @@ const EnhancedWalletDashboardContent = () => {
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [showDepositModal, setShowDepositModal] = useState(false);
 
-  // Calculate dynamic wallet metrics with robust fallbacks
-  const totalBalance = walletBalance?.total || 150753.62; // Use total from walletService
-  const yesterdayBalance = totalBalance * 0.97; // Simulate yesterday's balance
-  const change24h = totalBalance - yesterdayBalance;
-  const changePercent = ((change24h / yesterdayBalance) * 100);
-  const cryptoBalance = walletBalance?.crypto || 125670.45; // Match walletService crypto balance
-  const btcAmount = cryptoBalance / 42000; // Approximate BTC price for ~$125k portfolio
+  // Simple balance calculation
+  const totalBalance = walletBalance?.total || 0;
 
   if (isLoading) {
     return (
