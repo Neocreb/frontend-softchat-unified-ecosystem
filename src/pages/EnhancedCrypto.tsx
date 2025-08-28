@@ -269,22 +269,22 @@ export default function EnhancedCrypto() {
           <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-                    <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                  </div>
-                  <div>
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      Cryptocurrency Hub
-                    </h1>
-                    <p className="text-sm sm:text-base lg:text-lg text-muted-foreground">
-                      Trade, learn, and manage your crypto portfolio with
-                      professional tools
-                    </p>
-                  </div>
-                </div>
+                <h1 className="text-xl sm:text-2xl font-bold">
+                  Hi, {user?.profile?.full_name || user?.profile?.username || user?.email?.split('@')[0] || 'User'}!
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Welcome to your crypto trading dashboard
+                </p>
               </div>
               <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+                    <TrendingUp className="h-4 w-4 text-white" />
+                  </div>
+                  <Badge variant="outline" className="bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border-blue-200">
+                    Crypto
+                  </Badge>
+                </div>
                 <ApiStatusIndicator showDetails={true} />
                 <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
