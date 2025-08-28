@@ -43,13 +43,13 @@ const PrivacyPolicy = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              At SoftChat, we are committed to protecting your privacy and ensuring the security 
-              of your personal information. This Privacy Policy explains how we collect, use, 
-              disclose, and safeguard your information when you use our AI-powered social media 
+              At Eloity, we are committed to protecting your privacy and ensuring the security
+              of your personal information. This Privacy Policy explains how we collect, use,
+              disclose, and safeguard your information when you use our AI-powered social media
               and marketplace platform.
             </p>
             <p>
-              SoftChat is a comprehensive platform that includes social networking features,
+              Eloity is a comprehensive platform that includes social networking features,
               marketplace functionality, freelancing services, cryptocurrency trading,
               delivery services, and AI-powered content recommendations. Your privacy is
               fundamental to our operations.
