@@ -588,7 +588,7 @@ class EloitsService {
 
   // Calculate cash conversion rate
   calculateCashValue(points: number): number {
-    return points / 100; // 100 SP = $1.00
+    return points / 100; // 100 ELO = $1.00
   }
 
   // Get available activities
@@ -706,7 +706,7 @@ class EloitsService {
     points: number,
     paymentMethod: string,
   ): Promise<boolean> {
-    if (points < 500) throw new Error("Minimum conversion is 500 SP");
+    if (points < 500) throw new Error("Minimum conversion is 500 ELO");
 
     // Record conversion transaction
     this.recordTransaction({
