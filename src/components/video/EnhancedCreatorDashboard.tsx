@@ -1086,43 +1086,75 @@ const EnhancedCreatorDashboard: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 py-4">
             {/* Title Row */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
                   <BarChart3 className="w-6 h-6 text-white" />
                 </div>
                 <div className="min-w-0">
-                  <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">
-                    Unified Creator Studio
-                  </h1>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
-                    Complete analytics across all platform features
-                  </p>
+                  <h1 className="text-xl font-bold text-gray-900 dark:text-white truncate">Creator Studio</h1>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 truncate">Cross-platform analytics</p>
                 </div>
-                <Badge variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 flex-shrink-0 text-xs">
-                  Pro Analytics
-                </Badge>
+                <div className="hidden sm:flex items-center gap-1 ml-2">
+                  <Button variant="ghost" size="icon" aria-label="Search" onClick={() => setShowSearch(s => !s)}>
+                    <Search className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" aria-label="Filters" onClick={handleFilterContent}>
+                    <Filter className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
+              <Badge variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 flex-shrink-0 text-xs">Pro Analytics</Badge>
+            </div>
+
+            {/* Tabs */}
+            <div className="w-full overflow-x-auto">
+              <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-fit">
+                <TabsTrigger value="overview" className="flex items-center gap-2 whitespace-nowrap px-3">
+                  <Eye className="w-4 h-4" />
+                  <span>Home</span>
+                </TabsTrigger>
+                <TabsTrigger value="features" className="flex items-center gap-2 whitespace-nowrap px-3">
+                  <Layers className="w-4 h-4" />
+                  <span>Tools</span>
+                </TabsTrigger>
+                <TabsTrigger value="content" className="flex items-center gap-2 whitespace-nowrap px-3">
+                  <FileText className="w-4 h-4" />
+                  <span>Posts</span>
+                </TabsTrigger>
+                <TabsTrigger value="revenue" className="flex items-center gap-2 whitespace-nowrap px-3">
+                  <DollarSign className="w-4 h-4" />
+                  <span>Earnings</span>
+                </TabsTrigger>
+                <TabsTrigger value="audience" className="flex items-center gap-2 whitespace-nowrap px-3">
+                  <Users className="w-4 h-4" />
+                  <span>Fans</span>
+                </TabsTrigger>
+                <TabsTrigger value="insights" className="flex items-center gap-2 whitespace-nowrap px-3">
+                  <BarChart3 className="w-4 h-4" />
+                  <span>Stats</span>
+                </TabsTrigger>
+              </TabsList>
             </div>
 
             {/* Controls Row */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              {/* Search */}
-              <div className="flex-1 sm:flex-none sm:w-48 lg:w-64">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <Input
-                    placeholder="Search features..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 h-9"
-                  />
+            <div className="flex flex-wrap items-center gap-3">
+              {showSearch && (
+                <div className="flex-1 min-w-[200px] sm:min-w-[280px]">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Input
+                      placeholder="Search features..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 h-9"
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Time Range */}
               <Select value={timeRange} onValueChange={setTimeRange}>
-                <SelectTrigger className="w-full sm:w-32 h-9">
+                <SelectTrigger className="w-32 h-9">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -1133,56 +1165,23 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 </SelectContent>
               </Select>
 
-              {/* View Mode Toggle */}
-              <div className="flex items-center gap-1 border rounded-lg p-1 w-fit">
-                <Button
-                  variant={viewMode === "grid" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setViewMode("grid")}
-                  className="h-7 w-7 p-0 flex-shrink-0"
-                  title="Grid View"
-                >
+              <div className="flex items-center gap-1 border rounded-lg p-1">
+                <Button variant={viewMode === "grid" ? "default" : "ghost"} size="sm" onClick={() => setViewMode("grid")} className="h-7 w-7 p-0" title="Grid View">
                   <Grid3X3 className="w-3.5 h-3.5" />
                 </Button>
-                <Button
-                  variant={viewMode === "list" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setViewMode("list")}
-                  className="h-7 w-7 p-0 flex-shrink-0"
-                  title="List View"
-                >
+                <Button variant={viewMode === "list" ? "default" : "ghost"} size="sm" onClick={() => setViewMode("list")} className="h-7 w-7 p-0" title="List View">
                   <List className="w-3.5 h-3.5" />
                 </Button>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleExport()}
-                  disabled={isExporting}
-                  className="h-9 px-3 flex-shrink-0"
-                >
-                  <Download className={cn("w-4 h-4", isExporting && "animate-spin")} />
-                  <span className="hidden sm:inline ml-2">
-                    {isExporting ? 'Exporting...' : 'Export'}
-                  </span>
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleRefreshData}
-                  disabled={isRefreshing}
-                  className="h-9 px-3 flex-shrink-0"
-                >
-                  <RefreshCw className={cn("w-4 h-4", isRefreshing && "animate-spin")} />
-                  <span className="hidden sm:inline ml-2">
-                    {isRefreshing ? 'Refreshing...' : 'Refresh'}
-                  </span>
-                </Button>
-              </div>
+              <Button variant="outline" size="sm" onClick={() => handleExport()} disabled={isExporting} className="h-9 px-3">
+                <Download className={cn("w-4 h-4", isExporting && "animate-spin")} />
+                <span className="hidden sm:inline ml-2">{isExporting ? 'Exporting...' : 'Export'}</span>
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleRefreshData} disabled={isRefreshing} className="h-9 px-3">
+                <RefreshCw className={cn("w-4 h-4", isRefreshing && "animate-spin")} />
+                <span className="hidden sm:inline ml-2">{isRefreshing ? 'Refreshing...' : 'Refresh'}</span>
+              </Button>
             </div>
           </div>
         </div>
@@ -1267,34 +1266,6 @@ const EnhancedCreatorDashboard: React.FC = () => {
           <FeatureDetailPage featureName={selectedFeature} />
         ) : (
         <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-6">
-          <div className="w-full overflow-x-auto pb-2">
-            <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-fit">
-              <TabsTrigger value="overview" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <Eye className="w-4 h-4" />
-                <span>Home</span>
-              </TabsTrigger>
-              <TabsTrigger value="features" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <Layers className="w-4 h-4" />
-                <span>Tools</span>
-              </TabsTrigger>
-              <TabsTrigger value="content" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <FileText className="w-4 h-4" />
-                <span>Posts</span>
-              </TabsTrigger>
-              <TabsTrigger value="revenue" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <DollarSign className="w-4 h-4" />
-                <span>Earnings</span>
-              </TabsTrigger>
-              <TabsTrigger value="audience" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <Users className="w-4 h-4" />
-                <span>Fans</span>
-              </TabsTrigger>
-              <TabsTrigger value="insights" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <BarChart3 className="w-4 h-4" />
-                <span>Stats</span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
