@@ -65,10 +65,19 @@ const EnhancedWalletDashboardContent = () => {
   return (
     <div className="mobile-container mobile-space-y bg-platform min-h-screen">
       {/* Header */}
-      <div className="text-center sm:text-left">
-        <h1 className="text-2xl font-bold text-foreground">
-          Wallet
-        </h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">
+            Hi, {user?.profile?.full_name || user?.profile?.username || user?.email?.split('@')[0] || 'User'}!
+          </h1>
+          <p className="text-sm text-muted-foreground">Welcome back to your financial dashboard</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-xs">
+            <Wallet className="h-3 w-3 mr-1" />
+            Wallet
+          </Badge>
+        </div>
       </div>
 
       {/* Main Balance Card - Fixed CSS for visibility */}
