@@ -29,7 +29,7 @@ interface RevenueItem {
   type: string;
   amount: number;
   currency: string;
-  softPoints: number;
+  eloits: number;
   date: string;
   fromUser?: {
     id: string;
@@ -84,7 +84,7 @@ const RevenueHistory = ({ userId }: RevenueHistoryProps) => {
       type: "tip_received",
       amount: 25,
       currency: "USDT",
-      softPoints: 1,
+      eloits: 1,
       date: new Date().toISOString(),
       fromUser: {
         id: "user_1",
@@ -99,8 +99,8 @@ const RevenueHistory = ({ userId }: RevenueHistoryProps) => {
       id: "rev_002",
       type: "view_payment",
       amount: 0,
-      currency: "SOFT_POINTS",
-      softPoints: 5,
+      currency: "ELOITS",
+      eloits: 5,
       date: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
       description: "1,000 views milestone reached",
       status: "completed",
@@ -110,7 +110,7 @@ const RevenueHistory = ({ userId }: RevenueHistoryProps) => {
       type: "subscription_payment",
       amount: 9.99,
       currency: "USDT",
-      softPoints: 10,
+      eloits: 10,
       date: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
       fromUser: {
         id: "user_2",
@@ -277,10 +277,10 @@ const RevenueHistory = ({ userId }: RevenueHistoryProps) => {
                           +{formatCurrency(item.amount)}
                         </p>
                       )}
-                      {item.softPoints > 0 && (
+                      {item.eloits > 0 && (
                         <p className="text-xs text-purple-600 flex items-center justify-end gap-1">
                           <Zap className="w-3 h-3" />
-                          {item.softPoints} SP
+                          {item.eloits} ELO
                         </p>
                       )}
                     </div>

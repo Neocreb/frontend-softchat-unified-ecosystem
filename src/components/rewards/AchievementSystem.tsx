@@ -49,7 +49,7 @@ const AchievementSystem = ({ className }: AchievementSystemProps) => {
     {
       id: "first_earnings",
       title: "First Steps",
-      description: "Earn your first SoftPoints",
+      description: "Earn your first Eloits",
       icon: "💰",
       iconComponent: Star,
       category: "earning",
@@ -102,8 +102,8 @@ const AchievementSystem = ({ className }: AchievementSystemProps) => {
     },
     {
       id: "millionaire",
-      title: "SP Millionaire",
-      description: "Earn 1,000,000 total SoftPoints",
+      title: "ELO Millionaire",
+      description: "Earn 1,000,000 total Eloits",
       icon: "👑",
       iconComponent: Crown,
       category: "milestone",

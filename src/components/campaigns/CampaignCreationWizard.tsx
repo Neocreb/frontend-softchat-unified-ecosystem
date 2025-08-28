@@ -160,13 +160,13 @@ const AGE_GROUPS = [
 // Payment methods integration with wallet
 const PAYMENT_METHODS = [
   {
-    id: "soft_points",
-    name: "SoftPoints",
+    id: "eloits",
+    name: "Eloits",
     icon: Zap,
-    description: "Use your SoftPoints balance",
+    description: "Use your Eloits balance",
     available: true,
     balance: 1250.50,
-    bonus: "10% extra reach with SoftPoints",
+    bonus: "10% extra reach with Eloits",
   },
   {
     id: "usdt",
@@ -237,7 +237,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
     budget: {
       type: "daily", // daily, total
       amount: 50,
-      currency: "soft_points",
+      currency: "eloits",
       boostSpeed: "standard", // slow, standard, fast
     },
     schedule: {
@@ -248,7 +248,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
     
     // Step 5: Payment
     payment: {
-      method: "soft_points",
+      method: "eloits",
       agreesToTerms: false,
     }
   });
@@ -704,7 +704,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="soft_points">SoftPoints</SelectItem>
+                        <SelectItem value="eloits">Eloits</SelectItem>
                         <SelectItem value="usdt">USDT</SelectItem>
                         <SelectItem value="wallet">Wallet</SelectItem>
                       </SelectContent>

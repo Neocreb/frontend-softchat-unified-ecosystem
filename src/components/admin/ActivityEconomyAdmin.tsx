@@ -58,7 +58,7 @@ interface RewardRule {
   actionType: string;
   displayName: string;
   description: string;
-  baseSoftPoints: number;
+  baseEloits: number;
   baseWalletBonus: number;
   currency: string;
   dailyLimit?: number;
@@ -80,12 +80,12 @@ interface RewardRule {
 interface PlatformStats {
   totalUsers: number;
   activeUsers24h: number;
-  totalSoftPointsIssued: number;
+  totalEloitsIssued: number;
   totalWalletBonusPaid: number;
   totalActivities: number;
   flaggedUsers: number;
   pendingReviews: number;
-  dailyActivity: Array<{ date: string; count: number; softPoints: number }>;
+  dailyActivity: Array<{ date: string; count: number; eloits: number }>;
 }
 
 interface FraudAlert {
@@ -161,7 +161,7 @@ const ActivityEconomyAdmin: React.FC = () => {
           actionType: "like_post",
           displayName: "Like Post",
           description: "User likes a post",
-          baseSoftPoints: 0.5,
+          baseEloits: 0.5,
           baseWalletBonus: 0,
           currency: "USDT",
           dailyLimit: 100,
@@ -181,7 +181,7 @@ const ActivityEconomyAdmin: React.FC = () => {
           actionType: "post_content",
           displayName: "Create Post",
           description: "User creates a new post",
-          baseSoftPoints: 3,
+          baseEloits: 3,
           baseWalletBonus: 0,
           currency: "USDT",
           dailyLimit: 5,
@@ -201,7 +201,7 @@ const ActivityEconomyAdmin: React.FC = () => {
           actionType: "purchase_product",
           displayName: "Purchase Product",
           description: "User makes a purchase",
-          baseSoftPoints: 5,
+          baseEloits: 5,
           baseWalletBonus: 0.01,
           currency: "USDT",
           minimumValue: 10,
@@ -221,19 +221,19 @@ const ActivityEconomyAdmin: React.FC = () => {
       setPlatformStats({
         totalUsers: 45672,
         activeUsers24h: 8934,
-        totalSoftPointsIssued: 2456789,
+        totalEloitsIssued: 2456789,
         totalWalletBonusPaid: 8947.32, // Match centralized e-commerce balance
         totalActivities: 156789,
         flaggedUsers: 23,
         pendingReviews: 7,
         dailyActivity: [
-          { date: "2024-01-01", count: 1234, softPoints: 5678 },
-          { date: "2024-01-02", count: 1456, softPoints: 6234 },
-          { date: "2024-01-03", count: 1678, softPoints: 7123 },
-          { date: "2024-01-04", count: 1234, softPoints: 5897 },
-          { date: "2024-01-05", count: 1567, softPoints: 6789 },
-          { date: "2024-01-06", count: 1789, softPoints: 7456 },
-          { date: "2024-01-07", count: 1890, softPoints: 8123 },
+          { date: "2024-01-01", count: 1234, eloits: 5678 },
+          { date: "2024-01-02", count: 1456, eloits: 6234 },
+          { date: "2024-01-03", count: 1678, eloits: 7123 },
+          { date: "2024-01-04", count: 1234, eloits: 5897 },
+          { date: "2024-01-05", count: 1567, eloits: 6789 },
+          { date: "2024-01-06", count: 1789, eloits: 7456 },
+          { date: "2024-01-07", count: 1890, eloits: 8123 },
         ],
       });
 
@@ -527,10 +527,10 @@ const ActivityEconomyAdmin: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-purple-700">
-                  SoftPoints Issued
+                  Eloits Issued
                 </p>
                 <p className="text-2xl font-bold text-purple-900">
-                  {formatNumber(platformStats?.totalSoftPointsIssued || 0)}
+                  {formatNumber(platformStats?.totalEloitsIssued || 0)}
                 </p>
                 <p className="text-xs text-purple-600">Total distributed</p>
               </div>
@@ -622,7 +622,7 @@ const ActivityEconomyAdmin: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <p className="font-medium text-sm">
-                          {formatNumber(day.softPoints)} SP
+                          {formatNumber(day.eloits)} ELO
                         </p>
                         <p className="text-xs text-muted-foreground">
                           distributed
@@ -764,7 +764,7 @@ const ActivityEconomyAdmin: React.FC = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
                         <p className="text-muted-foreground">Base Reward</p>
-                        <p className="font-medium">{rule.baseSoftPoints} SP</p>
+                        <p className="font-medium">{rule.baseEloits} ELO</p>
                       </div>
                       <div>
                         <p className="text-muted-foreground">Wallet Bonus</p>
@@ -802,15 +802,15 @@ const ActivityEconomyAdmin: React.FC = () => {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="baseSoftPoints">Base SoftPoints</Label>
+                    <Label htmlFor="baseEloits">Base Eloits</Label>
                     <Input
-                      id="baseSoftPoints"
+                      id="baseEloits"
                       type="number"
-                      value={editingRule.baseSoftPoints}
+                      value={editingRule.baseEloits}
                       onChange={(e) =>
                         setEditingRule({
                           ...editingRule,
-                          baseSoftPoints: parseFloat(e.target.value) || 0,
+                          baseEloits: parseFloat(e.target.value) || 0,
                         })
                       }
                     />

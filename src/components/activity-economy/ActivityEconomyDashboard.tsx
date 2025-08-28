@@ -43,20 +43,20 @@ import { useToast } from "@/hooks/use-toast";
 // =============================================================================
 
 interface ActivitySummary {
-  currentSoftPoints: number;
+  currentEloits: number;
   currentWalletBalance: {
     usdt: number;
     eth: number;
     btc: number;
   };
   period: {
-    totalSoftPointsEarned: number;
+    totalEloitsEarned: number;
     totalWalletBonusEarned: number;
     totalActivities: number;
   };
   breakdown: Array<{
     actionType: string;
-    softPointsEarned: number;
+    eloitsEarned: number;
     walletBonusEarned: number;
     activityCount: number;
   }>;
@@ -73,7 +73,7 @@ interface ActivityHistoryItem {
   actionType: string;
   targetId?: string;
   targetType?: string;
-  softPoints: number;
+  eloits: number;
   walletBonus: number;
   currency: string;
   status: string;
@@ -88,7 +88,7 @@ interface Challenge {
   targetAction: string;
   targetCount: number;
   targetValue?: number;
-  softPointsReward: number;
+  eloitsReward: number;
   walletReward: number;
   progress: {
     currentProgress: number;
@@ -175,14 +175,14 @@ const ActivityEconomyDashboard: React.FC = () => {
         );
         // Fallback to demo data with lower values to show progression
         setActivitySummary({
-          currentSoftPoints: 0,
+          currentEloits: 0,
           currentWalletBalance: {
             usdt: 0,
             eth: 0,
             btc: 0,
           },
           period: {
-            totalSoftPointsEarned: 0,
+            totalEloitsEarned: 0,
             totalWalletBonusEarned: 0,
             totalActivities: 0,
           },
@@ -242,7 +242,7 @@ const ActivityEconomyDashboard: React.FC = () => {
         description: "Post 3 pieces of content today",
         targetAction: "post_content",
         targetCount: 3,
-        softPointsReward: 15,
+        eloitsReward: 15,
         walletReward: 0,
         progress: {
           currentProgress: 1,
@@ -259,7 +259,7 @@ const ActivityEconomyDashboard: React.FC = () => {
         description: "Like and comment on 20 posts",
         targetAction: "social_engagement",
         targetCount: 20,
-        softPointsReward: 10,
+        eloitsReward: 10,
         walletReward: 0,
         progress: {
           currentProgress: 12,
@@ -277,7 +277,7 @@ const ActivityEconomyDashboard: React.FC = () => {
         targetAction: "purchase_product",
         targetCount: 1,
         targetValue: 100,
-        softPointsReward: 50,
+        eloitsReward: 50,
         walletReward: 5,
         progress: {
           currentProgress: 0,
@@ -378,7 +378,7 @@ const ActivityEconomyDashboard: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold">Activity Economy</h1>
           <p className="text-muted-foreground">
-            Earn SoftPoints and wallet bonuses for every meaningful action
+            Earn Eloits and wallet bonuses for every meaningful action
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -403,15 +403,15 @@ const ActivityEconomyDashboard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-purple-700">
-                  SoftPoints
+                  Eloits
                 </p>
                 <p className="text-2xl font-bold text-purple-900">
-                  {formatNumber(activitySummary?.currentSoftPoints || 0)}
+                  {formatNumber(activitySummary?.currentEloits || 0)}
                 </p>
                 <p className="text-xs text-purple-600">
                   +
                   {formatNumber(
-                    activitySummary?.period.totalSoftPointsEarned || 0,
+                    activitySummary?.period.totalEloitsEarned || 0,
                   )}{" "}
                   this week
                 </p>
@@ -537,7 +537,7 @@ const ActivityEconomyDashboard: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <p className="font-medium text-sm">
-                          {formatNumber(item.softPointsEarned)} SP
+                          {formatNumber(item.eloitsEarned)} ELO
                         </p>
                         {item.walletBonusEarned > 0 && (
                           <p className="text-xs text-green-600">
@@ -588,7 +588,7 @@ const ActivityEconomyDashboard: React.FC = () => {
                           Daily Cap
                         </p>
                         <p className="text-lg font-bold text-purple-600">
-                          {activitySummary.trustScore.dailyCap} SP
+                          {activitySummary.trustScore.dailyCap} ELO
                         </p>
                       </div>
                     </div>
@@ -644,7 +644,7 @@ const ActivityEconomyDashboard: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <p className="font-medium text-sm">
-                        +{formatNumber(activity.softPoints)} SP
+                        +{formatNumber(activity.eloits)} SP
                       </p>
                       {activity.walletBonus > 0 && (
                         <p className="text-xs text-green-600">
@@ -709,7 +709,7 @@ const ActivityEconomyDashboard: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <p className="font-medium text-sm">
-                          +{formatNumber(activity.softPoints)} SP
+                          +{formatNumber(activity.eloits)} SP
                         </p>
                         {activity.walletBonus > 0 && (
                           <p className="text-xs text-green-600">
@@ -778,9 +778,9 @@ const ActivityEconomyDashboard: React.FC = () => {
                         <div>
                           <p className="text-sm font-medium">Rewards</p>
                           <div className="flex items-center gap-3 mt-1">
-                            {challenge.softPointsReward > 0 && (
+                            {challenge.eloitsReward > 0 && (
                               <span className="text-xs text-purple-600">
-                                {challenge.softPointsReward} SP
+                                {challenge.eloitsReward} SP
                               </span>
                             )}
                             {challenge.walletReward > 0 && (
@@ -837,7 +837,7 @@ const ActivityEconomyDashboard: React.FC = () => {
                     <label className="flex items-center space-x-2">
                       <input type="checkbox" defaultChecked />
                       <span className="text-sm">
-                        Notify me when I earn SoftPoints
+                        Notify me when I earn Eloits
                       </span>
                     </label>
                     <label className="flex items-center space-x-2">

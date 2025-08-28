@@ -51,34 +51,33 @@ const WalletCard = () => {
   };
 
   return (
-    <Card className="overflow-hidden bg-gradient-to-b from-white to-blue-50 border-0 shadow-lg">
+    <Card className="overflow-hidden bg-gradient-to-br from-eloity-primary/90 to-eloity-600/90 dark:from-eloity-primary/80 dark:to-eloity-700/80 border-0 shadow-lg hover:shadow-xl transition-all duration-300">
       <CardContent className="p-6 space-y-6">
         {/* Balance Section */}
         <div className="text-center space-y-2">
-          <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
-            Balance 
+          <div className="text-sm text-white/80 flex items-center justify-center gap-1 font-medium">
+            Total Balance
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
               <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
               <path d="M8 12L16 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </div>
-          <div className="text-5xl font-bold">${balance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+          <div className="text-4xl sm:text-5xl font-bold text-white drop-shadow-sm">${balance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
         </div>
 
         {/* Action Buttons */}
         <div className="grid grid-cols-2 gap-4">
-          <Button 
-            onClick={handleSend} 
-            className="bg-blue-500 hover:bg-blue-600 text-white py-6 rounded-xl flex items-center justify-center gap-2"
+          <Button
+            onClick={handleSend}
+            className="bg-white/20 hover:bg-white/30 text-white border border-white/20 backdrop-blur-sm py-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105 font-semibold"
           >
             <ArrowUp className="h-5 w-5" />
             <span className="text-lg">Send</span>
           </Button>
-          <Button 
-            onClick={handleReceive} 
-            variant="outline" 
-            className="bg-white border-gray-200 py-6 rounded-xl flex items-center justify-center gap-2"
+          <Button
+            onClick={handleReceive}
+            className="bg-white text-eloity-primary hover:bg-white/90 border border-white py-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105 font-semibold"
           >
             <ArrowDown className="h-5 w-5" />
             <span className="text-lg">Receive</span>
@@ -88,8 +87,8 @@ const WalletCard = () => {
         {/* Contacts Section */}
         <div>
           <div className="flex justify-between items-center mb-4">
-            <div className="text-lg font-medium">Contacts</div>
-            <Button variant="link" className="text-blue-500 p-0">view all</Button>
+            <div className="text-lg font-medium text-white">Contacts</div>
+            <Button variant="link" className="text-white/80 hover:text-white p-0 font-medium">view all</Button>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
             {contacts.map((contact) => (
@@ -98,7 +97,7 @@ const WalletCard = () => {
                   <AvatarImage src={contact.avatar} alt={contact.name} />
                   <AvatarFallback>{contact.name.substring(0, 2)}</AvatarFallback>
                 </Avatar>
-                <span className="text-sm text-gray-500 mt-1">@{contact.username}</span>
+                <span className="text-sm text-white/80 mt-1 font-medium">@{contact.username}</span>
               </div>
             ))}
           </div>
@@ -107,27 +106,27 @@ const WalletCard = () => {
         {/* Tabs Navigation */}
         <div>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="w-full bg-transparent border-b justify-start gap-6 h-auto pb-2">
-              <TabsTrigger 
-                value="coins" 
-                className={`text-lg font-medium data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:text-black data-[state=active]:shadow-none px-0 pb-2 ${activeTab === 'coins' ? 'text-black' : 'text-gray-400'}`}
+            <TabsList className="w-full bg-white/10 backdrop-blur-sm border-b border-white/20 justify-start gap-6 h-auto pb-2 rounded-lg">
+              <TabsTrigger
+                value="coins"
+                className={`text-lg font-medium data-[state=active]:border-b-2 data-[state=active]:border-white data-[state=active]:text-white data-[state=active]:shadow-none px-0 pb-2 transition-colors ${activeTab === 'coins' ? 'text-white' : 'text-white/60'}`}
               >
                 Coins
               </TabsTrigger>
-              <TabsTrigger 
-                value="nfts" 
-                className={`text-lg font-medium data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:text-black data-[state=active]:shadow-none px-0 pb-2 ${activeTab === 'nfts' ? 'text-black' : 'text-gray-400'}`}
+              <TabsTrigger
+                value="nfts"
+                className={`text-lg font-medium data-[state=active]:border-b-2 data-[state=active]:border-white data-[state=active]:text-white data-[state=active]:shadow-none px-0 pb-2 transition-colors ${activeTab === 'nfts' ? 'text-white' : 'text-white/60'}`}
               >
                 NFTs
               </TabsTrigger>
-              <TabsTrigger 
-                value="dapps" 
-                className={`text-lg font-medium data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:text-black data-[state=active]:shadow-none px-0 pb-2 ${activeTab === 'dapps' ? 'text-black' : 'text-gray-400'}`}
+              <TabsTrigger
+                value="dapps"
+                className={`text-lg font-medium data-[state=active]:border-b-2 data-[state=active]:border-white data-[state=active]:text-white data-[state=active]:shadow-none px-0 pb-2 transition-colors ${activeTab === 'dapps' ? 'text-white' : 'text-white/60'}`}
               >
                 dApps
               </TabsTrigger>
               <div className="ml-auto">
-                <Button variant="ghost" size="icon" className="rounded-full">
+                <Button variant="ghost" size="icon" className="rounded-full text-white/80 hover:text-white hover:bg-white/10">
                   <Search className="h-5 w-5" />
                 </Button>
               </div>
@@ -136,8 +135,8 @@ const WalletCard = () => {
         </div>
         
         {/* Bank Withdrawal Section */}
-        <div className="mt-4 border-t pt-4">
-          <Button onClick={handleWithdraw} className="w-full bg-green-500 hover:bg-green-600">
+        <div className="mt-4 border-t border-white/20 pt-4">
+          <Button onClick={handleWithdraw} className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/20 backdrop-blur-sm font-semibold transition-all duration-200 hover:scale-[1.02]">
             Withdraw to Bank Account
           </Button>
         </div>
