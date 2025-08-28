@@ -215,7 +215,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
       ]
     },
     {
-      name: "Crypto Trading",
+      name: "Finance",
       icon: Coins,
       color: "bg-yellow-500",
       growth: 18.7,
