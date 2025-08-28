@@ -682,7 +682,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
           { name: "Sharpe Ratio", value: "1.89", change: "+15.6%", trend: "up", description: "Risk-adjusted return" },
         ]},
       ],
-      "Messages & Chat": [
+      "Engagement": [
         { category: "Communication Stats", metrics: [
           { name: "Messages Sent", value: "2,341", change: "+15.6%", trend: "up", description: "Total messages sent" },
           { name: "Messages Received", value: "3,456", change: "+23.4%", trend: "up", description: "Incoming messages" },
