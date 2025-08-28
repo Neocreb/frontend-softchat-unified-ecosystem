@@ -221,7 +221,7 @@ export default function ModernSidebar({
             {/* Mobile header */}
             <div className="p-4 border-b">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">SoftChat</h2>
+                <h2 className="text-lg font-semibold">Eloity</h2>
                 <Button variant="ghost" size="sm" onClick={onClose}>
                   <ChevronLeft className="h-4 w-4" />
                 </Button>

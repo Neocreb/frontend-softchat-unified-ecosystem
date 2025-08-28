@@ -56,7 +56,7 @@ const AdminLayout = () => {
         <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-6 py-4">
           <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
             <div className="flex items-center gap-4">
-              <span>SoftChat Admin Panel v2.0</span>
+              <span>Eloity Admin Panel v2.0</span>
               <span>•</span>
               <span>Logged in as: {currentAdmin.name}</span>
             </div>
