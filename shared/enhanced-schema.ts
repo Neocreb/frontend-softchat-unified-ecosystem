@@ -159,6 +159,7 @@ export const referral_links = pgTable('referral_links', {
   referrer_reward: numeric('referrer_reward', { precision: 10, scale: 2 }).default('20'),
   referee_reward: numeric('referee_reward', { precision: 10, scale: 2 }).default('35'),
   revenue_share_percentage: numeric('revenue_share_percentage', { precision: 5, scale: 2 }).default('0'),
+  automatic_sharing_enabled: boolean('automatic_sharing_enabled').default(true),
   is_active: boolean('is_active').default(true),
   max_uses: integer('max_uses'),
   current_uses: integer('current_uses').default(0),
