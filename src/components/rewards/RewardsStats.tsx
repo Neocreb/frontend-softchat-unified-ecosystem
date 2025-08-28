@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 
 interface RewardsStatsProps {
   totalEarnings: number;
-  currentSoftPoints: number;
+  currentEloits: number;
   trustScore: {
     current: number;
     level: string;
@@ -53,7 +53,7 @@ interface RewardsStatsProps {
 
 const RewardsStats: React.FC<RewardsStatsProps> = ({
   totalEarnings,
-  currentSoftPoints,
+  currentEloits,
   trustScore,
   activityStats,
   earningsByType,
@@ -164,7 +164,7 @@ const RewardsStats: React.FC<RewardsStatsProps> = ({
               {formatCurrency(totalEarnings, currency)}
             </div>
             <div className="text-sm text-green-600">
-              {formatNumber(currentSoftPoints)} SoftPoints earned
+              {formatNumber(currentEloits)} Eloits earned
             </div>
           </div>
         </CardContent>
