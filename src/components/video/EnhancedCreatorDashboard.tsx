@@ -1485,8 +1485,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
             {/* Feature Management Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Platform Features</h2>
-                <p className="text-gray-600 dark:text-gray-400">Manage and configure your platform features</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Features</h2>
+                <p className="text-gray-600 dark:text-gray-400">Manage features</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={() => alert('Opening global platform settings...')}>
@@ -1670,8 +1670,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
             {/* Content Analytics Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Content Analytics</h2>
-                <p className="text-gray-600 dark:text-gray-400">Comprehensive performance analysis across all content types</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Content</h2>
+                <p className="text-gray-600 dark:text-gray-400">Performance by content</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleFilterContent}>
@@ -1923,8 +1923,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
             {/* Revenue Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Revenue Analytics</h2>
-                <p className="text-gray-600 dark:text-gray-400">Comprehensive revenue tracking across all income streams</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Revenue</h2>
+                <p className="text-gray-600 dark:text-gray-400">Track earnings</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={() => handleExport('pdf')} disabled={isExporting}>
@@ -2215,8 +2215,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
             {/* Audience Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Audience Analytics</h2>
-                <p className="text-gray-600 dark:text-gray-400">Deep insights into your audience across all platforms</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Audience</h2>
+                <p className="text-gray-600 dark:text-gray-400">Audience insights</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleAudienceSegmentation}>
@@ -2571,8 +2571,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
             {/* Insights Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">AI-Powered Insights</h2>
-                <p className="text-gray-600 dark:text-gray-400">Smart recommendations and predictive analytics for growth</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Insights</h2>
+                <p className="text-gray-600 dark:text-gray-400">AI recommendations</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleRefreshData} disabled={isRefreshing}>
