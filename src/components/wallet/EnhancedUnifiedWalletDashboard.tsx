@@ -49,12 +49,7 @@ const EnhancedWalletDashboardContent = () => {
   const cryptoBalance = walletBalance?.crypto || 125670.45; // Match walletService crypto balance
   const btcAmount = cryptoBalance / 42000; // Approximate BTC price for ~$125k portfolio
 
-  // Debug logging
-  console.log("Wallet Debug - isLoading:", isLoading);
-  console.log("Wallet Debug - walletBalance:", walletBalance);
-  console.log("Wallet Debug - totalBalance:", totalBalance);
-
-  if (isLoading && !walletBalance) {
+  if (isLoading) {
     return (
       <div className="mobile-container mobile-space-y">
         <div className="animate-pulse space-y-6">
