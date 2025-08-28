@@ -33,7 +33,7 @@ export class UnifiedActivityService {
       return {
         success: false,
         status: "pending_payment",
-        softPoints: 0,
+        eloits: 0,
         walletBonus: 0,
         newTrustScore: 0,
         riskScore: 0,
@@ -113,7 +113,7 @@ export class UnifiedActivityService {
       return {
         success: false,
         status: "pending_approval",
-        softPoints: 0,
+        eloits: 0,
         walletBonus: 0,
         newTrustScore: 0,
         riskScore: 0,
@@ -233,7 +233,7 @@ export class UnifiedActivityService {
       return {
         success: false,
         status: "pending_completion",
-        softPoints: 0,
+        eloits: 0,
         walletBonus: 0,
         newTrustScore: 0,
         riskScore: 0,
@@ -337,7 +337,7 @@ export class UnifiedActivityService {
       return {
         success: false,
         status: "pending_confirmations",
-        softPoints: 0,
+        eloits: 0,
         walletBonus: 0,
         newTrustScore: 0,
         riskScore: 0,
@@ -416,12 +416,12 @@ export class UnifiedActivityService {
 
   // Utility method to show reward notifications
   static showRewardNotification(reward: ActivityRewardResponse, customMessage?: string) {
-    if (reward.success && reward.softPoints > 0) {
+    if (reward.success && reward.eloits > 0) {
       // This would integrate with your notification system
-      console.log(`🎉 +${reward.softPoints} SoftPoints earned! ${customMessage || reward.message}`);
+      console.log(`🎉 +${reward.eloits} Eloits earned! ${customMessage || reward.message}`);
       
       // You can integrate with react-hot-toast or your existing notification system
-      // notification.success(`🎉 +${reward.softPoints} SoftPoints earned!`, {
+      // notification.success(`🎉 +${reward.eloits} Eloits earned!`, {
       //   description: customMessage || reward.message
       // });
     }
@@ -448,7 +448,7 @@ export class UnifiedActivityService {
         : {
             success: false,
             status: 'error',
-            softPoints: 0,
+            eloits: 0,
             walletBonus: 0,
             newTrustScore: 0,
             riskScore: 0,
