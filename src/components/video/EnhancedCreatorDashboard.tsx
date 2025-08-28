@@ -1680,7 +1680,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {["Marketplace", "Crypto Trading", "Live Streaming"].map((feature, index) => (
+                    {["Marketplace", "Finance"].map((feature, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
