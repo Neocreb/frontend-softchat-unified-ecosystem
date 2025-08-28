@@ -301,7 +301,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
       comments: "567",
       shares: "234",
       publishDate: "2024-01-15",
-      platform: "Video Content",
+      platform: "Video",
       thumbnail: "/api/placeholder/300/200",
       analytics: {
         watchTime: "92%",
