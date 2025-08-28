@@ -837,7 +837,7 @@ const ActivityEconomyDashboard: React.FC = () => {
                     <label className="flex items-center space-x-2">
                       <input type="checkbox" defaultChecked />
                       <span className="text-sm">
-                        Notify me when I earn SoftPoints
+                        Notify me when I earn Eloits
                       </span>
                     </label>
                     <label className="flex items-center space-x-2">
