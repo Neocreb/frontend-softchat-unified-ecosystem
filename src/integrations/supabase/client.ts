@@ -8,13 +8,47 @@ const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-  auth: {
-    storage: localStorage,
-    persistSession: true,
-    autoRefreshToken: true,
+// Custom fetch to surface detailed error payloads from Supabase in the console
+const debugFetch: typeof fetch = async (input, init) => {
+  const res = await fetch(input as RequestInfo, init as RequestInit);
+  if (!res.ok) {
+    try {
+      const url = typeof input === 'string' ? input : (input as Request).url;
+      let body: any = null;
+      try {
+        body = await res.clone().json();
+      } catch (_) {
+        body = await res.clone().text();
+      }
+      // Log structured details to aid debugging auth/API errors
+      console.error('Supabase request failed', {
+        url,
+        status: res.status,
+        statusText: res.statusText,
+        body,
+      });
+    } catch (e) {
+      console.error('Supabase request failed and response could not be parsed', e);
+    }
   }
-});
+  return res;
+};
+
+export const supabase = createClient<Database>(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+  {
+    auth: {
+      storage: localStorage,
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+    },
+    global: {
+      fetch: debugFetch,
+    },
+  }
+);
 
 // Export createClient for re-export compatibility
 export { createClient };
