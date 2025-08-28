@@ -401,6 +401,62 @@ const ArticleViewer = () => {
             </CardContent>
           </Card>
 
+          {/* Reward Points Info */}
+          <Card className="mb-6 border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                  <Gift className="h-5 w-5 text-amber-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-amber-800 dark:text-amber-200">Earn Rewards</h3>
+                  <p className="text-sm text-amber-700 dark:text-amber-300">Complete this article to earn learning points</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-center gap-2 text-sm">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                    userProgress?.rewardsEarned.reading ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                  }`}>
+                    {userProgress?.rewardsEarned.reading ? <CheckCircle2 className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
+                  </div>
+                  <span className={userProgress?.rewardsEarned.reading ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}>
+                    Reading: {article.rewardPoints.reading} pts
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                    userProgress?.rewardsEarned.quizCompletion ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                  }`}>
+                    {userProgress?.rewardsEarned.quizCompletion ? <CheckCircle2 className="h-3 w-3" /> : <ListChecks className="h-3 w-3" />}
+                  </div>
+                  <span className={userProgress?.rewardsEarned.quizCompletion ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}>
+                    Quiz Pass: {article.rewardPoints.quizCompletion} pts
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                    userProgress?.rewardsEarned.perfectScore ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                  }`}>
+                    {userProgress?.rewardsEarned.perfectScore ? <CheckCircle2 className="h-3 w-3" /> : <Star className="h-3 w-3" />}
+                  </div>
+                  <span className={userProgress?.rewardsEarned.perfectScore ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}>
+                    Perfect Score: {article.rewardPoints.perfectScore} pts
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-800">
+                <p className="text-xs text-amber-700 dark:text-amber-300">
+                  💡 Tip: Spend at least 80% of the reading time and pass the quiz to earn all rewards!
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Article Content */}
           <Card className="mb-6">
             <CardContent className="p-8">
