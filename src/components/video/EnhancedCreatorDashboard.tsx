@@ -602,7 +602,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
           { name: "Story Views", value: "45.2K", change: "+31.4%", trend: "up", description: "Story impressions" },
         ]},
       ],
-      "Video Content": [
+      "Video": [
         { category: "Video Performance", metrics: [
           { name: "Total Videos", value: "156", change: "+22.4%", trend: "up", description: "Videos created" },
           { name: "Total Views", value: "2.1M", change: "+35.2%", trend: "up", description: "All-time views" },
