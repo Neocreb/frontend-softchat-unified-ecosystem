@@ -24,6 +24,7 @@ const CreatorEconomyHeader = ({
   activeTab,
   setActiveTab,
 }: CreatorEconomyHeaderProps) => {
+  const { user } = useAuth();
   const tabs = [
     { id: "overview", label: "Overview", icon: BarChart3, category: "creator" },
     { id: "content", label: "Content", icon: TrendingUp, category: "creator" },
