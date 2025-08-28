@@ -465,7 +465,7 @@ export default function EnhancedRewards() {
                     </h3>
                     <p className="text-sm text-purple-700">
                       0.5% of creator earnings automatically shared with referrals.
-                      <a href="/app/legal" className="underline hover:text-purple-800 ml-1">Terms</a>
+                      <a href="/legal" className="underline hover:text-purple-800 ml-1">Terms</a>
                     </p>
                   </div>
                 </div>
