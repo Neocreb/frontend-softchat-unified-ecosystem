@@ -152,6 +152,25 @@ const SafeReferralComponent: React.FC = () => {
           </CardContent>
         </Card>
 
+        <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-pink-700">Reward Sharing</p>
+                <p className="text-2xl font-bold text-pink-900">
+                  {isLoading ? "..." : formatCurrency(sharingStats?.totalShared || 0)}
+                </p>
+                <p className="text-xs text-pink-600">
+                  0.5% auto-shared with referrals
+                </p>
+              </div>
+              <div className="p-3 bg-pink-200 rounded-full">
+                <Heart className="w-6 h-6 text-pink-700" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
