@@ -582,4 +582,129 @@ router.post('/claim-rewards', authenticateToken, async (req, res) => {
   }
 });
 
+// Update revenue share percentage for a referral link
+router.patch('/links/:linkId/revenue-share', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    const { linkId } = req.params;
+    const { percentage } = req.body;
+
+    if (typeof percentage !== 'number') {
+      return res.status(400).json({ error: 'Revenue share percentage must be a number' });
+    }
+
+    if (percentage < 0 || percentage > 100) {
+      return res.status(400).json({ error: 'Revenue share percentage must be between 0 and 100' });
+    }
+
+    const success = await updateRevenueSharePercentage(linkId, userId, percentage);
+
+    if (success) {
+      logger.info('Revenue share percentage updated', { userId, linkId, percentage });
+      res.json({
+        success: true,
+        message: `Revenue share percentage updated to ${percentage}%`,
+        percentage
+      });
+    } else {
+      res.status(500).json({ error: 'Failed to update revenue share percentage' });
+    }
+  } catch (error) {
+    logger.error('Error updating revenue share percentage:', error);
+    if (error.message.includes('Unauthorized')) {
+      res.status(403).json({ error: error.message });
+    } else if (error.message.includes('not found')) {
+      res.status(404).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: 'Failed to update revenue share percentage' });
+    }
+  }
+});
+
+// Get revenue sharing statistics
+router.get('/revenue-sharing/stats', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    const stats = await getRevenueSharingStats(userId);
+
+    res.json({
+      success: true,
+      data: stats
+    });
+  } catch (error) {
+    logger.error('Error fetching revenue sharing stats:', error);
+    res.status(500).json({ error: 'Failed to fetch revenue sharing statistics' });
+  }
+});
+
+// Get revenue sharing history
+router.get('/revenue-sharing/history', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    // Get sharing history (both given and received)
+    const givenShares = await db.select({
+      id: referral_events.id,
+      amount: referral_events.reward_amount,
+      currency: referral_events.reward_currency,
+      createdAt: referral_events.created_at,
+      metadata: referral_events.metadata,
+      type: sql`'given'::text`
+    }).from(referral_events)
+      .where(and(
+        eq(referral_events.referrer_id, userId),
+        eq(referral_events.event_type, 'revenue_share')
+      ))
+      .orderBy(desc(referral_events.created_at))
+      .limit(50);
+
+    const receivedShares = await db.select({
+      id: referral_events.id,
+      amount: referral_events.reward_amount,
+      currency: referral_events.reward_currency,
+      createdAt: referral_events.created_at,
+      metadata: referral_events.metadata,
+      type: sql`'received'::text`
+    }).from(referral_events)
+      .where(and(
+        eq(referral_events.referee_id, userId),
+        eq(referral_events.event_type, 'revenue_share')
+      ))
+      .orderBy(desc(referral_events.created_at))
+      .limit(50);
+
+    // Combine and sort by date
+    const allShares = [...givenShares, ...receivedShares]
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 50);
+
+    res.json({
+      success: true,
+      data: {
+        history: allShares,
+        summary: {
+          totalGiven: givenShares.reduce((sum, share) => sum + Number(share.amount), 0),
+          totalReceived: receivedShares.reduce((sum, share) => sum + Number(share.amount), 0),
+          givenCount: givenShares.length,
+          receivedCount: receivedShares.length
+        }
+      }
+    });
+  } catch (error) {
+    logger.error('Error fetching revenue sharing history:', error);
+    res.status(500).json({ error: 'Failed to fetch revenue sharing history' });
+  }
+});
+
 export default router;
