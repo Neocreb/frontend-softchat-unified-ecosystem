@@ -193,8 +193,8 @@ const SecureReceiptDialog = ({ transaction, isOpen, onClose }: SecureReceiptProp
           <div className="bg-white border-2 border-gray-200 rounded-lg p-8 font-mono">
             {/* Header */}
             <div className="text-center border-b-2 border-gray-300 pb-6 mb-6">
-              <h1 className="text-2xl font-bold text-gray-800">ELOITY PLATFORM</h1>
-              <p className="text-sm text-gray-600">Secure Digital Receipt</p>
+              <h1 className="text-xl font-bold text-gray-800">ELOITY</h1>
+              <p className="text-xs text-gray-600">Digital Receipt</p>
               <p className="text-xs text-gray-500 mt-2">
                 Generated: {format(new Date(receiptData.timestamp), 'PPpp')}
               </p>
