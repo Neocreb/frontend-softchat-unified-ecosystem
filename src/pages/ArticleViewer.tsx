@@ -235,15 +235,15 @@ const ArticleViewer = () => {
     setUserProgress(progress);
   };
 
-  const handleToggleLike = () => {
+  const handleToggleLike = async () => {
     if (!user || !articleId) return;
-    
-    const isLiked = educationalArticleService.toggleLike(user.id, articleId);
+
+    const isLiked = await educationalArticleService.toggleLike(user.id, articleId);
     toast({
-      title: isLiked ? "Article Liked" : "Like Removed",
-      description: isLiked ? "Thanks for the feedback!" : "Like removed",
+      title: isLiked ? "❤️ Article Liked" : "Like Removed",
+      description: isLiked ? "Thanks for the feedback! You earned engagement points." : "Like removed",
     });
-    
+
     // Refresh progress
     const progress = educationalArticleService.getUserArticleProgress(user.id, articleId);
     setUserProgress(progress);
