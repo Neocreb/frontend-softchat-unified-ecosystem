@@ -115,6 +115,67 @@ body {
   color: hsl(var(--foreground));
 }
 
+/* Crypto Premium Component Styling */
+.crypto-card-premium {
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.1) 0%, 
+    rgba(147, 51, 234, 0.1) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.dark .crypto-card-premium {
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.15) 0%, 
+    rgba(147, 51, 234, 0.15) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.crypto-text-premium {
+  color: rgb(59 130 246);
+  font-weight: 600;
+}
+
+.dark .crypto-text-premium {
+  color: rgb(96 165 250);
+}
+
+.crypto-text-muted-premium {
+  color: rgb(100 116 139);
+}
+
+.dark .crypto-text-muted-premium {
+  color: rgb(148 163 184);
+}
+
+.crypto-text-secondary-premium {
+  color: rgb(71 85 105);
+}
+
+.dark .crypto-text-secondary-premium {
+  color: rgb(148 163 184);
+}
+
+.crypto-border-premium {
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.dark .crypto-border-premium {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.crypto-gradient-bg {
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.1) 0%, 
+    rgba(147, 51, 234, 0.1) 100%);
+}
+
+.dark .crypto-gradient-bg {
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.2) 0%, 
+    rgba(147, 51, 234, 0.2) 100%);
+}
+
 /* Eloity Brand Gradients - Fixed colors */
 .eloity-gradient {
   background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
@@ -294,4 +355,20 @@ body {
 /* Gradient Backgrounds */
 .bg-gradient-radial {
   background-image: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Tab content animations */
+.tab-content-animate {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
