@@ -23,13 +23,13 @@ export class AdminService {
     try {
       // Demo admin credentials for immediate access
       if (
-        credentials.email === "admin@softchat.com" &&
-        credentials.password === "SoftChat2024!"
+        credentials.email === "admin@eloity.com" &&
+        credentials.password === "Eloity2024!"
       ) {
         const demoAdmin: AdminUser = {
           id: "demo-admin-001",
           name: "Demo Administrator",
-          email: "admin@softchat.com",
+          email: "admin@eloity.com",
           avatar:
             "https://ui-avatars.com/api/?name=Admin&background=3b82f6&color=white",
           roles: ["super_admin"],
@@ -346,7 +346,7 @@ export class AdminService {
           {
             id: "demo-admin-001",
             name: "Demo Administrator",
-            email: "admin@softchat.com",
+            email: "admin@eloity.com",
             roles: ["super_admin"],
           },
         ],
