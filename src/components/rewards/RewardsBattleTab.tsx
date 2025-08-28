@@ -523,7 +523,7 @@ const RewardsBattleTab = () => {
               </div>
               <h3 className="font-semibold mb-2">Place Your Vote</h3>
               <p className="text-sm text-muted-foreground">
-                Vote with your SoftPoints. Higher odds mean higher potential rewards.
+                Vote with your Eloits. Higher odds mean higher potential rewards.
               </p>
             </div>
             <div className="text-center p-4">
