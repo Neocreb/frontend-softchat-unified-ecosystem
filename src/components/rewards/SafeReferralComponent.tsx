@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Users,
   Copy,
@@ -11,9 +12,13 @@ import {
   TrendingUp,
   Star,
   ExternalLink,
+  Heart,
+  Info,
+  Gift,
 } from "lucide-react";
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { useToast } from "@/hooks/use-toast";
+import { AutomaticRewardSharingService } from "@/services/automaticRewardSharingService";
 
 const SafeReferralComponent: React.FC = () => {
   const { toast } = useToast();
