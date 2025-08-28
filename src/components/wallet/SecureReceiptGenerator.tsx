@@ -208,12 +208,12 @@ const SecureReceiptDialog = ({ transaction, isOpen, onClose }: SecureReceiptProp
                 </h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="font-medium">Receipt ID:</span>
-                    <span className="font-mono">{receiptData.id}</span>
+                    <span className="font-medium">Receipt:</span>
+                    <span className="font-mono text-xs">{receiptData.id.slice(-8)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="font-medium">Transaction ID:</span>
-                    <span className="font-mono text-xs">{transaction.id}</span>
+                    <span className="font-medium">Transaction:</span>
+                    <span className="font-mono text-xs">{transaction.id.slice(-8)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="font-medium">Date:</span>
