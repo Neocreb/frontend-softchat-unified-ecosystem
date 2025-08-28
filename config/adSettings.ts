@@ -6,7 +6,7 @@ export const adSettings = {
   
   // Feed ad settings
   feedAdFrequency: 6, // native ad after every 6 posts
-  feedSponsoredFrequency: 8, // Softchat sponsored post
+  feedSponsoredFrequency: 8, // Eloity sponsored post
   
   // Marketplace ad settings
   marketplaceInterstitialFrequency: 10, // ad after every 10 products
@@ -34,7 +34,7 @@ export const adSettings = {
   // Ad types
   adTypes: {
     EXTERNAL: 'external', // AdSense, Adsterra, PropellerAds
-    SPONSORED: 'sponsored', // Internal Softchat campaigns
+    SPONSORED: 'sponsored', // Internal Eloity campaigns
   },
   
   // Ad labels
