@@ -30,6 +30,14 @@ const CryptoLearn = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [courseStats, setCourseStats] = useState({
+    totalCourses: 0,
+    enrolledCourses: 0,
+    completedCourses: 0,
+    totalTimeSpent: 0,
+    averageProgress: 0
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -42,15 +50,46 @@ const CryptoLearn = () => {
       navigate("/auth");
       return;
     }
-    loadBlogPosts();
+    loadData();
   }, [user, navigate, toast]);
 
-  const loadBlogPosts = async () => {
+  const loadData = async () => {
     try {
+      // Load courses
+      const allCourses = courseService.getAllCourses();
+
+      // Load user progress for each course
+      if (user) {
+        const userProgress = courseService.getUserProgress(user.id);
+        const enrolledCourseIds = userProgress.map(p => p.courseId);
+
+        // Update course enrollment and progress status
+        allCourses.forEach(course => {
+          const progress = userProgress.find(p => p.courseId === course.id);
+          if (progress) {
+            course.enrolled = true;
+            course.progress = progress.progress;
+            course.completedLessons = progress.completedLessons.length;
+          }
+        });
+
+        // Get course statistics
+        const stats = courseService.getCourseStats(user.id);
+        setCourseStats(stats);
+      }
+
+      setCourses(allCourses);
+
+      // Load blog posts
       const result = await blogService.getBlogPosts({ limit: 12 });
       setBlogPosts(result?.posts || []);
     } catch (error) {
-      console.error("Failed to load blog posts:", error);
+      console.error("Failed to load data:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load course data.",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
