@@ -35,8 +35,8 @@ interface Currency {
   icon: string;
 }
 
-const SoftPointExchange = () => {
-  const [fromCurrency, setFromCurrency] = useState("softpoints");
+const EloitExchange = () => {
+  const [fromCurrency, setFromCurrency] = useState("eloits");
   const [toCurrency, setToCurrency] = useState("btc");
   const [amount, setAmount] = useState("");
   const [convertedAmount, setConvertedAmount] = useState("0");
@@ -50,11 +50,11 @@ const SoftPointExchange = () => {
   const { toast } = useToast();
 
   const currencies: Currency[] = [
-    { 
-      id: "softpoints", 
-      name: "SoftPoints", 
-      symbol: "SP", 
-      icon: "🔮" 
+    {
+      id: "eloits",
+      name: "Eloits",
+      symbol: "ELO",
+      icon: "🔮"
     },
     { 
       id: "btc", 
@@ -445,4 +445,4 @@ const SoftPointExchange = () => {
   );
 };
 
-export default SoftPointExchange;
+export default EloitExchange;
