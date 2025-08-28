@@ -275,19 +275,12 @@ const SecureReceiptDialog = ({ transaction, isOpen, onClose }: SecureReceiptProp
 
           {/* Security Notice */}
           <Card className="border-blue-200 bg-blue-50">
-            <CardContent className="p-4">
-              <div className="flex gap-3">
-                <Shield className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-blue-800">
-                  <p className="font-medium mb-1">Security Features:</p>
-                  <ul className="space-y-1 text-xs">
-                    <li>• Cryptographic hash prevents tampering</li>
-                    <li>• Digital signature ensures authenticity</li>
-                    <li>• Blockchain anchoring for immutable record</li>
-                    <li>• Unique verification code for instant validation</li>
-                    <li>• Timestamped with server-side validation</li>
-                  </ul>
-                </div>
+            <CardContent className="p-3">
+              <div className="flex gap-2 items-center">
+                <Shield className="h-4 w-4 text-blue-600" />
+                <p className="text-sm text-blue-800 font-medium">
+                  This receipt is cryptographically secured and tamper-proof
+                </p>
               </div>
             </CardContent>
           </Card>
