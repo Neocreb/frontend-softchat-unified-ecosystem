@@ -306,6 +306,122 @@ export class ReferralService {
     }
   }
 
+  // Update revenue share percentage for a referral link
+  static async updateRevenueSharePercentage(
+    linkId: string,
+    percentage: number
+  ): Promise<{ success: boolean; message: string }> {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return {
+          success: false,
+          message: "Authentication required",
+        };
+      }
+
+      const response = await fetch(
+        `${this.apiBase}/referral/links/${linkId}/revenue-share`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ percentage }),
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        return {
+          success: false,
+          message: error.error || "Failed to update revenue share percentage",
+        };
+      }
+
+      const result = await response.json();
+      return {
+        success: true,
+        message: result.message || "Revenue share percentage updated successfully",
+      };
+    } catch (error) {
+      console.error("Error updating revenue share percentage:", error);
+      return { success: false, message: "An error occurred" };
+    }
+  }
+
+  // Get revenue sharing statistics
+  static async getRevenueSharingStats(): Promise<{
+    shared: { total: number; count: number };
+    received: { total: number; count: number };
+    settings: Array<{
+      linkId: string;
+      revenueSharePercentage: number;
+      description?: string;
+    }>;
+  } | null> {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return null;
+
+      const response = await fetch(`${this.apiBase}/referral/revenue-sharing/stats`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch revenue sharing stats");
+      }
+
+      const result = await response.json();
+      return result.data;
+    } catch (error) {
+      console.error("Error fetching revenue sharing stats:", error);
+      return null;
+    }
+  }
+
+  // Get revenue sharing history
+  static async getRevenueSharingHistory(): Promise<{
+    history: Array<{
+      id: string;
+      amount: number;
+      currency: string;
+      createdAt: string;
+      type: "given" | "received";
+      metadata: any;
+    }>;
+    summary: {
+      totalGiven: number;
+      totalReceived: number;
+      givenCount: number;
+      receivedCount: number;
+    };
+  } | null> {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return null;
+
+      const response = await fetch(`${this.apiBase}/referral/revenue-sharing/history`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch revenue sharing history");
+      }
+
+      const result = await response.json();
+      return result.data;
+    } catch (error) {
+      console.error("Error fetching revenue sharing history:", error);
+      return null;
+    }
+  }
+
   // Utility methods
   static generateReferralCode(userId: string): string {
     return `SC${userId.substring(0, 6).toUpperCase()}${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
