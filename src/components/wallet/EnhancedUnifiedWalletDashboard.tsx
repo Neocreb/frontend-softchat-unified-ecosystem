@@ -70,7 +70,7 @@ const EnhancedWalletDashboardContent = () => {
           <h1 className="text-xl sm:text-2xl font-bold text-foreground">
             Hi, {user?.profile?.full_name || user?.profile?.username || user?.email?.split('@')[0] || 'User'}!
           </h1>
-          <p className="text-sm text-muted-foreground">Welcome back to your financial dashboard</p>
+          <p className="text-sm text-muted-foreground">Manage your finances</p>
         </div>
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="text-xs">
