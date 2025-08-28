@@ -107,6 +107,7 @@ import CryptoPortfolio from "./pages/CryptoPortfolio";
 import CryptoLearn from "./pages/CryptoLearn";
 import CourseDetail from "./pages/CourseDetail";
 import LessonViewer from "./pages/LessonViewer";
+import ArticleViewer from "./pages/ArticleViewer";
 import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
 import EnhancedSettings from "./pages/EnhancedSettings";
