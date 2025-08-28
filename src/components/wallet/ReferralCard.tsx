@@ -1,4 +1,3 @@
-
 import { Copy, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,7 @@ const ReferralCard = () => {
   const { toast } = useToast();
 
   const copyReferralLink = () => {
-    navigator.clipboard.writeText("https://softchat.com/ref/johndoe123");
+    navigator.clipboard.writeText("https://eloity.com/ref/johndoe123");
     toast({
       title: "Referral link copied",
       description: "Share it with friends to earn rewards!",
@@ -25,7 +24,7 @@ const ReferralCard = () => {
           <div className="text-sm font-medium mb-2">Your Referral Link</div>
           <div className="flex">
             <div className="flex-1 bg-muted rounded-l-md px-3 py-2 text-sm overflow-hidden text-ellipsis">
-              https://softchat.com/ref/johndoe123
+              https://eloity.com/ref/johndoe123
             </div>
             <Button 
               variant="secondary" 

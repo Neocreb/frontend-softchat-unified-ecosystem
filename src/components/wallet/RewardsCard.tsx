@@ -1,4 +1,3 @@
-
 import { Award, ArrowDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ const RewardsCard = () => {
       <CardContent>
         <div className="mb-6">
           <div className="mb-4 flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-softchat-primary to-softchat-accent flex items-center justify-center">
+            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-eloity-primary to-eloity-accent flex items-center justify-center">
               <Award className="h-8 w-8 text-white" />
             </div>
             <div>
@@ -31,7 +30,7 @@ const RewardsCard = () => {
             </div>
             <div className="h-2 rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-softchat-primary to-softchat-accent"
+                className="h-full rounded-full bg-gradient-to-r from-eloity-primary to-eloity-accent"
                 style={{ width: "49%" }}
               ></div>
             </div>
