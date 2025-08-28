@@ -42,6 +42,7 @@ import AdvancedAnalytics from "@/components/rewards/AdvancedAnalytics";
 import RewardsErrorBoundary from "@/components/rewards/RewardsErrorBoundary";
 import SeasonalEvents from "@/components/rewards/SeasonalEvents";
 import EnhancedLoadingStates from "@/components/rewards/EnhancedLoadingStates";
+import PioneerBadgeWidget from "@/components/rewards/PioneerBadgeWidget";
 
 interface RewardData {
   totalEarnings: number;
