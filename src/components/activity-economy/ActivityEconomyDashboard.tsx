@@ -644,7 +644,7 @@ const ActivityEconomyDashboard: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <p className="font-medium text-sm">
-                        +{formatNumber(activity.softPoints)} SP
+                        +{formatNumber(activity.eloits)} SP
                       </p>
                       {activity.walletBonus > 0 && (
                         <p className="text-xs text-green-600">
@@ -709,7 +709,7 @@ const ActivityEconomyDashboard: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <p className="font-medium text-sm">
-                          +{formatNumber(activity.softPoints)} SP
+                          +{formatNumber(activity.eloits)} SP
                         </p>
                         {activity.walletBonus > 0 && (
                           <p className="text-xs text-green-600">
