@@ -81,24 +81,6 @@ const EnhancedWalletDashboardContent = () => {
         onWithdraw={() => setShowWithdrawModal(true)}
       />
 
-      {/* Primary Action Buttons - Right after balance */}
-      <div className="flex gap-3 justify-center sm:justify-start">
-        <Button
-          onClick={() => setShowDepositModal(true)}
-          className="btn-gradient flex-1 sm:flex-none sm:min-w-[120px]"
-          size="lg"
-        >
-          Deposit
-        </Button>
-        <Button
-          onClick={() => setShowWithdrawModal(true)}
-          variant="outline"
-          className="bg-gradient-card border-primary/20 text-primary hover:bg-gradient-primary hover:text-white flex-1 sm:flex-none sm:min-w-[120px]"
-          size="lg"
-        >
-          Withdraw
-        </Button>
-      </div>
 
       {/* Main Tabbed Interface */}
       <Tabs
