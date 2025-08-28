@@ -704,7 +704,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="soft_points">SoftPoints</SelectItem>
+                        <SelectItem value="eloits">Eloits</SelectItem>
                         <SelectItem value="usdt">USDT</SelectItem>
                         <SelectItem value="wallet">Wallet</SelectItem>
                       </SelectContent>
