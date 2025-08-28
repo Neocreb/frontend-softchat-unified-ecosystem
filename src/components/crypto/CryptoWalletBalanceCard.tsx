@@ -48,20 +48,27 @@ export default function CryptoWalletBalanceCard({
   return (
     <Card
       className={cn(
-        "relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300",
+        "relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.01]",
         "bg-gradient-to-br from-eloity-primary/90 to-eloity-600/90 dark:from-eloity-primary/80 dark:to-eloity-700/80",
-        "w-full max-w-5xl mx-auto",
+        "w-full max-w-5xl mx-auto backdrop-blur-sm",
         "min-h-[280px] sm:min-h-[320px] lg:min-h-[360px]",
+        "transform-gpu", // Enable GPU acceleration for better performance
         className
       )}
     >
-      {/* Professional styling overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-white/10" />
-      
-      {/* Subtle pattern overlay */}
-      <div className="absolute inset-0 opacity-10" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' fill-opacity='0.15'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3Ccircle cx='50' cy='10' r='2'/%3E%3Ccircle cx='10' cy='50' r='2'/%3E%3Ccircle cx='50' cy='50' r='2'/%3E%3C/g%3E%3C/svg%3E")`
-      }} />
+      {/* Enhanced professional gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/10" />
+
+      {/* Subtle geometric pattern overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.08] dark:opacity-[0.06]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' fill-opacity='0.4'%3E%3Cpath d='M20 20L0 0h40L20 20z'/%3E%3Cpath d='M20 20L40 40H0L20 20z'/%3E%3C/g%3E%3C/svg%3E")`
+        }}
+      />
+
+      {/* Additional subtle texture for depth */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent" />
 
       <CardContent className="relative z-10 p-4 sm:p-6 h-full flex flex-col justify-between">
         {/* Header Row */}
