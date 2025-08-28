@@ -150,6 +150,13 @@ const EnhancedCreatorDashboard: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchTerm, setSearchTerm] = useState("");
+  const [setupComplete, setSetupComplete] = useState(() => {
+    try {
+      return localStorage.getItem("ucs:setupCompleted") === "true";
+    } catch {
+      return false;
+    }
+  });
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
