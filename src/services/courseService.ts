@@ -1,9 +1,9 @@
-import { 
-  BookOpen, 
-  TrendingUp, 
-  Target, 
-  Shield, 
-  Brain, 
+import {
+  BookOpen,
+  TrendingUp,
+  Target,
+  Shield,
+  Brain,
   Play,
   FileText,
   CheckCircle2,
@@ -11,6 +11,7 @@ import {
   Quiz,
   Download
 } from "lucide-react";
+import { getCompleteCoursesWithExtendedData } from "./courseDataExtension";
 
 export interface Lesson {
   id: string;
