@@ -210,7 +210,11 @@ const CryptoLearn = () => {
             <TabsContent value="courses" className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses.map((course, index) => (
-                  <Card key={index} className="cursor-pointer hover:shadow-xl transition-all duration-300 group content-card overflow-hidden hover:scale-[1.02]">
+                  <Card
+                    key={course.id}
+                    className="cursor-pointer hover:shadow-xl transition-all duration-300 group content-card overflow-hidden hover:scale-[1.02]"
+                    onClick={() => handleCourseClick(course.id)}
+                  >
                     <div className={`h-2 bg-gradient-to-r ${course.color}`}></div>
                     <CardContent className="p-6">
                       <div className="space-y-4">
@@ -222,7 +226,7 @@ const CryptoLearn = () => {
                             {course.level}
                           </Badge>
                         </div>
-                        
+
                         <div>
                           <h3 className="font-bold text-lg mb-2 group-hover:text-blue-600 transition-colors">
                             {course.title}
@@ -232,6 +236,22 @@ const CryptoLearn = () => {
                           </p>
                         </div>
 
+                        {/* Progress bar for enrolled courses */}
+                        {course.enrolled && course.progress > 0 && (
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-xs text-muted-foreground">
+                              <span>Progress</span>
+                              <span>{Math.round(course.progress)}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+                              <div
+                                className="bg-blue-600 h-1.5 rounded-full transition-all duration-300"
+                                style={{ width: `${course.progress}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                        )}
+
                         <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
@@ -239,7 +259,7 @@ const CryptoLearn = () => {
                           </div>
                           <div className="flex items-center gap-1">
                             <BookOpen className="h-4 w-4" />
-                            {course.lessons} lessons
+                            {course.totalLessons} lessons
                           </div>
                           <div className="flex items-center gap-1">
                             <Users className="h-4 w-4" />
@@ -251,9 +271,20 @@ const CryptoLearn = () => {
                           </div>
                         </div>
 
-                        <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                        <Button
+                          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCourseClick(course.id);
+                          }}
+                        >
                           <Play className="h-4 w-4 mr-2" />
-                          Start Learning
+                          {course.enrolled
+                            ? course.progress > 0
+                              ? 'Continue Learning'
+                              : 'Start Learning'
+                            : 'View Course'
+                          }
                         </Button>
                       </div>
                     </CardContent>
