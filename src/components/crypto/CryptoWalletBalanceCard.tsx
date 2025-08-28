@@ -178,18 +178,22 @@ export default function CryptoWalletBalanceCard({
         </div>
 
         {/* Footer Row */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
-          <div className="font-mono text-white/80 text-xs sm:text-sm tracking-wider drop-shadow">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 pt-2 border-t border-white/10">
+          <div className="font-mono text-white/85 text-xs sm:text-sm tracking-wider drop-shadow-sm font-medium">
             **** **** **** {String(Math.floor(totalBalance)).slice(-4)}
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-4 text-white/80 text-2xs sm:text-xs">
-            <div className="flex items-center gap-1 sm:gap-1.5">
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-pulse" />
-              <span className="font-medium">Live</span>
+          <div className="flex items-center gap-3 sm:gap-4 text-white/85 text-2xs sm:text-xs">
+            <div className="flex items-center gap-1.5 sm:gap-2 px-2 py-1 bg-white/10 rounded-lg backdrop-blur-sm">
+              <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50" />
+              <span className="font-semibold tracking-wide drop-shadow-sm">Live</span>
             </div>
-            <span className="hidden sm:inline">Last updated: {new Date().toLocaleTimeString()}</span>
-            <span className="sm:hidden">{new Date().toLocaleTimeString()}</span>
+            <div className="hidden sm:flex items-center text-white/75 font-medium">
+              <span>Updated: {new Date().toLocaleTimeString()}</span>
+            </div>
+            <div className="sm:hidden text-white/75 font-medium">
+              {new Date().toLocaleTimeString()}
+            </div>
           </div>
         </div>
       </CardContent>
