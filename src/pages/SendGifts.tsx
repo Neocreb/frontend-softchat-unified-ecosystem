@@ -338,10 +338,10 @@ const SendGifts = () => {
   return (
     <>
       <Helmet>
-        <title>Send Gifts | SoftChat</title>
+        <title>Send Gifts | Eloity</title>
         <meta
           name="description"
-          content="Send virtual gifts and tips to show appreciation in the SoftChat community"
+          content="Send virtual gifts and tips to show appreciation in the Eloity community"
         />
       </Helmet>
 
