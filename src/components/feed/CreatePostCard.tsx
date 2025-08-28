@@ -47,10 +47,10 @@ const CreatePostCard = ({ onSubmit }: CreatePostCardProps) => {
           },
         );
 
-        if (reward.success && reward.softPoints > 0) {
+        if (reward.success && reward.eloits > 0) {
           toast({
             title: "Post created!",
-            description: `Published and earned ${reward.softPoints} SoftPoints!`,
+            description: `Published and earned ${reward.eloits} Eloits!`,
           });
         } else {
           toast({
