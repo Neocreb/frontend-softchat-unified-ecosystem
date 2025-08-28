@@ -416,6 +416,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
   };
 
   const filteredFeatures = platformFeatures.filter(feature =>
+    feature.name !== "Live Streaming" &&
     feature.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (selectedFeatures.length === 0 || selectedFeatures.includes(feature.name))
   );
