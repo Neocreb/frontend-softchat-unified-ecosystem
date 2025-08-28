@@ -1297,6 +1297,20 @@ const EnhancedCreatorDashboard: React.FC = () => {
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
+            {!setupComplete && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Get Started</CardTitle>
+                  <CardDescription>Complete setup</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-green-500"></span><span>Connect wallet</span></div>
+                  <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-blue-500"></span><span>Enable features</span></div>
+                  <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-purple-500"></span><span>Publish first post</span></div>
+                  <Button onClick={() => { try { localStorage.setItem("ucs:setupCompleted","true"); } catch {}; setSetupComplete(true); }}>Complete Setup</Button>
+                </CardContent>
+              </Card>
+            )}
             {/* Quick Actions */}
             <Card>
               <CardHeader>
