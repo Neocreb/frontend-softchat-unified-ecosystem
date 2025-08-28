@@ -273,7 +273,7 @@ export default function EnhancedCrypto() {
                   Hi, {user?.profile?.full_name || user?.profile?.username || user?.email?.split('@')[0] || 'User'}!
                 </h1>
                 <p className="text-sm text-muted-foreground">
-                  Welcome to your crypto trading dashboard
+                  Trade and manage crypto
                 </p>
               </div>
               <div className="flex items-center gap-3">
