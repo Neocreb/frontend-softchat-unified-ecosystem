@@ -662,7 +662,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
           { name: "Hourly Rate", value: "$45", change: "+12.5%", trend: "up", description: "Current rate" },
         ]},
       ],
-      "Crypto Trading": [
+      "Finance": [
         { category: "Portfolio Performance", metrics: [
           { name: "Portfolio Value", value: "$24,567", change: "+22.8%", trend: "up", description: "Total portfolio worth" },
           { name: "Total P&L", value: "+$3,456", change: "+145%", trend: "up", description: "Profit/Loss this period" },
