@@ -452,9 +452,34 @@ export default function EnhancedRewards() {
               <div className="h-64 bg-gray-200 rounded-xl"></div>
             </div>
           ) : (
-            <RewardsErrorBoundary>
-              <SafeReferralManager />
-            </RewardsErrorBoundary>
+            <div className="space-y-6">
+              {/* Reward Sharing Notice */}
+              <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-purple-100 rounded-full">
+                    <Gift className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-purple-900 mb-1">
+                      💝 Automatic Community Sharing is Active
+                    </h3>
+                    <p className="text-sm text-purple-700 mb-2">
+                      When you earn from content creation, engagement, and platform activities,
+                      <strong> 0.5% is automatically shared</strong> with your referrals to help grow our community.
+                    </p>
+                    <p className="text-xs text-purple-600">
+                      This applies only to creator economy earnings, never personal transactions like freelance or marketplace sales.
+                      <br />
+                      Learn more in our <a href="/legal" className="underline hover:text-purple-800">legal documentation</a>.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <RewardsErrorBoundary>
+                <SafeReferralManager />
+              </RewardsErrorBoundary>
+            </div>
           )}
         </TabsContent>
       </Tabs>
