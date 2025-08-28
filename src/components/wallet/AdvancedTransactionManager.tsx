@@ -48,7 +48,7 @@ import {
   Receipt,
   Shield,
 } from "lucide-react";
-import { format, parseISO, isWithinInterval } from "date-fns";
+import { format, parseISO, isWithinInterval, formatDistanceToNow } from "date-fns";
 
 interface FilterState {
   search: string;
