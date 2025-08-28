@@ -109,7 +109,7 @@ export default function BlogRSSFeed({
             <div className="flex items-center gap-2">
               <Rss className="h-5 w-5 text-orange-500" />
               <h3 className="text-lg font-semibold">
-                Latest from SoftChat Blog
+                Latest from Eloity Blog
               </h3>
             </div>
           </div>
@@ -140,7 +140,7 @@ export default function BlogRSSFeed({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Rss className="h-5 w-5 text-orange-500" />
-            <h3 className="text-lg font-semibold">Latest from SoftChat Blog</h3>
+            <h3 className="text-lg font-semibold">Latest from Eloity Blog</h3>
             <Badge variant="outline" className="text-xs">
               RSS Feed
             </Badge>
