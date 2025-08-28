@@ -45,6 +45,7 @@ import productsRouter from './routes/products.js';
 import freelanceRouter from './routes/freelance.js';
 import followRouter from './routes/follow.js';
 import referralRouter from './routes/referral.js';
+import rewardSharingRouter from './routes/rewardSharing.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
