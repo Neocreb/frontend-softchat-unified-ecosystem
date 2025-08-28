@@ -296,7 +296,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 
     toast({
       title: "🎉 Onboarding Complete!",
-      description: `Welcome to ${selectedPath?.title} on Softchat! You're ready to get started.`,
+      description: `Welcome to ${selectedPath?.title} on Eloity! You're ready to get started.`,
     });
 
     if (onComplete) onComplete();
@@ -347,7 +347,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
           <DialogTitle className="flex items-center gap-2 text-lg md:text-xl">
             <Lightbulb className="w-4 h-4 md:w-5 md:h-5 text-yellow-500" />
             {showPathSelection
-              ? "Welcome to Softchat!"
+              ? "Welcome to Eloity!"
               : `${selectedPath?.title} Guide`}
           </DialogTitle>
         </DialogHeader>
