@@ -58,7 +58,7 @@ const AdvertisingPolicy = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Target className="w-5 h-5" />
-              Types of Advertising on SoftChat
+              Types of Advertising on Eloity
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
