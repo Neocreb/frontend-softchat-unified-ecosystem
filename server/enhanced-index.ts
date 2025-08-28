@@ -46,6 +46,7 @@ import freelanceRouter from './routes/freelance.js';
 import followRouter from './routes/follow.js';
 import referralRouter from './routes/referral.js';
 import rewardSharingRouter from './routes/rewardSharing.js';
+import pioneerBadgeRouter from './routes/pioneerBadge.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
