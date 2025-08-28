@@ -31,6 +31,7 @@ const CryptoLearn = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [educationalArticles, setEducationalArticles] = useState<EducationalArticle[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
   const [courseStats, setCourseStats] = useState({
     totalCourses: 0,
