@@ -50,7 +50,12 @@ const EnhancedWalletDashboardContent = () => {
   const cryptoBalance = walletBalance?.crypto || 567.89;
   const btcAmount = cryptoBalance / 42000; // Approximate BTC price
 
-  if (isLoading) {
+  // Debug logging
+  console.log("Wallet Debug - isLoading:", isLoading);
+  console.log("Wallet Debug - walletBalance:", walletBalance);
+  console.log("Wallet Debug - totalBalance:", totalBalance);
+
+  if (isLoading && !walletBalance) {
     return (
       <div className="mobile-container mobile-space-y">
         <div className="animate-pulse space-y-6">
