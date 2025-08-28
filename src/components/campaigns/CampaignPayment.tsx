@@ -61,7 +61,7 @@ interface CampaignPaymentProps {
 
 // Mock wallet balances - in real app, this would come from wallet context
 const mockWalletBalances = {
-  softPoints: 1250.50,
+  eloits: 1250.50,
   usdt: 150.30,
   btc: 0.00234,
   eth: 0.4521,
@@ -71,13 +71,13 @@ const mockWalletBalances = {
 // Payment method configurations
 const PAYMENT_METHODS = [
   {
-    id: "soft_points",
-    name: "SoftPoints",
+    id: "eloits",
+    name: "Eloits",
     icon: Zap,
-    description: "Use your SoftPoints balance",
+    description: "Use your Eloits balance",
     available: true,
-    balance: mockWalletBalances.softPoints,
-    currency: "SP",
+    balance: mockWalletBalances.eloits,
+    currency: "ELO",
     bonuses: [
       { type: "reach", multiplier: 1.1, description: "10% extra reach" },
       { type: "cashback", percentage: 5, description: "5% cashback on completed campaigns" }
@@ -141,7 +141,7 @@ const CampaignPayment: React.FC<CampaignPaymentProps> = ({
   onPaymentError,
 }) => {
   const { toast } = useToast();
-  const [selectedMethod, setSelectedMethod] = useState<string>("soft_points");
+  const [selectedMethod, setSelectedMethod] = useState<string>("eloits");
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentStep, setPaymentStep] = useState<"select" | "confirm" | "processing" | "success">("select");
@@ -223,7 +223,7 @@ const CampaignPayment: React.FC<CampaignPaymentProps> = ({
   };
 
   const formatCurrency = (amount: number, curr: string) => {
-    if (curr === "SP") return `${amount.toFixed(0)} SP`;
+    if (curr === "ELO") return `${amount.toFixed(0)} ELO`;
     if (curr === "USDT") return `$${amount.toFixed(2)} USDT`;
     return `$${amount.toFixed(2)}`;
   };
