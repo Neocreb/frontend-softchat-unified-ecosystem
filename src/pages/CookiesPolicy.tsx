@@ -256,7 +256,7 @@ const CookiesPolicy = () => {
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li><strong>Ad Targeting:</strong> Show relevant advertisements</li>
                 <li><strong>Campaign Tracking:</strong> Measure advertising effectiveness</li>
-                <li><strong>Retargeting:</strong> Re-engage users who visited SoftChat</li>
+                <li><strong>Retargeting:</strong> Re-engage users who visited Eloity</li>
                 <li><strong>Social Media Ads:</strong> Track social media campaign performance</li>
                 <li><strong>Affiliate Marketing:</strong> Attribute referrals and commissions</li>
               </ul>
