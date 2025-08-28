@@ -1796,7 +1796,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 <CardContent>
                   <div className="space-y-4">
                     {[
-                      { platform: "Video Content", count: 456, percentage: 32, color: "bg-red-500" },
+                      { platform: "Video", count: 456, percentage: 32, color: "bg-red-500" },
                       { platform: "Social Posts", count: 387, percentage: 27, color: "bg-blue-500" },
                       { platform: "Marketplace Products", count: 234, percentage: 16, color: "bg-green-500" },
                       { platform: "Live Streams", count: 189, percentage: 13, color: "bg-pink-500" },
