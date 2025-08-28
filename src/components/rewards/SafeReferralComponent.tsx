@@ -94,23 +94,14 @@ const SafeReferralComponent: React.FC = () => {
       <Alert className="border-blue-200 bg-blue-50">
         <Gift className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-800">
-          <div className="flex items-start justify-between">
+          <div className="flex items-center justify-between">
             <div className="flex-1">
-              <strong>Automatic Reward Sharing is Active!</strong>
-              <p className="text-sm mt-1">
-                When you earn rewards from content creation, engagement, and platform activities,
-                0.5% is automatically shared with your referrals as a thank you for growing our community.
-                This only applies to creator economy earnings, not personal transactions.
-              </p>
+              <strong>Community Sharing Active:</strong> 0.5% of creator earnings automatically shared with your referrals.
             </div>
-            <div className="ml-4 text-right">
-              <p className="text-xs text-blue-600">This Month</p>
-              <p className="font-semibold text-blue-800">
-                {isLoading ? "..." : formatCurrency(sharingStats?.thisMonthShared || 0)} shared
-              </p>
-              <p className="font-semibold text-blue-800">
-                {isLoading ? "..." : formatCurrency(sharingStats?.thisMonthReceived || 0)} received
-              </p>
+            <div className="text-right text-xs">
+              <div className="text-blue-600">This Month</div>
+              <div className="font-semibold">{isLoading ? "..." : formatCurrency(sharingStats?.thisMonthShared || 0)} shared</div>
+              <div className="font-semibold">{isLoading ? "..." : formatCurrency(sharingStats?.thisMonthReceived || 0)} received</div>
             </div>
           </div>
         </AlertDescription>
@@ -345,30 +336,16 @@ const SafeReferralComponent: React.FC = () => {
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border border-blue-200">
               <h3 className="font-semibold text-gray-900 mb-2">How It Works</h3>
               <p className="text-sm text-gray-700 mb-3">
-                As part of our commitment to community growth, 0.5% of your creator economy earnings
-                are automatically shared with the people you've referred to Eloity.
+                0.5% of creator economy earnings are automatically shared with your referrals.
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-2 gap-6 text-xs">
                 <div>
-                  <h4 className="font-medium text-gray-800 mb-1">✅ Included Earnings:</h4>
-                  <ul className="text-gray-600 space-y-1">
-                    <li>• Content creation rewards</li>
-                    <li>• Ad revenue sharing</li>
-                    <li>• Engagement bonuses</li>
-                    <li>• Challenge completions</li>
-                    <li>• Battle voting rewards</li>
-                    <li>• Gifts and tips received</li>
-                  </ul>
+                  <h4 className="font-medium text-gray-800 mb-1">✅ Included</h4>
+                  <p className="text-gray-600">Content, engagement, ads, challenges</p>
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-800 mb-1">❌ Not Included:</h4>
-                  <ul className="text-gray-600 space-y-1">
-                    <li>• Freelance project payments</li>
-                    <li>• Marketplace sales</li>
-                    <li>• Crypto trading profits</li>
-                    <li>• Direct user payments</li>
-                    <li>• Withdrawal transactions</li>
-                  </ul>
+                  <h4 className="font-medium text-gray-800 mb-1">❌ Excluded</h4>
+                  <p className="text-gray-600">Freelance, marketplace, crypto trading</p>
                 </div>
               </div>
             </div>
@@ -423,16 +400,13 @@ const SafeReferralComponent: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
               <div className="flex items-start gap-2">
-                <Info className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <Info className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-yellow-800 mb-1">Important Information</h4>
-                  <p className="text-sm text-yellow-700">
-                    Automatic reward sharing is enabled by default and helps build a supportive community.
-                    This system is part of our Terms of Service and ensures that those who help grow the platform
-                    benefit from community success. The 0.5% is taken from platform reward earnings only,
-                    never from your personal business transactions.
+                  <p className="text-xs text-yellow-700">
+                    Automatic sharing is part of our Terms of Service.
+                    <a href="/app/legal" className="underline hover:text-yellow-800 ml-1">Learn more</a>
                   </p>
                 </div>
               </div>
