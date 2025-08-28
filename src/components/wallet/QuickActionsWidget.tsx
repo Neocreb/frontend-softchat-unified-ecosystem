@@ -386,8 +386,6 @@ const QuickActionsWidget = () => {
         </CardContent>
       </Card>
 
-      {/* African Payment Quick Links */}
-      <AfricanPaymentQuickLinks />
 
       {/* Quick Action Modals */}
       <EnhancedSendMoneyModal
