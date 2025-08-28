@@ -260,7 +260,7 @@ app.get('/api/health', async (req, res) => {
     
     res.json({
       status: 'OK',
-      message: 'Softchat Backend Server is running',
+      message: 'Eloity Backend Server is running',
       timestamp: new Date().toISOString(),
       version: '2.0.0',
       environment: process.env.NODE_ENV,
@@ -655,7 +655,7 @@ if (process.env.NODE_ENV === 'production') {
   // In development, just return a simple message for non-API routes
   app.get('*', (req, res) => {
     res.json({
-      message: 'Softchat Backend API server running in development mode',
+      message: 'Eloity Backend API server running in development mode',
       version: '2.0.0',
       frontend: 'Served by Vite on port 8080',
       api: 'Available at /api/*',
@@ -679,7 +679,7 @@ if (process.env.NODE_ENV === 'production') {
 console.log(`🔄 Attempting to start server on port ${PORT}...`);
 
 server.listen(PORT, () => {
-  console.log(`✅ Softchat Backend server successfully started!`);
+  console.log(`✅ Eloity Backend server successfully started!`);
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`🌐 WebSocket server running on ws://localhost:${PORT}`);
 
