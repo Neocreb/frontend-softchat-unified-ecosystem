@@ -132,10 +132,11 @@ interface FeatureAnalytics {
 const EnhancedCreatorDashboard: React.FC = () => {
   const [timeRange, setTimeRange] = useState(() => {
     try {
-      return localStorage.getItem("ucs:timeRange") || "30d";
-    } catch {
-      return "30d";
-    }
+      if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") {
+        return window.localStorage.getItem("ucs:timeRange") || "30d";
+      }
+    } catch {}
+    return "30d";
   });
   const [activeSection, setActiveSection] = useState("overview");
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
@@ -152,10 +153,11 @@ const EnhancedCreatorDashboard: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [setupComplete, setSetupComplete] = useState(() => {
     try {
-      return localStorage.getItem("ucs:setupCompleted") === "true";
-    } catch {
-      return false;
-    }
+      if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") {
+        return window.localStorage.getItem("ucs:setupCompleted") === "true";
+      }
+    } catch {}
+    return false;
   });
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -422,7 +424,11 @@ const EnhancedCreatorDashboard: React.FC = () => {
   );
 
   useEffect(() => {
-    try { localStorage.setItem("ucs:timeRange", timeRange); } catch {}
+    try {
+      if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") {
+        window.localStorage.setItem("ucs:timeRange", timeRange);
+      }
+    } catch {}
   }, [timeRange]);
 
   const totalRevenue = platformFeatures.reduce((sum, feature) => {
@@ -1307,7 +1313,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-green-500"></span><span>Connect wallet</span></div>
                   <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-blue-500"></span><span>Enable features</span></div>
                   <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-purple-500"></span><span>Publish first post</span></div>
-                  <Button onClick={() => { try { localStorage.setItem("ucs:setupCompleted","true"); } catch {}; setSetupComplete(true); }}>Complete Setup</Button>
+                  <Button onClick={() => { try { if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") { window.localStorage.setItem("ucs:setupCompleted","true"); } } catch {}; setSetupComplete(true); }}>Complete Setup</Button>
                 </CardContent>
               </Card>
             )}
