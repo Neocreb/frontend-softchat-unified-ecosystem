@@ -21,7 +21,7 @@ export const adSettings = {
   enableAds: true,
   adsEnabled: process.env.NODE_ENV !== 'development', // Disable in dev by default
   
-  // SoftPoints reward settings
+  // Eloits reward settings
   adRewardPoints: 2, // points earned per ad view
   maxDailyAdRewards: 10, // maximum ads that can earn points per day
   

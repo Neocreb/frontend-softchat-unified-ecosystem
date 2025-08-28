@@ -1,6 +1,6 @@
 import { User } from "@/types/user";
 
-// SoftPoints Activity Types
+// Eloits Activity Types
 export type ActivityType =
   | "social"
   | "trading"
