@@ -2053,7 +2053,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                       { platform: "Freelance", amount: 8920, percentage: 32, color: "bg-orange-500", growth: "+31.2%" },
                       { platform: "Video Content", amount: 3240, percentage: 12, color: "bg-red-500", growth: "+45.8%" },
                       { platform: "Live Streaming", amount: 1890, percentage: 7, color: "bg-pink-500", growth: "+92.1%" },
-                      { platform: "Crypto Trading", amount: 1100, percentage: 4, color: "bg-yellow-500", growth: "+22.8%" },
+                      { platform: "Finance", amount: 1100, percentage: 4, color: "bg-yellow-500", growth: "+22.8%" },
                     ].map((item, index) => (
                       <div key={index} className="space-y-2">
                         <div className="flex justify-between items-center text-sm">
