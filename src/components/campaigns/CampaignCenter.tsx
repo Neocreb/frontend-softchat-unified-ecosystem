@@ -352,7 +352,7 @@ const CampaignCenter: React.FC = () => {
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Start Your First Campaign</h3>
                     <p className="text-muted-foreground text-lg leading-relaxed">
-                      Boost your content, products, or services to reach more people and grow your business on Softchat.
+                      Boost your content, products, or services to reach more people and grow your business on Eloity.
                     </p>
                     <Button
                       size="lg"

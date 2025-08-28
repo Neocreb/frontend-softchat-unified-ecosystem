@@ -703,8 +703,8 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
           </DialogHeader>
           <div className="p-4 space-y-3">
             {[
-              { value: "public", icon: Globe, label: "Public", desc: "Anyone on or off SoftChat" },
-              { value: "friends", icon: Users, label: "Friends", desc: "Your friends on SoftChat" },
+              { value: "public", icon: Globe, label: "Public", desc: "Anyone on or off Eloity" },
+              { value: "friends", icon: Users, label: "Friends", desc: "Your friends on Eloity" },
               { value: "private", icon: Lock, label: "Only me", desc: "Only you can see this post" },
             ].map((option) => (
               <button
