@@ -40,14 +40,14 @@ const AdvertisingPolicy = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              SoftChat is committed to providing a high-quality advertising experience that 
-              respects user privacy while enabling businesses to reach their target audiences 
-              effectively. This Advertising Policy outlines how we display, target, and 
+              Eloity is committed to providing a high-quality advertising experience that
+              respects user privacy while enabling businesses to reach their target audiences
+              effectively. This Advertising Policy outlines how we display, target, and
               manage advertisements across our AI-powered social media and marketplace platform.
             </p>
             <p>
-              We believe in transparent, relevant, and respectful advertising that enhances 
-              rather than detracts from the user experience on SoftChat's social networking, 
+              We believe in transparent, relevant, and respectful advertising that enhances
+              rather than detracts from the user experience on Eloity's social networking, 
               marketplace, freelancing, and cryptocurrency features.
             </p>
           </CardContent>
@@ -58,7 +58,7 @@ const AdvertisingPolicy = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Target className="w-5 h-5" />
-              Types of Advertising on SoftChat
+              Types of Advertising on Eloity
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -332,7 +332,7 @@ const AdvertisingPolicy = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm">
-              SoftChat works with reputable third-party advertising networks and partners 
+              Eloity works with reputable third-party advertising networks and partners 
               to deliver relevant advertisements:
             </p>
 
@@ -352,7 +352,7 @@ const AdvertisingPolicy = () => {
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li>Google Analytics for advertising insights</li>
                 <li>Facebook Pixel for conversion tracking</li>
-                <li>Custom analytics for SoftChat-specific metrics</li>
+                <li>Custom analytics for Eloity-specific metrics</li>
                 <li>Third-party verification services</li>
                 <li>Brand safety and fraud detection tools</li>
               </ul>
@@ -472,9 +472,9 @@ const AdvertisingPolicy = () => {
               For questions about our Advertising Policy or to report advertising issues:
             </p>
             <div className="space-y-2 text-sm">
-              <p><strong>Email:</strong> advertising@softchat.com</p>
-              <p><strong>Ad Review Team:</strong> adreview@softchat.com</p>
-              <p><strong>Policy Questions:</strong> policy@softchat.com</p>
+              <p><strong>Email:</strong> advertising@eloity.com</p>
+              <p><strong>Ad Review Team:</strong> adreview@eloity.com</p>
+              <p><strong>Policy Questions:</strong> policy@eloity.com</p>
               <p><strong>Response Time:</strong> We aim to respond within 2-5 business days</p>
             </div>
           </CardContent>

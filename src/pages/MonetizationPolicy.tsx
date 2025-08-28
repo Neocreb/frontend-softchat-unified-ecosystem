@@ -40,7 +40,7 @@ const MonetizationPolicy = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              SoftChat believes in empowering all users to earn and monetize their content, skills, 
+              Eloity believes in empowering all users to earn and monetize their content, skills, 
               and engagement. Our platform provides multiple revenue streams for creators, freelancers, 
               and entrepreneurs while maintaining fair and transparent policies.
             </p>

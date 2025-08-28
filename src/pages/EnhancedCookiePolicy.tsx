@@ -38,7 +38,7 @@ export default function EnhancedCookiePolicy() {
             </h1>
           </div>
           <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-            Learn about how SoftChat uses cookies and similar technologies, and manage your preferences 
+            Learn about how Eloity uses cookies and similar technologies, and manage your preferences 
             for data collection across our global platform.
           </p>
           <div className="flex flex-wrap justify-center gap-2 mt-4">
@@ -69,7 +69,7 @@ export default function EnhancedCookiePolicy() {
                   <CardContent className="space-y-4">
                     <p>
                       Cookies are small text files stored on your device when you visit websites. 
-                      SoftChat uses cookies and similar technologies to enhance your experience, 
+                      Eloity uses cookies and similar technologies to enhance your experience, 
                       provide personalized content, and analyze platform usage.
                     </p>
 
@@ -92,7 +92,7 @@ export default function EnhancedCookiePolicy() {
                         <ul className="text-sm space-y-1 text-gray-600">
                           <li>• <strong>Session Cookies:</strong> Deleted when browser closes</li>
                           <li>• <strong>Persistent Cookies:</strong> Remain until expiration</li>
-                          <li>• <strong>First-Party Cookies:</strong> Set by SoftChat directly</li>
+                          <li>• <strong>First-Party Cookies:</strong> Set by Eloity directly</li>
                           <li>• <strong>Third-Party Cookies:</strong> Set by external services</li>
                         </ul>
                       </div>
@@ -452,7 +452,7 @@ export default function EnhancedCookiePolicy() {
                         <div className="text-sm space-y-1 text-gray-600">
                           <div>• <strong>Control:</strong> External service policies</div>
                           <div>• <strong>Purpose:</strong> Ads, social widgets</div>
-                          <div>• <strong>Blocking:</strong> Browser or extension controls</div>
+                          <div>��� <strong>Blocking:</strong> Browser or extension controls</div>
                           <div>• <strong>Privacy:</strong> ITP and similar protections</div>
                         </div>
                       </div>
@@ -606,7 +606,7 @@ export default function EnhancedCookiePolicy() {
                         <h4 className="font-semibold">How to Exercise Rights</h4>
                         <div className="bg-blue-50 p-3 rounded">
                           <ul className="text-sm space-y-1 text-blue-700">
-                            <li>• <strong>Email:</strong> privacy@softchat.com</li>
+                            <li>• <strong>Email:</strong> privacy@eloity.com</li>
                             <li>• <strong>Support Portal:</strong> Help center requests</li>
                             <li>• <strong>In-App:</strong> Privacy settings and controls</li>
                             <li>• <strong>Phone:</strong> Customer service hotline</li>

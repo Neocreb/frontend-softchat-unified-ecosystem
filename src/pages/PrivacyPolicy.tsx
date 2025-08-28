@@ -43,13 +43,13 @@ const PrivacyPolicy = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              At SoftChat, we are committed to protecting your privacy and ensuring the security 
-              of your personal information. This Privacy Policy explains how we collect, use, 
-              disclose, and safeguard your information when you use our AI-powered social media 
+              At Eloity, we are committed to protecting your privacy and ensuring the security
+              of your personal information. This Privacy Policy explains how we collect, use,
+              disclose, and safeguard your information when you use our AI-powered social media
               and marketplace platform.
             </p>
             <p>
-              SoftChat is a comprehensive platform that includes social networking features,
+              Eloity is a comprehensive platform that includes social networking features,
               marketplace functionality, freelancing services, cryptocurrency trading,
               delivery services, and AI-powered content recommendations. Your privacy is
               fundamental to our operations.
@@ -327,7 +327,7 @@ const PrivacyPolicy = () => {
           </CardHeader>
           <CardContent>
             <p className="text-sm">
-              SoftChat is not intended for children under 13 years of age. We do not knowingly 
+              Eloity is not intended for children under 13 years of age. We do not knowingly 
               collect personal information from children under 13. If we become aware that we 
               have collected such information, we will take steps to delete it promptly.
             </p>
@@ -362,8 +362,8 @@ const PrivacyPolicy = () => {
               please contact us:
             </p>
             <div className="space-y-2 text-sm">
-              <p><strong>Email:</strong> privacy@softchat.com</p>
-              <p><strong>Address:</strong> SoftChat Privacy Team, Data Protection Office</p>
+              <p><strong>Email:</strong> privacy@eloity.com</p>
+              <p><strong>Address:</strong> Eloity Privacy Team, Data Protection Office</p>
               <p><strong>Response Time:</strong> We aim to respond within 30 days</p>
             </div>
           </CardContent>

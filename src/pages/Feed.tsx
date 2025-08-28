@@ -33,7 +33,7 @@ const posts: Post[] = [
   {
     id: "1",
     content:
-      "Just launched our new AI-powered feature! Check it out at softchat.ai/new-features",
+      "Just launched our new AI-powered feature! Check it out at eloity.ai/new-features",
     timestamp: "2h ago",
     createdAt: "2h ago", // Added required field
     likes: 24,
@@ -135,8 +135,8 @@ const Feed = () => {
         return (
           <SponsoredPostCard
             key={item.id}
-            title="Discover Softchat Premium"
-            content="Unlock exclusive features, priority support, and enhanced creator tools. Join thousands of creators already earning more with Softchat Premium!"
+            title="Discover Eloity Premium"
+            content="Unlock exclusive features, priority support, and enhanced creator tools. Join thousands of creators already earning more with Eloity Premium!"
             ctaText="Upgrade Now"
             onClick={() => {
               console.log('Sponsored post clicked');

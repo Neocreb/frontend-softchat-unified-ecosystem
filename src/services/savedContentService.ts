@@ -41,8 +41,8 @@ interface ViewHistoryItem {
 }
 
 class SavedContentService {
-  private static SAVED_POSTS_KEY = 'softchat_saved_posts';
-  private static VIEW_HISTORY_KEY = 'softchat_view_history';
+  private static SAVED_POSTS_KEY = 'eloity_saved_posts';
+  private static VIEW_HISTORY_KEY = 'eloity_view_history';
   private static MAX_HISTORY_ITEMS = 100;
 
   // Saved Posts Management

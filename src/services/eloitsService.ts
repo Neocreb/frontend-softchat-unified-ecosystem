@@ -1,6 +1,6 @@
 import { User } from "@/types/user";
 
-// SoftPoints Activity Types
+// Eloits Activity Types
 export type ActivityType =
   | "social"
   | "trading"
@@ -22,7 +22,7 @@ export type RewardType =
   | "marketplace_credit"
   | "trading_bonus";
 
-export interface SoftPointsActivity {
+export interface EloitsActivity {
   id: string;
   type: ActivityType;
   name: string;
@@ -40,7 +40,7 @@ export interface SoftPointsActivity {
   maxProgress?: number;
 }
 
-export interface SoftPointsReward {
+export interface EloitsReward {
   id: string;
   type: RewardType;
   name: string;
@@ -56,7 +56,7 @@ export interface SoftPointsReward {
   terms?: string[];
 }
 
-export interface UserSoftPointsData {
+export interface UserEloitsData {
   totalEarned: number;
   totalSpent: number;
   currentBalance: number;
@@ -72,7 +72,7 @@ export interface UserSoftPointsData {
   creatorBonus: number;
 }
 
-export interface SoftPointsTransaction {
+export interface EloitsTransaction {
   id: string;
   type: "earned" | "spent" | "converted" | "bonus" | "penalty";
   amount: number;
@@ -84,8 +84,8 @@ export interface SoftPointsTransaction {
   metadata?: Record<string, any>;
 }
 
-// Configuration for SoftPoints activities
-const activityConfig: Record<string, SoftPointsActivity> = {
+// Configuration for Eloits activities
+const activityConfig: Record<string, EloitsActivity> = {
   // Daily Activities
   daily_login: {
     id: "daily_login",
@@ -283,7 +283,7 @@ const activityConfig: Record<string, SoftPointsActivity> = {
     id: "refer_friend",
     type: "referral",
     name: "Refer Friends",
-    description: "Invite friends to join SoftChat",
+    description: "Invite friends to join Eloity",
     points: 1000,
     icon: "users",
     color: "bg-indigo-500",
@@ -373,13 +373,13 @@ const levelConfig = {
 };
 
 // Reward catalog
-const rewardCatalog: Record<string, SoftPointsReward> = {
+const rewardCatalog: Record<string, EloitsReward> = {
   // Cash Conversions
   cash_5: {
     id: "cash_5",
     type: "cash",
     name: "$5 Cash",
-    description: "Convert SoftPoints to real money via bank transfer",
+    description: "Convert Eloits to real money via bank transfer",
     pointsRequired: 500,
     value: "$5.00",
     category: "Money",
@@ -389,7 +389,7 @@ const rewardCatalog: Record<string, SoftPointsReward> = {
     id: "cash_25",
     type: "cash",
     name: "$25 Cash",
-    description: "Convert SoftPoints to real money via bank transfer",
+    description: "Convert Eloits to real money via bank transfer",
     pointsRequired: 2500,
     value: "$25.00",
     category: "Money",
@@ -400,7 +400,7 @@ const rewardCatalog: Record<string, SoftPointsReward> = {
     id: "cash_100",
     type: "cash",
     name: "$100 Cash",
-    description: "Convert SoftPoints to real money via bank transfer",
+    description: "Convert Eloits to real money via bank transfer",
     pointsRequired: 10000,
     value: "$100.00",
     category: "Money",
@@ -436,7 +436,7 @@ const rewardCatalog: Record<string, SoftPointsReward> = {
     id: "marketplace_10",
     type: "marketplace_credit",
     name: "$10 Marketplace Credit",
-    description: "Credit to use in the SoftChat marketplace",
+    description: "Credit to use in the Eloity marketplace",
     pointsRequired: 900,
     value: "$10.00",
     category: "Shopping",
@@ -446,7 +446,7 @@ const rewardCatalog: Record<string, SoftPointsReward> = {
     id: "marketplace_50",
     type: "marketplace_credit",
     name: "$50 Marketplace Credit",
-    description: "Credit to use in the SoftChat marketplace",
+    description: "Credit to use in the Eloity marketplace",
     pointsRequired: 4500,
     value: "$50.00",
     category: "Shopping",
@@ -480,8 +480,8 @@ const rewardCatalog: Record<string, SoftPointsReward> = {
   exclusive_nft: {
     id: "exclusive_nft",
     type: "exclusive",
-    name: "SoftChat NFT",
-    description: "Limited edition SoftChat commemorative NFT",
+    name: "Eloity NFT",
+    description: "Limited edition Eloity commemorative NFT",
     pointsRequired: 15000,
     value: "Unique",
     category: "Collectibles",
@@ -502,7 +502,7 @@ const rewardCatalog: Record<string, SoftPointsReward> = {
   },
 };
 
-class SoftPointsService {
+class EloitsService {
   // Calculate user level based on points
   calculateLevel(points: number): string {
     const levels = Object.entries(levelConfig);
@@ -588,11 +588,11 @@ class SoftPointsService {
 
   // Calculate cash conversion rate
   calculateCashValue(points: number): number {
-    return points / 100; // 100 SP = $1.00
+    return points / 100; // 100 ELO = $1.00
   }
 
   // Get available activities
-  getAvailableActivities(userLevel: string = "Bronze"): SoftPointsActivity[] {
+  getAvailableActivities(userLevel: string = "Bronze"): EloitsActivity[] {
     return Object.values(activityConfig);
   }
 
@@ -600,7 +600,7 @@ class SoftPointsService {
   getAvailableRewards(
     userLevel: string = "Bronze",
     userPoints: number = 0,
-  ): SoftPointsReward[] {
+  ): EloitsReward[] {
     return Object.values(rewardCatalog).filter((reward) => {
       if (reward.minLevel) {
         const levels = Object.keys(levelConfig);
@@ -613,7 +613,7 @@ class SoftPointsService {
   }
 
   // Record a transaction
-  recordTransaction(transaction: SoftPointsTransaction): void {
+  recordTransaction(transaction: EloitsTransaction): void {
     // In a real app, this would save to database
     console.log("Recording transaction:", transaction);
   }
@@ -622,7 +622,7 @@ class SoftPointsService {
   getTransactionHistory(
     userId: string,
     limit: number = 50,
-  ): SoftPointsTransaction[] {
+  ): EloitsTransaction[] {
     // Mock data - in real app, fetch from database
     return [
       {
@@ -680,8 +680,8 @@ class SoftPointsService {
     return false;
   }
 
-  // Get user's SoftPoints statistics
-  getUserStats(userId: string): UserSoftPointsData {
+  // Get user's Eloits statistics
+  getUserStats(userId: string): UserEloitsData {
     // Mock data - in real app, fetch from database
     return {
       totalEarned: 12450,
@@ -706,7 +706,7 @@ class SoftPointsService {
     points: number,
     paymentMethod: string,
   ): Promise<boolean> {
-    if (points < 500) throw new Error("Minimum conversion is 500 SP");
+    if (points < 500) throw new Error("Minimum conversion is 500 ELO");
 
     // Record conversion transaction
     this.recordTransaction({
@@ -725,5 +725,5 @@ class SoftPointsService {
   }
 }
 
-export const softPointsService = new SoftPointsService();
+export const eloitsService = new EloitsService();
 export { levelConfig, activityConfig, rewardCatalog };

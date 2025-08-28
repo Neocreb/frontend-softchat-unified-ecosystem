@@ -132,14 +132,14 @@ export const messagingService = {
             sender_id: "sample-user-1",
             conversation_id: "sample-conversation-1",
             content:
-              "Hey! Welcome to SoftChat messaging. This is a sample conversation for testing.",
+              "Hey! Welcome to Eloity messaging. This is a sample conversation for testing.",
             created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
             read: false,
             sender: {
-              name: "SoftChat Bot",
-              username: "softchat_bot",
+              name: "Eloity Bot",
+              username: "eloity_bot",
               avatar:
-                "https://api.dicebear.com/7.x/avataaars/svg?seed=softchat",
+                "https://api.dicebear.com/7.x/avataaars/svg?seed=eloity",
             },
           },
           {
@@ -151,10 +151,10 @@ export const messagingService = {
             created_at: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
             read: false,
             sender: {
-              name: "SoftChat Bot",
-              username: "softchat_bot",
+              name: "Eloity Bot",
+              username: "eloity_bot",
               avatar:
-                "https://api.dicebear.com/7.x/avataaars/svg?seed=softchat",
+                "https://api.dicebear.com/7.x/avataaars/svg?seed=eloity",
             },
           },
         ];
@@ -230,21 +230,21 @@ export const messagingService = {
           sender_id: "sample-user-1",
           conversation_id: "sample-conversation-1",
           content:
-            "Hey! Welcome to SoftChat messaging. This is a sample conversation for testing.",
+            "Hey! Welcome to Eloity messaging. This is a sample conversation for testing.",
           created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
           read: false,
           sender: {
-            name: "SoftChat Bot",
-            username: "softchat_bot",
-            avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=softchat",
+            name: "Eloity Bot",
+            username: "eloity_bot",
+            avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=eloity",
           },
         },
         unread_count: 1,
         other_user: {
           id: "sample-user-1",
-          name: "SoftChat Bot",
-          username: "softchat_bot",
-          avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=softchat",
+          name: "Eloity Bot",
+          username: "eloity_bot",
+          avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=eloity",
         },
       };
 
@@ -346,22 +346,22 @@ export const messagingService = {
             sender_id: "sample-user-1",
             conversation_id: "sample-conversation-1",
             content:
-              "Hey! Welcome to SoftChat messaging. This is a sample conversation for testing.",
+              "Hey! Welcome to Eloity messaging. This is a sample conversation for testing.",
             created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
             read: false,
             sender: {
-              name: "SoftChat Bot",
-              username: "softchat_bot",
+              name: "Eloity Bot",
+              username: "eloity_bot",
               avatar:
-                "https://api.dicebear.com/7.x/avataaars/svg?seed=softchat",
+                "https://api.dicebear.com/7.x/avataaars/svg?seed=eloity",
             },
           },
           unread_count: 1,
           other_user: {
             id: "sample-user-1",
-            name: "SoftChat Bot",
-            username: "softchat_bot",
-            avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=softchat",
+            name: "Eloity Bot",
+            username: "eloity_bot",
+            avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=eloity",
           },
         },
       ];

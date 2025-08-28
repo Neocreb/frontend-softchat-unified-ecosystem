@@ -36,17 +36,17 @@ const TermsOfService = () => {
         {/* Introduction */}
         <Card>
           <CardHeader>
-            <CardTitle>Welcome to SoftChat</CardTitle>
+            <CardTitle>Welcome to Eloity</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              These Terms of Service ("Terms") govern your use of SoftChat, an AI-powered
+              These Terms of Service ("Terms") govern your use of Eloity, an AI-powered
               social media and marketplace platform that includes social networking,
               marketplace functionality, freelancing services, cryptocurrency trading,
               delivery services, verified premium subscriptions, and advanced analytics features.
             </p>
             <p>
-              By accessing or using SoftChat, you agree to be bound by these Terms.
+              By accessing or using Eloity, you agree to be bound by these Terms.
               If you disagree with any part of these terms, you may not access the Service.
             </p>
           </CardContent>
@@ -64,7 +64,7 @@ const TermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Free vs Premium Plans</h4>
               <p className="text-sm">
-                SoftChat offers both free and premium subscription tiers. Free users have access to all
+                Eloity offers both free and premium subscription tiers. Free users have access to all
                 core features with certain limitations (10 video uploads/month, 5GB storage, 90-day content
                 retention). Premium users ($9.99/month or $99.99/year) receive enhanced features including
                 verified badges, unlimited uploads, 100GB storage, and priority support.
@@ -129,7 +129,7 @@ const TermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Account Creation</h4>
               <ul className="list-disc list-inside space-y-1 text-sm">
-                <li>You must be at least 13 years old to use SoftChat</li>
+                <li>You must be at least 13 years old to use Eloity</li>
                 <li>You must provide accurate and complete information</li>
                 <li>You are responsible for maintaining account security</li>
                 <li>One person may not maintain multiple accounts</li>
@@ -304,7 +304,7 @@ const TermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Liability and Insurance</h4>
               <p className="text-sm mb-2">
-                SoftChat provides comprehensive delivery insurance coverage. Delivery providers
+                Eloity provides comprehensive delivery insurance coverage. Delivery providers
                 are covered under our commercial liability policy during active deliveries.
                 Claims for damaged, lost, or stolen items will be processed according to our
                 dispute resolution procedures. Maximum liability per package is limited to
@@ -325,7 +325,7 @@ const TermsOfService = () => {
           <CardContent className="space-y-4">
             <div>
               <h4 className="font-semibold mb-2">Acceptable Use</h4>
-              <p className="text-sm mb-2">You agree to use SoftChat responsibly and in compliance with:</p>
+              <p className="text-sm mb-2">You agree to use Eloity responsibly and in compliance with:</p>
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li>All applicable local, state, national, and international laws</li>
                 <li>These Terms of Service and our Community Guidelines</li>
@@ -408,7 +408,7 @@ const TermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Platform Rights</h4>
               <ul className="list-disc list-inside space-y-1 text-sm">
-                <li>SoftChat and related marks are our intellectual property</li>
+                <li>Eloity and related marks are our intellectual property</li>
                 <li>Our AI algorithms and recommendation systems are proprietary</li>
                 <li>Platform software and infrastructure are protected by copyright</li>
                 <li>Users may not reverse engineer or copy our technology</li>
@@ -472,7 +472,7 @@ const TermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Limitation of Liability</h4>
               <p className="text-sm">
-                To the fullest extent permitted by law, SoftChat shall not be liable for any 
+                To the fullest extent permitted by law, Eloity shall not be liable for any 
                 indirect, incidental, special, consequential, or punitive damages, including 
                 but not limited to loss of profits, data, or business opportunities.
               </p>
@@ -514,7 +514,7 @@ const TermsOfService = () => {
           <CardContent>
             <p className="text-sm">
               We reserve the right to modify these Terms at any time. We will notify users of 
-              material changes via email or platform notifications. Continued use of SoftChat 
+              material changes via email or platform notifications. Continued use of Eloity 
               after modifications constitutes acceptance of the updated Terms.
             </p>
           </CardContent>
@@ -544,8 +544,8 @@ const TermsOfService = () => {
               If you have questions about these Terms of Service, please contact us:
             </p>
             <div className="space-y-2 text-sm">
-              <p><strong>Email:</strong> legal@softchat.com</p>
-              <p><strong>Address:</strong> SoftChat Legal Department</p>
+              <p><strong>Email:</strong> legal@eloity.com</p>
+              <p><strong>Address:</strong> Eloity Legal Department</p>
               <p><strong>Response Time:</strong> We aim to respond within 5 business days</p>
             </div>
           </CardContent>

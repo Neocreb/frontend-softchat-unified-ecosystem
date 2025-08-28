@@ -41,7 +41,7 @@ const DispatchPartnerTerms = () => {
           <CardContent className="space-y-4">
             <p>
               These Dispatch Partner Terms of Use ("Partner Terms") govern your participation
-              as an independent contractor delivery provider ("Dispatch Partner") on the SoftChat
+              as an independent contractor delivery provider ("Dispatch Partner") on the Eloity
               platform. These terms supplement and work in conjunction with our main Terms of Service.
             </p>
             <p>
@@ -217,7 +217,7 @@ const DispatchPartnerTerms = () => {
                 <li>Partners are independent contractors responsible for tax obligations</li>
                 <li>1099 tax forms provided annually for earnings reporting</li>
                 <li>Partners must maintain records for business expense deductions</li>
-                <li>SoftChat does not withhold taxes from partner earnings</li>
+                <li>Eloity does not withhold taxes from partner earnings</li>
                 <li>International partners subject to applicable tax treaties</li>
               </ul>
             </div>
@@ -428,9 +428,9 @@ const DispatchPartnerTerms = () => {
               For questions about these Dispatch Partner Terms, please contact:
             </p>
             <div className="space-y-2 text-sm">
-              <p><strong>Partner Support:</strong> partners@softchat.com</p>
-              <p><strong>Legal Department:</strong> legal@softchat.com</p>
-              <p><strong>Data Protection Officer:</strong> privacy@softchat.com</p>
+              <p><strong>Partner Support:</strong> partners@eloity.com</p>
+              <p><strong>Legal Department:</strong> legal@eloity.com</p>
+              <p><strong>Data Protection Officer:</strong> privacy@eloity.com</p>
               <p><strong>Emergency Support:</strong> 24/7 partner helpline available in app</p>
               <p><strong>Response Time:</strong> Partner inquiries answered within 4 hours</p>
             </div>

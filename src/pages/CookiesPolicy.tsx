@@ -66,11 +66,11 @@ const CookiesPolicy = () => {
           <CardContent className="space-y-4">
             <p>
               Cookies are small text files that are stored on your device when you visit 
-              SoftChat. They help us provide you with a better experience by remembering 
+              Eloity. They help us provide you with a better experience by remembering 
               your preferences, keeping you logged in, and enabling personalized features.
             </p>
             <p>
-              This Cookie Policy explains how SoftChat uses cookies and similar technologies 
+              This Cookie Policy explains how Eloity uses cookies and similar technologies 
               across our AI-powered social media and marketplace platform, including our 
               social networking, marketplace, freelancing, and cryptocurrency features.
             </p>
@@ -88,7 +88,7 @@ const CookiesPolicy = () => {
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground mb-4">
               Manage your cookie preferences below. Note that disabling certain cookies 
-              may affect your experience on SoftChat.
+              may affect your experience on Eloity.
             </p>
             
             <div className="space-y-4">
@@ -118,7 +118,7 @@ const CookiesPolicy = () => {
                     <h4 className="font-semibold">Analytics Cookies</h4>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Help us understand how you use SoftChat to improve our services.
+                    Help us understand how you use Eloity to improve our services.
                   </p>
                 </div>
                 <Switch 
@@ -234,7 +234,7 @@ const CookiesPolicy = () => {
                 Analytics Cookies
               </h4>
               <p className="text-sm mb-2">
-                These cookies help us understand how users interact with SoftChat:
+                These cookies help us understand how users interact with Eloity:
               </p>
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li><strong>Usage Analytics:</strong> Track page views and user journeys</li>
@@ -256,7 +256,7 @@ const CookiesPolicy = () => {
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li><strong>Ad Targeting:</strong> Show relevant advertisements</li>
                 <li><strong>Campaign Tracking:</strong> Measure advertising effectiveness</li>
-                <li><strong>Retargeting:</strong> Re-engage users who visited SoftChat</li>
+                <li><strong>Retargeting:</strong> Re-engage users who visited Eloity</li>
                 <li><strong>Social Media Ads:</strong> Track social media campaign performance</li>
                 <li><strong>Affiliate Marketing:</strong> Attribute referrals and commissions</li>
               </ul>
@@ -305,7 +305,7 @@ const CookiesPolicy = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm">
-              SoftChat integrates with various third-party services that may set their own cookies:
+              Eloity integrates with various third-party services that may set their own cookies:
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -390,7 +390,7 @@ const CookiesPolicy = () => {
             <div>
               <h4 className="font-semibold mb-2">Platform Controls</h4>
               <p className="text-sm mb-2">
-                SoftChat provides additional privacy controls:
+                Eloity provides additional privacy controls:
               </p>
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li>Cookie preference center (above)</li>
@@ -443,7 +443,7 @@ const CookiesPolicy = () => {
               If you have questions about our use of cookies, please contact us:
             </p>
             <div className="space-y-2 text-sm">
-              <p><strong>Email:</strong> privacy@softchat.com</p>
+              <p><strong>Email:</strong> privacy@eloity.com</p>
               <p><strong>Subject:</strong> Cookie Policy Inquiry</p>
               <p><strong>Response Time:</strong> We aim to respond within 30 days</p>
             </div>
