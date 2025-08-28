@@ -327,7 +327,7 @@ const PrivacyPolicy = () => {
           </CardHeader>
           <CardContent>
             <p className="text-sm">
-              SoftChat is not intended for children under 13 years of age. We do not knowingly 
+              Eloity is not intended for children under 13 years of age. We do not knowingly 
               collect personal information from children under 13. If we become aware that we 
               have collected such information, we will take steps to delete it promptly.
             </p>
