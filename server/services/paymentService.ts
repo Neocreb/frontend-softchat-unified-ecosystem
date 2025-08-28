@@ -37,7 +37,7 @@ export async function processFlutterwavePayment(data: FlutterwavePaymentData) {
         name: user.full_name || user.username
       },
       customizations: {
-        title: "Softchat Payment",
+        title: "Eloity Payment",
         description: purpose,
         logo: `${process.env.FRONTEND_URL}/logo.png`
       },
@@ -260,7 +260,7 @@ export async function processMTNMoMoPayment(data: MTNMoMoPaymentData) {
         partyId: phoneNumber.replace('+', '')
       },
       payerMessage: narration,
-      payeeNote: "Softchat platform payment"
+      payeeNote: "Eloity platform payment"
     };
 
     if (process.env.NODE_ENV === 'production') {
