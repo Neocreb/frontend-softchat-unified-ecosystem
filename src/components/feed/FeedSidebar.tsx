@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -47,7 +46,7 @@ const FeedSidebar = () => {
                   <div className="flex items-center">
                     <span className="text-sm font-medium">{profile.name}</span>
                     {profile.verified && (
-                      <Badge variant="default" className="ml-1 px-1 py-0 h-4 bg-softchat-primary hover:bg-softchat-primary/90">
+                      <Badge variant="default" className="ml-1 px-1 py-0 h-4 bg-eloity-primary hover:bg-eloity-primary/90">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"
@@ -129,7 +128,7 @@ const FeedSidebar = () => {
         <CardContent className="pt-0">
           <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-softchat-primary to-softchat-accent flex items-center justify-center">
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-eloity-primary to-eloity-accent flex items-center justify-center">
                 <Star className="h-5 w-5 text-white" />
               </div>
               <div>
@@ -151,7 +150,7 @@ const FeedSidebar = () => {
               </div>
               <div className="h-2 rounded-full bg-muted">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-softchat-primary to-softchat-accent"
+                  className="h-full rounded-full bg-gradient-to-r from-eloity-primary to-eloity-accent"
                   style={{ width: "49%" }}
                 ></div>
               </div>
@@ -161,15 +160,15 @@ const FeedSidebar = () => {
               <div className="mb-2 font-medium">Earn more points!</div>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
-                  <Plus className="h-3 w-3 text-softchat-accent" />
+                  <Plus className="h-3 w-3 text-eloity-accent" />
                   Create a post (+10 points)
                 </li>
                 <li className="flex items-center gap-2">
-                  <Plus className="h-3 w-3 text-softchat-accent" />
+                  <Plus className="h-3 w-3 text-eloity-accent" />
                   Make a purchase (+50 points)
                 </li>
                 <li className="flex items-center gap-2">
-                  <Plus className="h-3 w-3 text-softchat-accent" />
+                  <Plus className="h-3 w-3 text-eloity-accent" />
                   Refer a friend (+200 points)
                 </li>
               </ul>
