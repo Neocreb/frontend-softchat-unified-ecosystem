@@ -80,7 +80,7 @@ const EnhancedWalletDashboardContent = () => {
         </h1>
       </div>
 
-      {/* Enhanced Professional Balance Card */}
+      {/* Enhanced Professional Balance Card - Always render with fallback data */}
       <CryptoWalletBalanceCard
         totalBalance={totalBalance}
         totalBalance24hChange={change24h}
@@ -92,6 +92,7 @@ const EnhancedWalletDashboardContent = () => {
         }}
         onDeposit={() => setShowDepositModal(true)}
         onWithdraw={() => setShowWithdrawModal(true)}
+        className="mb-6"
       />
 
 
