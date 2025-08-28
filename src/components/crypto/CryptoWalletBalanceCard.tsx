@@ -74,36 +74,36 @@ export default function CryptoWalletBalanceCard({
         {/* Header Row */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="p-1.5 sm:p-2 bg-white/20 backdrop-blur-sm rounded-xl shadow-lg">
-              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+            <div className="p-2 sm:p-2.5 bg-white/25 backdrop-blur-md rounded-xl shadow-lg ring-1 ring-white/20 hover:bg-white/30 transition-all duration-200">
+              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white drop-shadow-sm" />
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-white drop-shadow-lg">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-white drop-shadow-lg tracking-tight">
                 Crypto Wallet
               </h2>
-              <p className="text-white/90 text-xs sm:text-sm font-medium drop-shadow">
+              <p className="text-white/95 text-xs sm:text-sm font-medium drop-shadow tracking-wide">
                 Digital asset portfolio
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setShowBalance(!showBalance)}
-              className="text-white hover:bg-white/20 rounded-lg p-1.5 sm:p-2 transition-colors"
+              className="text-white hover:bg-white/25 rounded-xl p-1.5 sm:p-2 transition-all duration-200 backdrop-blur-md ring-1 ring-white/10 hover:ring-white/20 hover:scale-105"
             >
               {showBalance ? (
-                <EyeOff className="h-3 w-3 sm:h-4 sm:w-4" />
+                <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               ) : (
-                <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
+                <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               )}
             </Button>
 
-            <Badge className="bg-white/20 backdrop-blur-sm text-white border border-white/20 px-2 sm:px-3 py-1 text-2xs sm:text-xs font-semibold shadow-lg">
-              <Shield className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
-              Secured
+            <Badge className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-md text-white border border-green-400/30 px-2.5 sm:px-3 py-1.5 text-2xs sm:text-xs font-bold shadow-lg ring-1 ring-green-400/20 hover:from-green-500/25 hover:to-emerald-500/25 transition-all duration-200">
+              <Shield className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1.5 drop-shadow-sm" />
+              <span className="drop-shadow-sm">Secured</span>
             </Badge>
           </div>
         </div>
