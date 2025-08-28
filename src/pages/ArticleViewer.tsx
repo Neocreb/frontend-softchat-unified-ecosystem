@@ -174,14 +174,31 @@ const ArticleViewer = () => {
         score
       }));
 
-      // Save quiz score
+      // Save quiz score and handle rewards
       if (user && articleId) {
-        educationalArticleService.saveQuizScore(user.id, articleId, score);
-        
+        educationalArticleService.saveQuizScore(user.id, articleId, score).then(() => {
+          // Refresh progress to get updated rewards
+          const updatedProgress = educationalArticleService.getUserArticleProgress(user.id, articleId);
+          setUserProgress(updatedProgress);
+        });
+
         if (score >= article.quiz.passingScore) {
+          // Calculate total rewards earned
+          let rewardMessage = `Congratulations! You scored ${score}% and completed the article.`;
+          let totalPoints = 0;
+
+          if (article.rewardPoints.quizCompletion) {
+            totalPoints += article.rewardPoints.quizCompletion;
+          }
+
+          if (score === 100 && article.rewardPoints.perfectScore) {
+            totalPoints += article.rewardPoints.perfectScore;
+            rewardMessage += ` Perfect score bonus included!`;
+          }
+
           toast({
-            title: "Quiz Passed!",
-            description: `Congratulations! You scored ${score}% and completed the article.`,
+            title: "🎉 Quiz Passed!",
+            description: `${rewardMessage} You earned ${totalPoints} points!`,
           });
         } else {
           toast({
