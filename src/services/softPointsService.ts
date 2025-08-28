@@ -680,8 +680,8 @@ class EloitsService {
     return false;
   }
 
-  // Get user's SoftPoints statistics
-  getUserStats(userId: string): UserSoftPointsData {
+  // Get user's Eloits statistics
+  getUserStats(userId: string): UserEloitsData {
     // Mock data - in real app, fetch from database
     return {
       totalEarned: 12450,
@@ -725,5 +725,5 @@ class EloitsService {
   }
 }
 
-export const softPointsService = new SoftPointsService();
+export const eloitsService = new EloitsService();
 export { levelConfig, activityConfig, rewardCatalog };
