@@ -622,7 +622,7 @@ const ActivityEconomyAdmin: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <p className="font-medium text-sm">
-                          {formatNumber(day.softPoints)} SP
+                          {formatNumber(day.eloits)} ELO
                         </p>
                         <p className="text-xs text-muted-foreground">
                           distributed
