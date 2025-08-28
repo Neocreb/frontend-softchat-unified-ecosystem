@@ -76,8 +76,8 @@ const PostActions = ({
           timeSpent / 1000, // Convert to seconds
         );
 
-        if (reward.success && reward.softPoints > 0) {
-          notification.success(`+${reward.softPoints} SoftPoints earned!`, {
+        if (reward.success && reward.eloits > 0) {
+          notification.success(`+${reward.eloits} Eloits earned!`, {
             description: "Keep engaging to earn more rewards",
           });
         }
