@@ -278,7 +278,203 @@ const mockCourses: Course[] = [
         description: "Learn to use moving averages for trend analysis",
         type: "text",
         duration: 15,
-        content: "Moving averages smooth out price data to help identify trend direction...",
+        content: `
+# Moving Averages: The Foundation of Trend Analysis
+
+## Introduction
+
+Moving averages are one of the most fundamental and widely used technical indicators in financial markets. They smooth out price data by creating a constantly updated average price over a specific time period. This smoothing helps traders identify trend direction and potential reversal points while filtering out the "noise" of day-to-day price fluctuations.
+
+## What are Moving Averages?
+
+A moving average is calculated by taking the arithmetic mean of a security's price over a set number of periods. As new data becomes available, the oldest data point is dropped, and the newest is added, causing the average to "move" along the price chart.
+
+**Key Characteristics:**
+- **Trend Following**: Moving averages are lagging indicators that follow price trends
+- **Smoothing Effect**: They reduce the impact of random price fluctuations
+- **Support/Resistance**: Can act as dynamic support and resistance levels
+- **Signal Generation**: Crossovers and slopes provide trading signals
+
+## Types of Moving Averages
+
+### Simple Moving Average (SMA)
+
+The most basic type, calculated by adding closing prices over a period and dividing by the number of periods.
+
+**Formula**: SMA = (P1 + P2 + ... + Pn) / n
+
+**Characteristics:**
+- Gives equal weight to all prices in the period
+- Slower to react to recent price changes
+- More stable, less prone to false signals
+
+### Exponential Moving Average (EMA)
+
+Gives more weight to recent prices, making it more responsive to new information.
+
+**Characteristics:**
+- Reacts faster to price changes
+- Follows trends more closely
+- More prone to false signals but catches trends earlier
+
+### Weighted Moving Average (WMA)
+
+Assigns different weights to different periods, typically giving more weight to recent data.
+
+**Characteristics:**
+- Customizable weighting scheme
+- Faster response than SMA
+- Less common in practice
+
+## Popular Moving Average Periods
+
+### Short-term Moving Averages (5-20 periods)
+- **5-day**: Very responsive, good for scalping
+- **10-day**: Popular for short-term trend identification
+- **20-day**: Commonly used monthly reference
+
+### Medium-term Moving Averages (21-100 periods)
+- **50-day**: Industry standard for medium-term trends
+- **100-day**: Quarterly trend reference
+
+### Long-term Moving Averages (100+ periods)
+- **200-day**: Most watched long-term trend indicator
+- **365-day**: Annual trend reference
+
+## Trading Strategies with Moving Averages
+
+### 1. Trend Identification
+
+**Uptrend Signals:**
+- Price consistently above the moving average
+- Moving average has a positive slope
+- Higher moving average highs and lows
+
+**Downtrend Signals:**
+- Price consistently below the moving average
+- Moving average has a negative slope
+- Lower moving average highs and lows
+
+### 2. Moving Average Crossovers
+
+**Golden Cross:**
+- Short-term MA crosses above long-term MA
+- Bullish signal, often indicating trend reversal
+- Most famous: 50-day crossing above 200-day
+
+**Death Cross:**
+- Short-term MA crosses below long-term MA
+- Bearish signal, often indicating trend reversal
+- 50-day crossing below 200-day is widely watched
+
+### 3. Multiple Moving Average Systems
+
+Using 3 or more moving averages to confirm trends:
+- **Fast MA** (e.g., 10-day): Entry signals
+- **Medium MA** (e.g., 50-day): Trend confirmation
+- **Slow MA** (e.g., 200-day): Overall trend direction
+
+### 4. Moving Average as Support/Resistance
+
+- In uptrends, MA often acts as support
+- In downtrends, MA often acts as resistance
+- Bounces off MA can provide entry opportunities
+- Breaks through MA can signal trend changes
+
+## Advantages of Moving Averages
+
+1. **Simplicity**: Easy to understand and calculate
+2. **Versatility**: Work across all timeframes and markets
+3. **Trend Clarity**: Clear visual representation of trend direction
+4. **Objective**: Removes emotion from trend analysis
+5. **Risk Management**: Can be used for stop-loss placement
+
+## Limitations of Moving Averages
+
+1. **Lagging Nature**: Always behind price action
+2. **Whipsaws**: Can generate false signals in sideways markets
+3. **No Predictive Power**: Only show what has happened, not what will happen
+4. **Period Sensitivity**: Performance varies greatly with different periods
+
+## Advanced Moving Average Concepts
+
+### Moving Average Convergence Divergence (MACD)
+
+Uses the relationship between two EMAs to generate signals:
+- **MACD Line**: 12-day EMA minus 26-day EMA
+- **Signal Line**: 9-day EMA of MACD line
+- **Histogram**: Difference between MACD and signal line
+
+### Bollinger Bands
+
+Combines a simple moving average with standard deviation bands:
+- **Middle Band**: 20-period SMA
+- **Upper Band**: SMA + (2 × standard deviation)
+- **Lower Band**: SMA - (2 × standard deviation)
+
+### Adaptive Moving Averages
+
+Automatically adjust their sensitivity based on market volatility:
+- **KAMA (Kaufman's Adaptive MA)**: Adjusts based on price direction and volatility
+- **ALMA (Arnaud Legoux MA)**: Reduces lag while maintaining smoothness
+
+## Cryptocurrency-Specific Considerations
+
+### Market Hours
+- Crypto markets trade 24/7, affecting MA calculations
+- No gaps like traditional markets
+- Continuous price action can create different patterns
+
+### Volatility
+- Higher volatility may require longer MA periods
+- More false signals in highly volatile conditions
+- Consider using EMAs for faster response
+
+### Volume
+- Combine MAs with volume analysis
+- Volume-weighted moving averages (VWMA) can be more relevant
+
+## Practical Implementation Tips
+
+### Choosing the Right Period
+1. **Match your trading timeframe**: Day traders use shorter periods
+2. **Consider market volatility**: Higher volatility = longer periods
+3. **Test different combinations**: Backtest various periods
+4. **Use market standards**: 50 and 200-day are widely watched
+
+### Combining with Other Indicators
+- **RSI**: Confirm overbought/oversold conditions
+- **Volume**: Validate MA signals with volume confirmation
+- **Support/Resistance**: Combine with horizontal levels
+- **Candlestick Patterns**: Use for precise entry timing
+
+### Risk Management
+- Use MA for initial stop-loss placement
+- Trail stops along moving averages
+- Consider MA slope for position sizing
+- Exit when MA structure breaks down
+
+## Common Mistakes to Avoid
+
+1. **Over-reliance**: MAs are just one tool among many
+2. **Wrong Period Selection**: Not matching period to trading style
+3. **Ignoring Market Context**: MAs work poorly in choppy markets
+4. **Chasing Signals**: Acting on every crossover without confirmation
+5. **Neglecting Risk Management**: Using MAs without proper stops
+
+## Conclusion
+
+Moving averages are foundational tools in technical analysis, providing clear visual representation of trends and generating actionable trading signals. While they have limitations as lagging indicators, their simplicity and effectiveness have made them enduring favorites among traders and investors.
+
+Success with moving averages comes from:
+- Understanding their strengths and limitations
+- Choosing appropriate periods for your trading style
+- Combining them with other technical tools
+- Maintaining proper risk management
+- Practicing patience and discipline in execution
+
+Remember that no single indicator is perfect, and moving averages work best as part of a comprehensive trading strategy that includes multiple forms of analysis and sound risk management principles.
+        `,
         completed: false,
         order: 4
       },
