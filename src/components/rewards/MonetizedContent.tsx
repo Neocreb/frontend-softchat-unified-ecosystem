@@ -27,7 +27,7 @@ interface ContentItem {
   views: number;
   earnings: number;
   tips: number;
-  softPoints: number;
+  eloits: number;
   isMonetized: boolean;
   createdAt: string;
   performance: {
@@ -80,7 +80,7 @@ const MonetizedContent = ({ userId }: MonetizedContentProps) => {
       views: 45689,
       earnings: 240.5,
       tips: 12,
-      softPoints: 45,
+      eloits: 45,
       isMonetized: true,
       createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
       performance: {
@@ -97,7 +97,7 @@ const MonetizedContent = ({ userId }: MonetizedContentProps) => {
       views: 23456,
       earnings: 125.3,
       tips: 8,
-      softPoints: 23,
+      eloits: 23,
       isMonetized: true,
       createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
       performance: {
@@ -114,7 +114,7 @@ const MonetizedContent = ({ userId }: MonetizedContentProps) => {
       views: 18923,
       earnings: 89.75,
       tips: 15,
-      softPoints: 19,
+      eloits: 19,
       isMonetized: true,
       createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
       performance: {
@@ -167,9 +167,9 @@ const MonetizedContent = ({ userId }: MonetizedContentProps) => {
       views: acc.views + item.views,
       earnings: acc.earnings + item.earnings,
       tips: acc.tips + item.tips,
-      softPoints: acc.softPoints + item.softPoints,
+      eloits: acc.eloits + item.eloits,
     }),
-    { views: 0, earnings: 0, tips: 0, softPoints: 0 },
+    { views: 0, earnings: 0, tips: 0, eloits: 0 },
   );
 
   return (
@@ -229,8 +229,8 @@ const MonetizedContent = ({ userId }: MonetizedContentProps) => {
                 <Zap className="w-5 h-5 text-purple-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">SoftPoints</p>
-                <p className="text-xl font-bold">{totalStats.softPoints}</p>
+                <p className="text-sm text-muted-foreground">Eloits</p>
+                <p className="text-xl font-bold">{totalStats.eloits}</p>
               </div>
             </div>
           </CardContent>
@@ -349,7 +349,7 @@ const MonetizedContent = ({ userId }: MonetizedContentProps) => {
                       </p>
                       <p className="text-xs text-purple-600 flex items-center justify-end gap-1">
                         <Star className="w-3 h-3" />
-                        {item.softPoints} SP
+                        {item.eloits} ELO
                       </p>
                       {item.isMonetized && (
                         <Badge variant="outline" className="text-xs mt-1">
