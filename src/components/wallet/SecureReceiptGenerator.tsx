@@ -272,9 +272,8 @@ const SecureReceiptDialog = ({ transaction, isOpen, onClose }: SecureReceiptProp
             </div>
 
             {/* Security Information */}
-            <div className="border-t-2 border-gray-300 pt-6 mb-6">
-              <h3 className="font-bold text-lg mb-4">SECURITY & VERIFICATION</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div className="border-t border-gray-300 pt-4 mb-4">
+              <div className="text-sm text-center">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Hash className="h-4 w-4" />
