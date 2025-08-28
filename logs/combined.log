@@ -1,0 +1,1 @@
+{"database":true,"environment":"development","features":["payments","video","crypto","kyc","notifications","admin","chat","social"],"level":"info","message":"Server started successfully","port":"5000","service":"eloity-backend","timestamp":"2025-08-28T12:18:03.961Z","version":"2.0.0"}
