@@ -540,9 +540,9 @@ const mockCourses: Course[] = [
 let userProgressData: { [userId: string]: UserProgress[] } = {};
 
 class CourseService {
-  // Get all courses
+  // Get all courses with complete lesson data
   getAllCourses(): Course[] {
-    return mockCourses;
+    return getCompleteCoursesWithExtendedData(mockCourses);
   }
 
   // Get course by ID
