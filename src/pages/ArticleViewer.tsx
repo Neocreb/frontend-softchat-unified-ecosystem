@@ -86,6 +86,20 @@ const ArticleViewer = () => {
     };
   }, [user, articleId, readingStartTime]);
 
+  // Track reading progress periodically
+  useEffect(() => {
+    if (!user || !articleId) return;
+
+    const interval = setInterval(() => {
+      const timeSpent = Math.round((Date.now() - readingStartTime.getTime()) / 60000); // in minutes
+      if (timeSpent > 0) {
+        educationalArticleService.updateReadingProgress(user.id, articleId, timeSpent);
+      }
+    }, 30000); // Track every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [user, articleId, readingStartTime]);
+
   const loadArticle = () => {
     try {
       const articleData = educationalArticleService.getArticleById(articleId!);
