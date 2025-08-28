@@ -315,6 +315,17 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setIsLoading(true);
         setError(null);
 
+        // Guard against missing Supabase configuration to avoid cryptic runtime errors
+        if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+          const cfgErr = new Error("Supabase configuration is missing");
+          console.error("Login aborted - missing Supabase env config", {
+            url: import.meta.env.VITE_SUPABASE_URL,
+            hasKey: !!import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          });
+          setError(cfgErr);
+          return { error: cfgErr };
+        }
+
         console.log("Attempting login for:", email);
         console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
 
@@ -324,12 +335,15 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         });
 
         if (error) {
+          // Log a structured error for better diagnostics
           console.error("Supabase auth error:", error);
-          console.error("Error details:", {
-            message: error.message,
-            status: error.status,
-            name: error.name
-          });
+          try {
+            console.error("Error details:", {
+              message: (error as any).message,
+              status: (error as any).status,
+              name: (error as any).name,
+            });
+          } catch {}
           setError(error);
           return { error };
         }

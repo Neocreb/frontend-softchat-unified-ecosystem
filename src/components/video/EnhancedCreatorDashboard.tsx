@@ -130,7 +130,14 @@ interface FeatureAnalytics {
 }
 
 const EnhancedCreatorDashboard: React.FC = () => {
-  const [timeRange, setTimeRange] = useState("30d");
+  const [timeRange, setTimeRange] = useState(() => {
+    try {
+      if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") {
+        return window.localStorage.getItem("ucs:timeRange") || "30d";
+      }
+    } catch {}
+    return "30d";
+  });
   const [activeSection, setActiveSection] = useState("overview");
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [selectedContent, setSelectedContent] = useState<any | null>(null);
@@ -143,7 +150,16 @@ const EnhancedCreatorDashboard: React.FC = () => {
   const [showAudienceSegments, setShowAudienceSegments] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [setupComplete, setSetupComplete] = useState(() => {
+    try {
+      if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") {
+        return window.localStorage.getItem("ucs:setupCompleted") === "true";
+      }
+    } catch {}
+    return false;
+  });
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -163,7 +179,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
       ]
     },
     {
-      name: "Video Content",
+      name: "Video",
       icon: Video,
       color: "bg-red-500",
       growth: 31.8,
@@ -202,7 +218,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
       ]
     },
     {
-      name: "Crypto Trading",
+      name: "Finance",
       icon: Coins,
       color: "bg-yellow-500",
       growth: 18.7,
@@ -215,7 +231,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
       ]
     },
     {
-      name: "Messages & Chat",
+      name: "Engagement",
       icon: MessageSquare,
       color: "bg-purple-500",
       growth: 19.4,
@@ -232,7 +248,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
       icon: Radio,
       color: "bg-pink-500",
       growth: 67.3,
-      active: true,
+      active: false,
       metrics: [
         { title: "Live Sessions", value: "23", change: 83.2, trend: "up", icon: Radio, color: "text-pink-600" },
         { title: "Peak Viewers", value: "1,247", change: 45.7, trend: "up", icon: Eye, color: "text-blue-600" },
@@ -288,7 +304,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
       comments: "567",
       shares: "234",
       publishDate: "2024-01-15",
-      platform: "Video Content",
+      platform: "Video",
       thumbnail: "/api/placeholder/300/200",
       analytics: {
         watchTime: "92%",
@@ -403,9 +419,18 @@ const EnhancedCreatorDashboard: React.FC = () => {
   };
 
   const filteredFeatures = platformFeatures.filter(feature =>
+    feature.name !== "Live Streaming" &&
     feature.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (selectedFeatures.length === 0 || selectedFeatures.includes(feature.name))
   );
+
+  useEffect(() => {
+    try {
+      if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") {
+        window.localStorage.setItem("ucs:timeRange", timeRange);
+      }
+    } catch {}
+  }, [timeRange]);
 
   const totalRevenue = platformFeatures.reduce((sum, feature) => {
     const revenueMetric = feature.metrics.find(m => m.title.includes("Revenue") || m.title.includes("Earnings"));
@@ -584,7 +609,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
           { name: "Story Views", value: "45.2K", change: "+31.4%", trend: "up", description: "Story impressions" },
         ]},
       ],
-      "Video Content": [
+      "Video": [
         { category: "Video Performance", metrics: [
           { name: "Total Videos", value: "156", change: "+22.4%", trend: "up", description: "Videos created" },
           { name: "Total Views", value: "2.1M", change: "+35.2%", trend: "up", description: "All-time views" },
@@ -644,7 +669,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
           { name: "Hourly Rate", value: "$45", change: "+12.5%", trend: "up", description: "Current rate" },
         ]},
       ],
-      "Crypto Trading": [
+      "Finance": [
         { category: "Portfolio Performance", metrics: [
           { name: "Portfolio Value", value: "$24,567", change: "+22.8%", trend: "up", description: "Total portfolio worth" },
           { name: "Total P&L", value: "+$3,456", change: "+145%", trend: "up", description: "Profit/Loss this period" },
@@ -664,7 +689,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
           { name: "Sharpe Ratio", value: "1.89", change: "+15.6%", trend: "up", description: "Risk-adjusted return" },
         ]},
       ],
-      "Messages & Chat": [
+      "Engagement": [
         { category: "Communication Stats", metrics: [
           { name: "Messages Sent", value: "2,341", change: "+15.6%", trend: "up", description: "Total messages sent" },
           { name: "Messages Received", value: "3,456", change: "+23.4%", trend: "up", description: "Incoming messages" },
@@ -1067,43 +1092,77 @@ const EnhancedCreatorDashboard: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 py-4">
             {/* Title Row */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
                   <BarChart3 className="w-6 h-6 text-white" />
                 </div>
                 <div className="min-w-0">
-                  <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">
-                    Unified Creator Studio
-                  </h1>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
-                    Complete analytics across all platform features
-                  </p>
+                  <h1 className="text-xl font-bold text-gray-900 dark:text-white truncate">Creator Studio</h1>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 truncate">Cross-platform analytics</p>
                 </div>
-                <Badge variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 flex-shrink-0 text-xs">
-                  Pro Analytics
-                </Badge>
+                <div className="hidden sm:flex items-center gap-1 ml-2">
+                  <Button variant="ghost" size="icon" aria-label="Search" onClick={() => setShowSearch(s => !s)}>
+                    <Search className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" aria-label="Filters" onClick={handleFilterContent}>
+                    <Filter className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
+              <Badge variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 flex-shrink-0 text-xs">Pro Analytics</Badge>
             </div>
 
-            {/* Controls Row */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              {/* Search */}
-              <div className="flex-1 sm:flex-none sm:w-48 lg:w-64">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <Input
-                    placeholder="Search features..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 h-9"
-                  />
-                </div>
-              </div>
+            {/* Tabs */}
+      <div className="w-full overflow-x-auto">
+        <Tabs value={activeSection} onValueChange={setActiveSection}>
+          <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-fit">
+            <TabsTrigger value="overview" className="flex items-center gap-2 whitespace-nowrap px-3">
+              <Eye className="w-4 h-4" />
+              <span>Home</span>
+            </TabsTrigger>
+            <TabsTrigger value="features" className="flex items-center gap-2 whitespace-nowrap px-3">
+              <Layers className="w-4 h-4" />
+              <span>Tools</span>
+            </TabsTrigger>
+            <TabsTrigger value="content" className="flex items-center gap-2 whitespace-nowrap px-3">
+              <FileText className="w-4 h-4" />
+              <span>Posts</span>
+            </TabsTrigger>
+            <TabsTrigger value="revenue" className="flex items-center gap-2 whitespace-nowrap px-3">
+              <DollarSign className="w-4 h-4" />
+              <span>Earnings</span>
+            </TabsTrigger>
+            <TabsTrigger value="audience" className="flex items-center gap-2 whitespace-nowrap px-3">
+              <Users className="w-4 h-4" />
+              <span>Fans</span>
+            </TabsTrigger>
+            <TabsTrigger value="insights" className="flex items-center gap-2 whitespace-nowrap px-3">
+              <BarChart3 className="w-4 h-4" />
+              <span>Stats</span>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
 
-              {/* Time Range */}
+            {/* Controls Row */}
+            <div className="flex flex-wrap items-center gap-3">
+              {showSearch && (
+                <div className="flex-1 min-w-[200px] sm:min-w-[280px]">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Input
+                      placeholder="Search features..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 h-9"
+                    />
+                  </div>
+                </div>
+              )}
+
               <Select value={timeRange} onValueChange={setTimeRange}>
-                <SelectTrigger className="w-full sm:w-32 h-9">
+                <SelectTrigger className="w-32 h-9">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -1114,56 +1173,23 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 </SelectContent>
               </Select>
 
-              {/* View Mode Toggle */}
-              <div className="flex items-center gap-1 border rounded-lg p-1 w-fit">
-                <Button
-                  variant={viewMode === "grid" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setViewMode("grid")}
-                  className="h-7 w-7 p-0 flex-shrink-0"
-                  title="Grid View"
-                >
+              <div className="flex items-center gap-1 border rounded-lg p-1">
+                <Button variant={viewMode === "grid" ? "default" : "ghost"} size="sm" onClick={() => setViewMode("grid")} className="h-7 w-7 p-0" title="Grid View">
                   <Grid3X3 className="w-3.5 h-3.5" />
                 </Button>
-                <Button
-                  variant={viewMode === "list" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setViewMode("list")}
-                  className="h-7 w-7 p-0 flex-shrink-0"
-                  title="List View"
-                >
+                <Button variant={viewMode === "list" ? "default" : "ghost"} size="sm" onClick={() => setViewMode("list")} className="h-7 w-7 p-0" title="List View">
                   <List className="w-3.5 h-3.5" />
                 </Button>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleExport()}
-                  disabled={isExporting}
-                  className="h-9 px-3 flex-shrink-0"
-                >
-                  <Download className={cn("w-4 h-4", isExporting && "animate-spin")} />
-                  <span className="hidden sm:inline ml-2">
-                    {isExporting ? 'Exporting...' : 'Export'}
-                  </span>
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleRefreshData}
-                  disabled={isRefreshing}
-                  className="h-9 px-3 flex-shrink-0"
-                >
-                  <RefreshCw className={cn("w-4 h-4", isRefreshing && "animate-spin")} />
-                  <span className="hidden sm:inline ml-2">
-                    {isRefreshing ? 'Refreshing...' : 'Refresh'}
-                  </span>
-                </Button>
-              </div>
+              <Button variant="outline" size="sm" onClick={() => handleExport()} disabled={isExporting} className="h-9 px-3">
+                <Download className={cn("w-4 h-4", isExporting && "animate-spin")} />
+                <span className="hidden sm:inline ml-2">{isExporting ? 'Exporting...' : 'Export'}</span>
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleRefreshData} disabled={isRefreshing} className="h-9 px-3">
+                <RefreshCw className={cn("w-4 h-4", isRefreshing && "animate-spin")} />
+                <span className="hidden sm:inline ml-2">{isRefreshing ? 'Refreshing...' : 'Refresh'}</span>
+              </Button>
             </div>
           </div>
         </div>
@@ -1248,37 +1274,23 @@ const EnhancedCreatorDashboard: React.FC = () => {
           <FeatureDetailPage featureName={selectedFeature} />
         ) : (
         <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-6">
-          <div className="w-full overflow-x-auto pb-2">
-            <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-fit">
-              <TabsTrigger value="overview" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <Eye className="w-4 h-4" />
-                <span>Home</span>
-              </TabsTrigger>
-              <TabsTrigger value="features" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <Layers className="w-4 h-4" />
-                <span>Tools</span>
-              </TabsTrigger>
-              <TabsTrigger value="content" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <FileText className="w-4 h-4" />
-                <span>Posts</span>
-              </TabsTrigger>
-              <TabsTrigger value="revenue" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <DollarSign className="w-4 h-4" />
-                <span>Earnings</span>
-              </TabsTrigger>
-              <TabsTrigger value="audience" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <Users className="w-4 h-4" />
-                <span>Fans</span>
-              </TabsTrigger>
-              <TabsTrigger value="insights" className="flex items-center gap-2 whitespace-nowrap px-3">
-                <BarChart3 className="w-4 h-4" />
-                <span>Stats</span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
+            {!setupComplete && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Get Started</CardTitle>
+                  <CardDescription>Complete setup</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-green-500"></span><span>Connect wallet</span></div>
+                  <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-blue-500"></span><span>Enable features</span></div>
+                  <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-purple-500"></span><span>Publish first post</span></div>
+                  <Button onClick={() => { try { if (typeof window !== "undefined" && typeof window.localStorage !== "undefined") { window.localStorage.setItem("ucs:setupCompleted","true"); } } catch {}; setSetupComplete(true); }}>Complete Setup</Button>
+                </CardContent>
+              </Card>
+            )}
             {/* Quick Actions */}
             <Card>
               <CardHeader>
@@ -1430,53 +1442,6 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Crown className="w-5 h-5 text-yellow-500" />
-                    Top Performing Content
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {topPerformingContent.map((content, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-                        onClick={() => setSelectedContent(content)}
-                      >
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                              {content.title}
-                            </h4>
-                            <Badge variant="outline" className="text-xs">
-                              {content.type}
-                            </Badge>
-                          </div>
-                          <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
-                            <span className="flex items-center gap-1">
-                              <Eye className="w-3 h-3" />
-                              {content.views}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Heart className="w-3 h-3" />
-                              {content.engagement}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <DollarSign className="w-3 h-3" />
-                              {content.revenue}
-                            </span>
-                          </div>
-                        </div>
-                        <Button variant="ghost" size="sm">
-                          <ChevronRight className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
 
@@ -1485,8 +1450,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
             {/* Feature Management Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Platform Features</h2>
-                <p className="text-gray-600 dark:text-gray-400">Manage and configure your platform features</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Features</h2>
+                <p className="text-gray-600 dark:text-gray-400">Manage features</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={() => alert('Opening global platform settings...')}>
@@ -1623,7 +1588,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {["Feed & Social", "Video Content", "Messages & Chat"].map((feature, index) => (
+                    {["Feed & Social", "Video", "Engagement"].map((feature, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
@@ -1648,7 +1613,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {["Marketplace", "Crypto Trading", "Live Streaming"].map((feature, index) => (
+                    {["Marketplace", "Finance"].map((feature, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
@@ -1670,8 +1635,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
             {/* Content Analytics Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Content Analytics</h2>
-                <p className="text-gray-600 dark:text-gray-400">Comprehensive performance analysis across all content types</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Content</h2>
+                <p className="text-gray-600 dark:text-gray-400">Performance by content</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleFilterContent}>
@@ -1764,7 +1729,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 <CardContent>
                   <div className="space-y-4">
                     {[
-                      { platform: "Video Content", count: 456, percentage: 32, color: "bg-red-500" },
+                      { platform: "Video", count: 456, percentage: 32, color: "bg-red-500" },
                       { platform: "Social Posts", count: 387, percentage: 27, color: "bg-blue-500" },
                       { platform: "Marketplace Products", count: 234, percentage: 16, color: "bg-green-500" },
                       { platform: "Live Streams", count: 189, percentage: 13, color: "bg-pink-500" },
@@ -1923,8 +1888,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
             {/* Revenue Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Revenue Analytics</h2>
-                <p className="text-gray-600 dark:text-gray-400">Comprehensive revenue tracking across all income streams</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Revenue</h2>
+                <p className="text-gray-600 dark:text-gray-400">Track earnings</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={() => handleExport('pdf')} disabled={isExporting}>
@@ -2021,7 +1986,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                       { platform: "Freelance", amount: 8920, percentage: 32, color: "bg-orange-500", growth: "+31.2%" },
                       { platform: "Video Content", amount: 3240, percentage: 12, color: "bg-red-500", growth: "+45.8%" },
                       { platform: "Live Streaming", amount: 1890, percentage: 7, color: "bg-pink-500", growth: "+92.1%" },
-                      { platform: "Crypto Trading", amount: 1100, percentage: 4, color: "bg-yellow-500", growth: "+22.8%" },
+                      { platform: "Finance", amount: 1100, percentage: 4, color: "bg-yellow-500", growth: "+22.8%" },
                     ].map((item, index) => (
                       <div key={index} className="space-y-2">
                         <div className="flex justify-between items-center text-sm">
@@ -2215,8 +2180,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
             {/* Audience Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Audience Analytics</h2>
-                <p className="text-gray-600 dark:text-gray-400">Deep insights into your audience across all platforms</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Audience</h2>
+                <p className="text-gray-600 dark:text-gray-400">Audience insights</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleAudienceSegmentation}>
@@ -2571,8 +2536,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
             {/* Insights Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">AI-Powered Insights</h2>
-                <p className="text-gray-600 dark:text-gray-400">Smart recommendations and predictive analytics for growth</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Insights</h2>
+                <p className="text-gray-600 dark:text-gray-400">AI recommendations</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleRefreshData} disabled={isRefreshing}>
