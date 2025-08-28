@@ -273,43 +273,15 @@ const SecureReceiptDialog = ({ transaction, isOpen, onClose }: SecureReceiptProp
 
             {/* Security Information */}
             <div className="border-t border-gray-300 pt-4 mb-4">
-              <div className="text-sm text-center">
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Hash className="h-4 w-4" />
-                    <span className="font-medium">Content Hash:</span>
-                  </div>
-                  <p className="font-mono text-xs bg-gray-100 p-2 rounded break-all">
-                    {receiptData.hash}
-                  </p>
-                  
-                  <div className="flex items-center gap-2 mt-4">
-                    <Fingerprint className="h-4 w-4" />
-                    <span className="font-medium">Digital Signature:</span>
-                  </div>
-                  <p className="font-mono text-xs bg-gray-100 p-2 rounded break-all">
-                    {receiptData.digitalSignature}
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Shield className="h-4 w-4" />
-                    <span className="font-medium">Verification Code:</span>
-                  </div>
-                  <p className="font-mono text-lg font-bold bg-yellow-100 p-3 rounded text-center">
+                  <p className="text-xs text-gray-600">Verification Code</p>
+                  <p className="font-mono text-sm font-bold bg-gray-100 p-2 rounded">
                     {receiptData.verificationCode}
                   </p>
-                  
-                  <div className="flex items-center gap-2 mt-4">
-                    <Lock className="h-4 w-4" />
-                    <span className="font-medium">Blockchain TX:</span>
-                  </div>
-                  <p className="font-mono text-xs bg-gray-100 p-2 rounded break-all">
-                    {receiptData.blockchainTxHash}
+                  <p className="text-xs text-gray-500">
+                    Verify at: eloity.com/verify/{receiptData.verificationCode}
                   </p>
                 </div>
-              </div>
             </div>
 
             {/* QR Code Section */}
