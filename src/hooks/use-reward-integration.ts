@@ -18,10 +18,10 @@ export const useRewardIntegration = (options: RewardHookOptions = {}) => {
     (reward: any, actionDescription: string) => {
       if (!showNotifications) return;
 
-      if (reward.success && reward.softPoints > 0) {
+      if (reward.success && reward.eloits > 0) {
         toast({
           title: "🎉 Reward Earned!",
-          description: `+${reward.softPoints} SoftPoints for ${actionDescription}${
+          description: `+${reward.eloits} Eloits for ${actionDescription}${
             reward.walletBonus > 0
               ? ` (+$${reward.walletBonus.toFixed(4)} bonus)`
               : ""
@@ -265,7 +265,7 @@ export const useRewardIntegration = (options: RewardHookOptions = {}) => {
         targetId,
         timeSpent,
       );
-      if (result.success && result.softPoints > 0) {
+      if (result.success && result.eloits > 0) {
         showRewardNotification(result, "liking content");
       }
       return result;
@@ -344,7 +344,7 @@ export const useRewardIntegration = (options: RewardHookOptions = {}) => {
 
     const result = await PlatformRewardIntegration.trackDailyLogin(user.id);
 
-    if (result.success && result.softPoints > 0) {
+    if (result.success && result.eloits > 0) {
       showRewardNotification(result, "daily login");
     }
 
@@ -379,13 +379,13 @@ export const useRewardIntegration = (options: RewardHookOptions = {}) => {
 
       // Show summary notification for batch activities
       const totalPoints = results.reduce(
-        (sum, result) => sum + (result.softPoints || 0),
+        (sum, result) => sum + (result.eloits || 0),
         0,
       );
       if (totalPoints > 0 && showNotifications) {
         toast({
           title: "🎉 Batch Rewards!",
-          description: `+${totalPoints} SoftPoints for ${activities.length} activities`,
+          description: `+${totalPoints} Eloits for ${activities.length} activities`,
         });
       }
 
