@@ -490,6 +490,8 @@ const AppRoutes = () => {
           <Route path="crypto-p2p" element={<CryptoP2P />} />
           <Route path="crypto-portfolio" element={<CryptoPortfolio />} />
           <Route path="crypto-learn" element={<CryptoLearn />} />
+          <Route path="course/:courseId" element={<CourseDetail />} />
+          <Route path="course/:courseId/lesson/:lessonId" element={<LessonViewer />} />
           <Route path="crypto/profile/:username" element={<CryptoProfile />} />
           <Route path="delivery/profile/:username" element={<DeliveryProfile />} />
           <Route path="campaigns" element={<CampaignCenter />} />
