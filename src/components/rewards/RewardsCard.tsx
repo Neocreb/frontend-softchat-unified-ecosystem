@@ -15,7 +15,7 @@ import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { cn } from "@/lib/utils";
 
 interface RewardsCardProps {
-  currentSoftPoints: number;
+  currentEloits: number;
   availableToWithdraw: number;
   totalEarnings: number;
   trustScore: {
@@ -29,7 +29,7 @@ interface RewardsCardProps {
 }
 
 const RewardsCard: React.FC<RewardsCardProps> = ({
-  currentSoftPoints,
+  currentEloits,
   availableToWithdraw,
   totalEarnings,
   trustScore,
@@ -125,9 +125,9 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
             <div className="flex items-center gap-2">
               <Star className="h-5 w-5 text-yellow-400" />
               <span className="text-2xl sm:text-3xl font-bold text-card-foreground">
-                {formatNumber(currentSoftPoints)}
+                {formatNumber(currentEloits)}
               </span>
-              <span className="text-sm text-muted-foreground font-medium">SP</span>
+              <span className="text-sm text-muted-foreground font-medium">ELO</span>
             </div>
             <div className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-green-500" />
@@ -160,7 +160,7 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
         {/* Bottom Section */}
         <div className="flex justify-between items-center border-t border-border pt-2">
           <div className="text-muted-foreground text-xs font-mono">
-            **** **** **** {String(currentSoftPoints).slice(-4)}
+            **** **** **** {String(currentEloits).slice(-4)}
           </div>
           <div className="text-muted-foreground text-xs">
             Trust: {trustScore.current} ({trustScore.multiplier}x)

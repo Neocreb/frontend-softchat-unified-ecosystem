@@ -35,7 +35,7 @@ import { cn } from "@/lib/utils";
 interface WithdrawalModalProps {
   isOpen: boolean;
   onClose: () => void;
-  currentSoftPoints: number;
+  currentEloits: number;
   availableToWithdraw: number;
   trustScore: {
     current: number;
@@ -49,7 +49,7 @@ interface WithdrawalModalProps {
 const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
   isOpen,
   onClose,
-  currentSoftPoints,
+  currentEloits,
   availableToWithdraw,
   trustScore,
   currency = "USD",
@@ -63,7 +63,7 @@ const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
 
   const processingSteps = [
     "Validating withdrawal...",
-    "Converting SoftPoints...",
+    "Converting Eloits...",
     "Processing transaction...",
     "Updating wallet balance...",
     "Finalizing transfer...",
@@ -71,7 +71,7 @@ const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
 
   const conversionRate = 100; // 100 SP = 1 USD (adjust as needed)
   const withdrawalAmountNumber = parseFloat(withdrawalAmount) || 0;
-  const requiredSoftPoints = withdrawalAmountNumber * conversionRate;
+  const requiredEloits = withdrawalAmountNumber * conversionRate;
   const fees = Math.max(withdrawalAmountNumber * 0.02, 0.5); // 2% fee, minimum $0.50
   const netAmount = withdrawalAmountNumber - fees;
 
@@ -127,7 +127,7 @@ const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
             Withdraw Rewards
           </DialogTitle>
           <DialogDescription>
-            Convert your SoftPoints to cash and transfer to your unified wallet
+            Convert your Eloits to cash and transfer to your unified wallet
           </DialogDescription>
         </DialogHeader>
 
@@ -155,7 +155,7 @@ const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Star className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
-                      <span className="font-semibold text-sm sm:text-base">{formatNumber(currentSoftPoints)} SP</span>
+                      <span className="font-semibold text-sm sm:text-base">{formatNumber(currentEloits)} ELO</span>
                     </div>
                     <Badge variant="secondary" className="flex items-center gap-1 text-xs">
                       <Shield className="h-3 w-3" />
@@ -211,8 +211,8 @@ const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                 {withdrawalAmountNumber > 0 && (
                   <div className="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span>SoftPoints Required:</span>
-                      <span className="font-medium">{formatNumber(requiredSoftPoints)} SP</span>
+                      <span>Eloits Required:</span>
+                      <span className="font-medium">{formatNumber(requiredEloits)} ELO</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Processing Fee (2%):</span>

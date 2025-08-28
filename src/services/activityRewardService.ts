@@ -91,9 +91,9 @@ export class ActivityRewardService {
       const result = await response.json();
 
       // Log success for debugging
-      if (result.success && result.softPoints > 0) {
+      if (result.success && result.eloits > 0) {
         console.log(
-          `🎉 Reward earned! +${result.softPoints} SoftPoints${result.walletBonus > 0 ? ` +$${result.walletBonus.toFixed(4)} wallet bonus` : ""}`,
+          `🎉 Reward earned! +${result.eloits} Eloits${result.walletBonus > 0 ? ` +$${result.walletBonus.toFixed(4)} wallet bonus` : ""}`,
         );
       }
 
@@ -103,7 +103,7 @@ export class ActivityRewardService {
       return {
         success: false,
         status: "error",
-        softPoints: 0,
+        eloits: 0,
         walletBonus: 0,
         newTrustScore: 0,
         riskScore: 0,
@@ -206,16 +206,16 @@ export class ActivityRewardService {
   }
 
   private static showRewardNotification(
-    softPoints: number,
+    eloits: number,
     walletBonus: number,
   ) {
     // This would integrate with your notification system
     console.log(
-      `🎉 Reward earned! +${softPoints} SoftPoints${walletBonus > 0 ? ` +$${walletBonus.toFixed(4)} wallet bonus` : ""}`,
+      `🎉 Reward earned! +${eloits} Eloits${walletBonus > 0 ? ` +$${walletBonus.toFixed(4)} wallet bonus` : ""}`,
     );
 
     // You can integrate with react-hot-toast or your existing notification system
-    // toast.success(`🎉 +${softPoints} SoftPoints earned!`);
+    // toast.success(`🎉 +${eloits} Eloits earned!`);
   }
 
   // Get reward summary

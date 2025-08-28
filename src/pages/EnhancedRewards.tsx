@@ -46,7 +46,7 @@ import EnhancedLoadingStates from "@/components/rewards/EnhancedLoadingStates";
 interface RewardData {
   totalEarnings: number;
   availableToWithdraw: number;
-  currentSoftPoints: number;
+  currentEloits: number;
   trustScore: {
     current: number;
     level: string;
@@ -90,7 +90,7 @@ interface RewardData {
 const getDemoData = (): RewardData => ({
   totalEarnings: 3525.05,
   availableToWithdraw: 3245.18, // Match centralized rewards balance
-  currentSoftPoints: 18642,
+  currentEloits: 18642,
   trustScore: {
     current: 78,
     level: "Silver",
@@ -300,7 +300,7 @@ export default function EnhancedRewards() {
         </div>
       ) : rewardData ? (
         <RewardsCard
-          currentSoftPoints={rewardData.currentSoftPoints}
+          currentEloits={rewardData.currentEloits}
           availableToWithdraw={rewardData.availableToWithdraw}
           totalEarnings={rewardData.totalEarnings}
           trustScore={rewardData.trustScore}
@@ -369,7 +369,7 @@ export default function EnhancedRewards() {
               <RewardsErrorBoundary>
                 <RewardsStats
                   totalEarnings={rewardData.totalEarnings}
-                  currentSoftPoints={rewardData.currentSoftPoints}
+                  currentEloits={rewardData.currentEloits}
                   trustScore={rewardData.trustScore}
                   activityStats={rewardData.activityStats}
                   earningsByType={rewardData.earningsByType}
@@ -460,7 +460,7 @@ export default function EnhancedRewards() {
         <WithdrawalModal
           isOpen={showWithdrawalModal}
           onClose={() => setShowWithdrawalModal(false)}
-          currentSoftPoints={rewardData.currentSoftPoints}
+          currentEloits={rewardData.currentEloits}
           availableToWithdraw={rewardData.availableToWithdraw}
           trustScore={rewardData.trustScore}
           onWithdrawalSuccess={handleWithdrawalSuccess}

@@ -193,10 +193,10 @@ const SecureReceiptDialog = ({ transaction, isOpen, onClose }: SecureReceiptProp
           <div className="bg-white border-2 border-gray-200 rounded-lg p-8 font-mono">
             {/* Header */}
             <div className="text-center border-b-2 border-gray-300 pb-6 mb-6">
-              <h1 className="text-2xl font-bold text-gray-800">SOFTCHAT PLATFORM</h1>
-              <p className="text-sm text-gray-600">Secure Digital Receipt</p>
-              <p className="text-xs text-gray-500 mt-2">
-                Generated: {format(new Date(receiptData.timestamp), 'PPpp')}
+              <h1 className="text-xl font-bold text-gray-800">ELOITY</h1>
+              <p className="text-xs text-gray-600">Digital Receipt</p>
+              <p className="text-xs text-gray-500">
+                {format(new Date(receiptData.timestamp), 'PPP')}
               </p>
             </div>
 
@@ -208,20 +208,16 @@ const SecureReceiptDialog = ({ transaction, isOpen, onClose }: SecureReceiptProp
                 </h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="font-medium">Receipt ID:</span>
-                    <span className="font-mono">{receiptData.id}</span>
+                    <span className="font-medium">Receipt:</span>
+                    <span className="font-mono text-xs">{receiptData.id.slice(-8)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="font-medium">Transaction ID:</span>
-                    <span className="font-mono text-xs">{transaction.id}</span>
+                    <span className="font-medium">Transaction:</span>
+                    <span className="font-mono text-xs">{transaction.id.slice(-8)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="font-medium">Date:</span>
-                    <span>{format(new Date(transaction.timestamp), 'PPP')}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Time:</span>
-                    <span>{format(new Date(transaction.timestamp), 'pp')}</span>
+                    <span className="font-medium">Date/Time:</span>
+                    <span className="text-xs">{format(new Date(transaction.timestamp), 'MM/dd/yyyy HH:mm')}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="font-medium">Type:</span>
@@ -276,70 +272,22 @@ const SecureReceiptDialog = ({ transaction, isOpen, onClose }: SecureReceiptProp
             </div>
 
             {/* Security Information */}
-            <div className="border-t-2 border-gray-300 pt-6 mb-6">
-              <h3 className="font-bold text-lg mb-4">SECURITY & VERIFICATION</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div className="border-t border-gray-300 pt-4 mb-4">
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Hash className="h-4 w-4" />
-                    <span className="font-medium">Content Hash:</span>
-                  </div>
-                  <p className="font-mono text-xs bg-gray-100 p-2 rounded break-all">
-                    {receiptData.hash}
-                  </p>
-                  
-                  <div className="flex items-center gap-2 mt-4">
-                    <Fingerprint className="h-4 w-4" />
-                    <span className="font-medium">Digital Signature:</span>
-                  </div>
-                  <p className="font-mono text-xs bg-gray-100 p-2 rounded break-all">
-                    {receiptData.digitalSignature}
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Shield className="h-4 w-4" />
-                    <span className="font-medium">Verification Code:</span>
-                  </div>
-                  <p className="font-mono text-lg font-bold bg-yellow-100 p-3 rounded text-center">
+                  <p className="text-xs text-gray-600">Verification Code</p>
+                  <p className="font-mono text-sm font-bold bg-gray-100 p-2 rounded">
                     {receiptData.verificationCode}
                   </p>
-                  
-                  <div className="flex items-center gap-2 mt-4">
-                    <Lock className="h-4 w-4" />
-                    <span className="font-medium">Blockchain TX:</span>
-                  </div>
-                  <p className="font-mono text-xs bg-gray-100 p-2 rounded break-all">
-                    {receiptData.blockchainTxHash}
+                  <p className="text-xs text-gray-500">
+                    Verify at: eloity.com/verify/{receiptData.verificationCode}
                   </p>
                 </div>
-              </div>
-            </div>
-
-            {/* QR Code Section */}
-            <div className="border-t-2 border-gray-300 pt-6 text-center">
-              <h3 className="font-bold text-lg mb-4">QUICK VERIFICATION</h3>
-              <div className="flex flex-col items-center space-y-4">
-                <div className="w-32 h-32 bg-gray-100 border-2 border-gray-300 rounded flex items-center justify-center">
-                  <QrCode className="h-16 w-16 text-gray-500" />
-                </div>
-                <p className="text-xs text-gray-600 max-w-md">
-                  Scan QR code or visit: softchat.com/verify/{receiptData.verificationCode}
-                </p>
-              </div>
             </div>
 
             {/* Footer */}
-            <div className="border-t-2 border-gray-300 mt-8 pt-6 text-center text-xs text-gray-500">
-              <p className="mb-2">
-                This receipt is cryptographically secured and tamper-evident.
-              </p>
-              <p className="mb-2">
-                Any modifications to this document will invalidate the digital signature.
-              </p>
+            <div className="border-t border-gray-300 mt-4 pt-2 text-center text-xs text-gray-500">
               <p className="font-mono">
-                Generated by SoftChat Platform Security System v2.0
+                Generated by Eloity Security System v2.0
               </p>
               <p className="mt-4 font-mono">
                 Receipt Hash: {receiptData.hash}
@@ -403,10 +351,10 @@ const generateReceiptHTML = (receiptData: ReceiptData, transaction: Transaction,
     <!DOCTYPE html>
     <html>
     <head>
-      <title>Secure Receipt - ${receiptData.id}</title>
+      <title>Receipt - ${receiptData.id.slice(-8)}</title>
       <style>
         body { font-family: 'Courier New', monospace; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
+        .header { text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
         .section { margin: 20px 0; }
         .row { display: flex; justify-content: space-between; margin: 5px 0; }
         .security { background: #f0f0f0; padding: 15px; border-radius: 5px; margin: 20px 0; }
@@ -417,15 +365,15 @@ const generateReceiptHTML = (receiptData: ReceiptData, transaction: Transaction,
     </head>
     <body>
       <div class="header">
-        <h1>SOFTCHAT PLATFORM</h1>
-        <p>Secure Digital Receipt</p>
-        <p>Generated: ${format(new Date(receiptData.timestamp), 'PPpp')}</p>
+        <h1>ELOITY</h1>
+        <p>Digital Receipt</p>
+        <p>${format(new Date(receiptData.timestamp), 'PPP')}</p>
       </div>
       
       <div class="section">
         <h3>TRANSACTION DETAILS</h3>
-        <div class="row"><span>Receipt ID:</span><span>${receiptData.id}</span></div>
-        <div class="row"><span>Transaction ID:</span><span>${transaction.id}</span></div>
+        <div class="row"><span>Receipt:</span><span>${receiptData.id.slice(-8)}</span></div>
+        <div class="row"><span>Transaction:</span><span>${transaction.id.slice(-8)}</span></div>
         <div class="row"><span>Amount:</span><span>$${Math.abs(transaction.amount).toFixed(2)}</span></div>
         <div class="row"><span>Type:</span><span>${transaction.type}</span></div>
         <div class="row"><span>Source:</span><span>${transaction.source}</span></div>
@@ -448,12 +396,12 @@ const generateReceiptHTML = (receiptData: ReceiptData, transaction: Transaction,
       </div>
       
       <p style="text-align: center; margin-top: 30px; font-size: 12px;">
-        Verify at: softchat.com/verify/${receiptData.verificationCode}
+        Verify at: eloity.com/verify/${receiptData.verificationCode}
       </p>
       
       <div style="border-top: 1px solid #ccc; margin-top: 30px; padding-top: 10px; font-size: 10px; text-align: center;">
         This receipt is cryptographically secured and tamper-evident.<br>
-        Generated by SoftChat Platform Security System v2.0<br>
+        Generated by Eloity Security System v2.0<br>
         Receipt Hash: ${receiptData.hash}
       </div>
     </body>

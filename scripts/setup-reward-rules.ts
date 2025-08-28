@@ -28,7 +28,7 @@ const defaultRewardRules = [
     actionType: "post_content",
     displayName: "Create Post",
     description: "Earn points for creating quality content",
-    baseSoftPoints: "3.0",
+    baseEloits: "3.0",
     baseWalletBonus: "0",
     currency: "USDT",
     dailyLimit: 10,
@@ -47,7 +47,7 @@ const defaultRewardRules = [
     actionType: "like_post",
     displayName: "Like Post",
     description: "Earn points for engaging with content",
-    baseSoftPoints: "0.5",
+    baseEloits: "0.5",
     baseWalletBonus: "0",
     currency: "USDT",
     dailyLimit: 100,
@@ -66,7 +66,7 @@ const defaultRewardRules = [
     actionType: "comment_post",
     displayName: "Comment on Post",
     description: "Earn points for meaningful comments",
-    baseSoftPoints: "1.5",
+    baseEloits: "1.5",
     baseWalletBonus: "0",
     currency: "USDT",
     dailyLimit: 50,
@@ -85,7 +85,7 @@ const defaultRewardRules = [
     actionType: "share_content",
     displayName: "Share Content",
     description: "Earn points for sharing quality content",
-    baseSoftPoints: "2.0",
+    baseEloits: "2.0",
     baseWalletBonus: "0",
     currency: "USDT",
     dailyLimit: 20,
@@ -104,7 +104,7 @@ const defaultRewardRules = [
     actionType: "daily_login",
     displayName: "Daily Login",
     description: "Earn points for daily engagement",
-    baseSoftPoints: "5.0",
+    baseEloits: "5.0",
     baseWalletBonus: "0",
     currency: "USDT",
     dailyLimit: 1,
@@ -123,7 +123,7 @@ const defaultRewardRules = [
     actionType: "purchase_product",
     displayName: "Purchase Product",
     description: "Earn points and wallet bonus for marketplace purchases",
-    baseSoftPoints: "10.0",
+    baseEloits: "10.0",
     baseWalletBonus: "0.01", // 1% wallet bonus
     currency: "USDT",
     dailyLimit: null, // Unlimited
@@ -143,7 +143,7 @@ const defaultRewardRules = [
     actionType: "complete_profile",
     displayName: "Complete Profile",
     description: "One-time reward for completing profile",
-    baseSoftPoints: "25.0",
+    baseEloits: "25.0",
     baseWalletBonus: "0",
     currency: "USDT",
     dailyLimit: 1,
@@ -162,7 +162,7 @@ const defaultRewardRules = [
     actionType: "refer_user",
     displayName: "Refer User",
     description: "Earn points for successful referrals with smart anti-abuse protection",
-    baseSoftPoints: "20.0",
+    baseEloits: "20.0",
     baseWalletBonus: "0.5",
     currency: "USDT",
     dailyLimit: null, // No hard limits - use decay instead
@@ -199,7 +199,7 @@ async function setupRewardRules() {
     );
     defaultRewardRules.forEach((rule) => {
       console.log(
-        `  - ${rule.displayName}: ${rule.baseSoftPoints} SP${rule.baseWalletBonus !== "0" ? ` + ${rule.baseWalletBonus} ${rule.currency}` : ""}`,
+        `  - ${rule.displayName}: ${rule.baseEloits} ELO${rule.baseWalletBonus !== "0" ? ` + ${rule.baseWalletBonus} ${rule.currency}` : ""}`,
       );
     });
   } catch (error) {
