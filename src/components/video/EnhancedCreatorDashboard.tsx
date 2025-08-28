@@ -420,6 +420,10 @@ const EnhancedCreatorDashboard: React.FC = () => {
     (selectedFeatures.length === 0 || selectedFeatures.includes(feature.name))
   );
 
+  useEffect(() => {
+    try { localStorage.setItem("ucs:timeRange", timeRange); } catch {}
+  }, [timeRange]);
+
   const totalRevenue = platformFeatures.reduce((sum, feature) => {
     const revenueMetric = feature.metrics.find(m => m.title.includes("Revenue") || m.title.includes("Earnings"));
     if (revenueMetric && typeof revenueMetric.value === 'string') {
