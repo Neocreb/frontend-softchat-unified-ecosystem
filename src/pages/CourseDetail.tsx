@@ -22,7 +22,7 @@ import {
   Award,
   Video,
   FileText,
-  Quiz,
+  ListChecks,
   Lock,
   Download,
   Share2
@@ -151,7 +151,7 @@ const CourseDetail = () => {
     switch (type) {
       case 'video': return Video;
       case 'text': return FileText;
-      case 'quiz': return Quiz;
+      case 'quiz': return ListChecks;
       case 'interactive': return Target;
       default: return BookOpen;
     }

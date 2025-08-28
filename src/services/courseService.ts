@@ -8,7 +8,6 @@ import {
   FileText,
   CheckCircle2,
   Video,
-  Quiz,
   Download
 } from "lucide-react";
 import { getCompleteCoursesWithExtendedData } from "./courseDataExtension";

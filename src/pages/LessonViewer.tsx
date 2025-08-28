@@ -21,7 +21,7 @@ import {
   VolumeX,
   Maximize,
   FileText,
-  Quiz,
+  ListChecks,
   Target,
   BookOpen,
   Award
@@ -387,7 +387,7 @@ const LessonViewer = () => {
                   {lesson.type === 'quiz' && lesson.quizQuestions && (
                     <div className="space-y-6">
                       <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg flex items-start gap-3">
-                        <Quiz className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <ListChecks className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
                         <div>
                           <h4 className="text-orange-900 dark:text-orange-100 font-semibold mb-1">Knowledge Assessment</h4>
                           <p className="text-orange-700 dark:text-orange-200 text-sm">
@@ -455,7 +455,7 @@ const LessonViewer = () => {
                                 {quizState.score >= 70 ? (
                                   <CheckCircle2 className="h-8 w-8" />
                                 ) : (
-                                  <Quiz className="h-8 w-8" />
+                                  <ListChecks className="h-8 w-8" />
                                 )}
                               </div>
                               <h3 className="text-2xl font-bold mb-2">
