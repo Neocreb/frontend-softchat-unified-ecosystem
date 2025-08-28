@@ -30,8 +30,8 @@
     "backup:db": "npx tsx scripts/backup-database.ts",
     "setup": "npm install && npm run db:generate && npm run db:push",
     "setup:env": "cp .env.example .env",
-    "docker:build": "docker build -t softchat .",
-    "docker:run": "docker run -p 5000:5000 softchat",
+    "docker:build": "docker build -t eloity .",
+    "docker:run": "docker run -p 5000:5000 eloity",
     "deploy:vercel": "vercel --prod",
     "analyze": "npm run build && npx webpack-bundle-analyzer dist/static/js/*.js"
   },
@@ -172,7 +172,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/softchat-platform.git"
+    "url": "https://github.com/your-username/eloity-platform.git"
   },
   "keywords": [
     "social-media",
@@ -187,15 +187,15 @@
     "postgresql"
   ],
   "author": {
-    "name": "Softchat Team",
-    "email": "team@softchat.com"
+    "name": "Eloity Team",
+    "email": "team@eloity.com"
   },
   "bugs": {
-    "url": "https://github.com/your-username/softchat-platform/issues"
+    "url": "https://github.com/your-username/eloity-platform/issues"
   },
-  "homepage": "https://softchat.com",
+  "homepage": "https://eloity.com",
   "funding": {
     "type": "patreon",
-    "url": "https://patreon.com/softchat"
+    "url": "https://patreon.com/eloity"
   }
 }
