@@ -22,7 +22,7 @@ export type RewardType =
   | "marketplace_credit"
   | "trading_bonus";
 
-export interface SoftPointsActivity {
+export interface EloitsActivity {
   id: string;
   type: ActivityType;
   name: string;
@@ -40,7 +40,7 @@ export interface SoftPointsActivity {
   maxProgress?: number;
 }
 
-export interface SoftPointsReward {
+export interface EloitsReward {
   id: string;
   type: RewardType;
   name: string;
@@ -56,7 +56,7 @@ export interface SoftPointsReward {
   terms?: string[];
 }
 
-export interface UserSoftPointsData {
+export interface UserEloitsData {
   totalEarned: number;
   totalSpent: number;
   currentBalance: number;
@@ -72,7 +72,7 @@ export interface UserSoftPointsData {
   creatorBonus: number;
 }
 
-export interface SoftPointsTransaction {
+export interface EloitsTransaction {
   id: string;
   type: "earned" | "spent" | "converted" | "bonus" | "penalty";
   amount: number;
@@ -84,8 +84,8 @@ export interface SoftPointsTransaction {
   metadata?: Record<string, any>;
 }
 
-// Configuration for SoftPoints activities
-const activityConfig: Record<string, SoftPointsActivity> = {
+// Configuration for Eloits activities
+const activityConfig: Record<string, EloitsActivity> = {
   // Daily Activities
   daily_login: {
     id: "daily_login",
@@ -373,7 +373,7 @@ const levelConfig = {
 };
 
 // Reward catalog
-const rewardCatalog: Record<string, SoftPointsReward> = {
+const rewardCatalog: Record<string, EloitsReward> = {
   // Cash Conversions
   cash_5: {
     id: "cash_5",
@@ -502,7 +502,7 @@ const rewardCatalog: Record<string, SoftPointsReward> = {
   },
 };
 
-class SoftPointsService {
+class EloitsService {
   // Calculate user level based on points
   calculateLevel(points: number): string {
     const levels = Object.entries(levelConfig);
