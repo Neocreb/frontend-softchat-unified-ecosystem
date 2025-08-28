@@ -146,6 +146,7 @@ import Explore from "./pages/Explore";
 import GlobalSearch from "./pages/GlobalSearch";
 import LandingPage from "./pages/LandingPage";
 import TestComponent from "./pages/TestComponent";
+import SupabaseDebug from "./pages/SupabaseDebug";
 import UnifiedNotifications from "./pages/UnifiedNotifications";
 import Create from "./pages/Create";
 import EnhancedPlatform from "./pages/EnhancedPlatform";
@@ -309,6 +310,7 @@ const AppRoutes = () => {
       {/* Root path shows original feature-rich landing page */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/test" element={<TestComponent />} />
+      <Route path="/supabase-debug" element={<SupabaseDebug />} />
       <Route path="/home" element={<Home />} />
       <Route path="/meme-gif-demo" element={<MemeGifDemo />} />
       <Route path="/meme-gif-test" element={<MemeGifTest />} />

@@ -41,6 +41,9 @@ const EnhancedWalletDashboardContent = () => {
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [showDepositModal, setShowDepositModal] = useState(false);
 
+  // Simple balance calculation
+  const totalBalance = walletBalance?.total || 0;
+
   if (isLoading) {
     return (
       <div className="mobile-container mobile-space-y">
@@ -66,16 +69,16 @@ const EnhancedWalletDashboardContent = () => {
         </h1>
       </div>
 
-      {/* Main Balance Card - Now prominently displayed first */}
+      {/* Main Balance Card - Fixed CSS for visibility */}
       <Card className="overflow-hidden card-enhanced">
-        <CardContent className="p-6 md:p-8 bg-gradient-wallet text-white">
+        <CardContent className="p-6 md:p-8 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
           <div className="text-center space-y-4">
             <div>
               <h2 className="text-lg font-medium text-white drop-shadow-sm">
                 Total Balance
               </h2>
-              <div className="text-4xl md:text-5xl font-bold">
-                ${walletBalance?.total.toFixed(2) || "0.00"}
+              <div className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+                ${totalBalance.toFixed(2)}
               </div>
             </div>
 
@@ -88,7 +91,7 @@ const EnhancedWalletDashboardContent = () => {
                 { name: "Freelance", value: walletBalance?.freelance || 0 },
               ].map((source) => (
                 <div key={source.name} className="text-center">
-                  <div className="text-lg md:text-xl font-semibold">
+                  <div className="text-lg md:text-xl font-semibold text-white drop-shadow-sm">
                     ${source.value.toFixed(2)}
                   </div>
                   <div className="text-xs text-white/90 drop-shadow-sm">
@@ -101,11 +104,11 @@ const EnhancedWalletDashboardContent = () => {
         </CardContent>
       </Card>
 
-      {/* Primary Action Buttons - Right after balance */}
+      {/* Primary Action Buttons */}
       <div className="flex gap-3 justify-center sm:justify-start">
         <Button
           onClick={() => setShowDepositModal(true)}
-          className="btn-gradient flex-1 sm:flex-none sm:min-w-[120px]"
+          className="bg-blue-600 hover:bg-blue-700 text-white flex-1 sm:flex-none sm:min-w-[120px]"
           size="lg"
         >
           Deposit
@@ -113,12 +116,13 @@ const EnhancedWalletDashboardContent = () => {
         <Button
           onClick={() => setShowWithdrawModal(true)}
           variant="outline"
-          className="bg-gradient-card border-primary/20 text-primary hover:bg-gradient-primary hover:text-white flex-1 sm:flex-none sm:min-w-[120px]"
+          className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white flex-1 sm:flex-none sm:min-w-[120px]"
           size="lg"
         >
           Withdraw
         </Button>
       </div>
+
 
       {/* Main Tabbed Interface */}
       <Tabs

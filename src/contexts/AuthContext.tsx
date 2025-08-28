@@ -8,7 +8,7 @@ import {
   type FC,
   type ReactNode,
 } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
 import { ExtendedUser, UserProfile } from "@/types/user";
 
@@ -133,6 +133,18 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       try {
         setIsLoading(true);
         setError(null);
+
+        // Check if environment variables are available
+        if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+          console.error("Supabase environment variables are missing!");
+          console.log("VITE_SUPABASE_URL:", import.meta.env.VITE_SUPABASE_URL);
+          console.log("VITE_SUPABASE_PUBLISHABLE_KEY available:", !!import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
+          setError(new Error("Supabase configuration is missing"));
+          setIsLoading(false);
+          return;
+        }
+
+        console.log("Supabase client initialized with URL:", import.meta.env.VITE_SUPABASE_URL);
 
         // Get initial session with timeout
         const sessionPromise = supabase.auth.getSession();
@@ -303,12 +315,21 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setIsLoading(true);
         setError(null);
 
+        console.log("Attempting login for:", email);
+        console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
+
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
         if (error) {
+          console.error("Supabase auth error:", error);
+          console.error("Error details:", {
+            message: error.message,
+            status: error.status,
+            name: error.name
+          });
           setError(error);
           return { error };
         }
@@ -317,6 +338,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return {};
       } catch (error) {
         const authError = error as Error;
+        console.error("Login catch error:", authError);
         setError(authError);
         return { error: authError };
       } finally {
