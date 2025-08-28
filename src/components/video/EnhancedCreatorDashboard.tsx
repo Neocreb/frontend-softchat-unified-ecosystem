@@ -130,7 +130,13 @@ interface FeatureAnalytics {
 }
 
 const EnhancedCreatorDashboard: React.FC = () => {
-  const [timeRange, setTimeRange] = useState("30d");
+  const [timeRange, setTimeRange] = useState(() => {
+    try {
+      return localStorage.getItem("ucs:timeRange") || "30d";
+    } catch {
+      return "30d";
+    }
+  });
   const [activeSection, setActiveSection] = useState("overview");
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [selectedContent, setSelectedContent] = useState<any | null>(null);
