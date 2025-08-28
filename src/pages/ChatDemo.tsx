@@ -68,7 +68,7 @@ export const ChatDemo: React.FC = () => {
             🚀 Unified Chat System Demo
           </h1>
           <p className="text-lg text-muted-foreground mb-6">
-            Experience SoftChat's intelligent chat system that adapts to
+            Experience Eloity's intelligent chat system that adapts to
             different contexts
           </p>
           <Button onClick={goToInbox} size="lg" className="mb-8">
