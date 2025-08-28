@@ -85,6 +85,10 @@ const CryptoLearn = () => {
       // Load blog posts
       const result = await blogService.getBlogPosts({ limit: 12 });
       setBlogPosts(result?.posts || []);
+
+      // Load educational articles
+      const articles = educationalArticleService.getAllArticles();
+      setEducationalArticles(articles);
     } catch (error) {
       console.error("Failed to load data:", error);
       toast({
