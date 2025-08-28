@@ -149,6 +149,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
   const [showAudienceSegments, setShowAudienceSegments] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [setupComplete, setSetupComplete] = useState(() => {
     try {
