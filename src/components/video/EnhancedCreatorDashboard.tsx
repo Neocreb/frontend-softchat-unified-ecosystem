@@ -1462,53 +1462,6 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Crown className="w-5 h-5 text-yellow-500" />
-                    Top Performing Content
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {topPerformingContent.map((content, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-                        onClick={() => setSelectedContent(content)}
-                      >
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                              {content.title}
-                            </h4>
-                            <Badge variant="outline" className="text-xs">
-                              {content.type}
-                            </Badge>
-                          </div>
-                          <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
-                            <span className="flex items-center gap-1">
-                              <Eye className="w-3 h-3" />
-                              {content.views}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Heart className="w-3 h-3" />
-                              {content.engagement}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <DollarSign className="w-3 h-3" />
-                              {content.revenue}
-                            </span>
-                          </div>
-                        </div>
-                        <Button variant="ghost" size="sm">
-                          <ChevronRight className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
 
