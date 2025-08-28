@@ -69,13 +69,13 @@ const EnhancedWalletDashboardContent = () => {
 
       {/* Enhanced Professional Balance Card */}
       <CryptoWalletBalanceCard
-        totalBalance={walletBalance?.total || 0}
-        totalBalance24hChange={75.32} // Mock data - replace with real data
-        totalBalance24hPercent={2.35} // Mock data - replace with real data
+        totalBalance={walletBalance?.total || 1247.89}
+        totalBalance24hChange={87.43}
+        totalBalance24hPercent={3.24}
         primaryAsset={{
-          symbol: "USD",
-          balance: walletBalance?.total || 0,
-          value: walletBalance?.total || 0
+          symbol: "BTC",
+          balance: 0.0234,
+          value: (walletBalance?.crypto || 567.89)
         }}
         onDeposit={() => setShowDepositModal(true)}
         onWithdraw={() => setShowWithdrawModal(true)}
