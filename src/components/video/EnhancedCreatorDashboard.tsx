@@ -245,7 +245,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
       icon: Radio,
       color: "bg-pink-500",
       growth: 67.3,
-      active: true,
+      active: false,
       metrics: [
         { title: "Live Sessions", value: "23", change: 83.2, trend: "up", icon: Radio, color: "text-pink-600" },
         { title: "Peak Viewers", value: "1,247", change: 45.7, trend: "up", icon: Eye, color: "text-blue-600" },
