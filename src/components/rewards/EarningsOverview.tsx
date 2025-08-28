@@ -50,8 +50,8 @@ const EarningsOverview = ({
       changeType: "positive" as const,
     },
     {
-      title: "SoftPoints",
-      value: revenueData?.softPointsEarned || 0,
+      title: "Eloits",
+      value: revenueData?.eloitsEarned || 0,
       format: "number",
       icon: Star,
       color: "text-purple-600",
