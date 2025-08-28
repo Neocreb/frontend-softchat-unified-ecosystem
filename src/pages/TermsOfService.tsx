@@ -36,17 +36,17 @@ const TermsOfService = () => {
         {/* Introduction */}
         <Card>
           <CardHeader>
-            <CardTitle>Welcome to SoftChat</CardTitle>
+            <CardTitle>Welcome to Eloity</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              These Terms of Service ("Terms") govern your use of SoftChat, an AI-powered
+              These Terms of Service ("Terms") govern your use of Eloity, an AI-powered
               social media and marketplace platform that includes social networking,
               marketplace functionality, freelancing services, cryptocurrency trading,
               delivery services, verified premium subscriptions, and advanced analytics features.
             </p>
             <p>
-              By accessing or using SoftChat, you agree to be bound by these Terms.
+              By accessing or using Eloity, you agree to be bound by these Terms.
               If you disagree with any part of these terms, you may not access the Service.
             </p>
           </CardContent>
