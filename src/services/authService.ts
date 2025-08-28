@@ -1,4 +1,3 @@
-
 import { supabase } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { ExtendedUser, UserProfile } from "@/types/user";
@@ -58,9 +57,23 @@ export const updateUserProfileData = async (userId: string, profileData: Partial
 };
 
 export const signIn = async (email: string, password: string) => {
+  if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+    const err = new Error('Supabase configuration is missing');
+    console.error('signIn aborted - missing Supabase env config', {
+      url: import.meta.env.VITE_SUPABASE_URL,
+      hasKey: !!import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+    });
+    throw err;
+  }
+
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
+    console.error('Supabase signIn error:', {
+      message: (error as any).message,
+      status: (error as any).status,
+      name: (error as any).name,
+    });
     throw error;
   }
 
@@ -68,6 +81,15 @@ export const signIn = async (email: string, password: string) => {
 };
 
 export const signUp = async (name: string, email: string, password: string) => {
+  if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+    const err = new Error('Supabase configuration is missing');
+    console.error('signUp aborted - missing Supabase env config', {
+      url: import.meta.env.VITE_SUPABASE_URL,
+      hasKey: !!import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+    });
+    throw err;
+  }
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -79,6 +101,11 @@ export const signUp = async (name: string, email: string, password: string) => {
   });
 
   if (error) {
+    console.error('Supabase signUp error:', {
+      message: (error as any).message,
+      status: (error as any).status,
+      name: (error as any).name,
+    });
     throw error;
   }
 
@@ -86,14 +113,28 @@ export const signUp = async (name: string, email: string, password: string) => {
 };
 
 export const signOut = async () => {
+  if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+    console.warn('signOut skipped - missing Supabase env config');
+    return;
+  }
+
   const { error } = await supabase.auth.signOut();
 
   if (error) {
+    console.error('Supabase signOut error:', {
+      message: (error as any).message,
+      status: (error as any).status,
+      name: (error as any).name,
+    });
     throw error;
   }
 };
 
 export const getCurrentSession = async () => {
+  if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+    console.warn('getCurrentSession skipped - missing Supabase env config');
+    return null;
+  }
   const { data } = await supabase.auth.getSession();
   return data.session;
 };
