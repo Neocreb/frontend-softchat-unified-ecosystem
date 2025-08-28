@@ -332,7 +332,7 @@ const AdvertisingPolicy = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm">
-              SoftChat works with reputable third-party advertising networks and partners 
+              Eloity works with reputable third-party advertising networks and partners 
               to deliver relevant advertisements:
             </p>
 
@@ -352,7 +352,7 @@ const AdvertisingPolicy = () => {
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li>Google Analytics for advertising insights</li>
                 <li>Facebook Pixel for conversion tracking</li>
-                <li>Custom analytics for SoftChat-specific metrics</li>
+                <li>Custom analytics for Eloity-specific metrics</li>
                 <li>Third-party verification services</li>
                 <li>Brand safety and fraud detection tools</li>
               </ul>
