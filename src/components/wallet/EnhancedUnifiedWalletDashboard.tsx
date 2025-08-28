@@ -67,40 +67,19 @@ const EnhancedWalletDashboardContent = () => {
         </h1>
       </div>
 
-      {/* Main Balance Card - Now prominently displayed first */}
-      <Card className="overflow-hidden card-enhanced">
-        <CardContent className="p-6 md:p-8 bg-gradient-wallet text-white">
-          <div className="text-center space-y-4">
-            <div>
-              <h2 className="text-lg font-medium text-white drop-shadow-sm">
-                Total Balance
-              </h2>
-              <div className="text-4xl md:text-5xl font-bold">
-                ${walletBalance?.total.toFixed(2) || "0.00"}
-              </div>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-              {[
-                { name: "E-commerce", value: walletBalance?.ecommerce || 0 },
-                { name: "Crypto", value: walletBalance?.crypto || 0 },
-                { name: "Rewards", value: walletBalance?.rewards || 0 },
-                { name: "Freelance", value: walletBalance?.freelance || 0 },
-              ].map((source) => (
-                <div key={source.name} className="text-center">
-                  <div className="text-lg md:text-xl font-semibold">
-                    ${source.value.toFixed(2)}
-                  </div>
-                  <div className="text-xs text-white/90 drop-shadow-sm">
-                    {source.name}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Enhanced Professional Balance Card */}
+      <CryptoWalletBalanceCard
+        totalBalance={walletBalance?.total || 0}
+        totalBalance24hChange={75.32} // Mock data - replace with real data
+        totalBalance24hPercent={2.35} // Mock data - replace with real data
+        primaryAsset={{
+          symbol: "USD",
+          balance: walletBalance?.total || 0,
+          value: walletBalance?.total || 0
+        }}
+        onDeposit={() => setShowDepositModal(true)}
+        onWithdraw={() => setShowWithdrawModal(true)}
+      />
 
       {/* Primary Action Buttons - Right after balance */}
       <div className="flex gap-3 justify-center sm:justify-start">
