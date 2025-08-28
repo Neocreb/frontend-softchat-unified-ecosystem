@@ -64,7 +64,7 @@ const ShortcutItem: React.FC<ShortcutItemProps> = ({
   <Link
     to={href}
     onClick={onClick}
-    className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-[80px] relative"
+    className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-w-[80px] relative"
   >
     <div className="relative">
       {icon}
@@ -74,7 +74,7 @@ const ShortcutItem: React.FC<ShortcutItemProps> = ({
         </div>
       )}
     </div>
-    <span className="text-xs text-center font-medium text-gray-600 truncate w-full">
+    <span className="text-xs text-center font-medium text-gray-600 dark:text-gray-300 truncate w-full">
       {label}
     </span>
   </Link>
@@ -305,10 +305,10 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
         className={`
         ${
           isMobile
-            ? `fixed left-0 top-0 bottom-0 z-50 bg-white transform transition-transform duration-300 ${
+            ? `fixed left-0 top-0 bottom-0 z-50 bg-white dark:bg-gray-900 transform transition-transform duration-300 ${
                 isOpen ? "translate-x-0" : "-translate-x-full"
               } w-80`
-            : "w-80 xl:w-96 2xl:w-80 bg-white border-r border-gray-200 h-full"
+            : "w-80 xl:w-96 2xl:w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 h-full"
         } overflow-y-auto
       `}
       >
@@ -316,10 +316,10 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
           {/* Close button for mobile */}
           {isMobile && (
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Menu</h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Menu</h2>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -329,23 +329,23 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
           {/* Profile Section */}
           <Link
             to="/app/profile"
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             onClick={handleLinkClick}
           >
             <Avatar className="w-9 h-9">
               <AvatarImage src={user?.avatar} />
-              <AvatarFallback className="bg-blue-100 text-blue-600">
+              <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
                 {user?.name?.substring(0, 2).toUpperCase() || "SC"}
               </AvatarFallback>
             </Avatar>
-            <span className="font-semibold text-gray-900 truncate">
+            <span className="font-semibold text-gray-900 dark:text-white truncate">
               {user?.name || "Your Profile"}
             </span>
           </Link>
 
           {/* Your Shortcuts Section */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
               Your shortcuts
             </h3>
             <div className="flex gap-2 overflow-x-auto pb-2">
@@ -367,13 +367,13 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
             {menuItems.map((item, index) => (
               <div
                 key={index}
-                className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors"
+                className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
                 <Link
                   to={item.href}
                   onClick={handleLinkClick}
                   className={`flex flex-col items-start gap-2 ${
-                    isActive(item.href) ? "text-blue-600" : "text-gray-700"
+                    isActive(item.href) ? "text-blue-600 dark:text-blue-400" : "text-gray-700 dark:text-gray-300"
                   }`}
                 >
                   <div className="flex-shrink-0">{item.icon}</div>
@@ -386,30 +386,30 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
           </div>
 
           {/* Privacy & Terms Footer */}
-          <div className="text-xs text-gray-500 space-y-1 pb-4">
+          <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1 pb-4">
             <div className="flex flex-wrap gap-2">
-              <Link to="/app/privacy" className="hover:underline">
+              <Link to="/app/privacy" className="hover:underline hover:text-gray-700 dark:hover:text-gray-200">
                 Privacy
               </Link>
               <span>·</span>
-              <Link to="/app/terms" className="hover:underline">
+              <Link to="/app/terms" className="hover:underline hover:text-gray-700 dark:hover:text-gray-200">
                 Terms
               </Link>
               <span>·</span>
-              <Link to="/app/advertising" className="hover:underline">
+              <Link to="/app/advertising" className="hover:underline hover:text-gray-700 dark:hover:text-gray-200">
                 Advertising
               </Link>
               <span>·</span>
-              <Link to="/app/ad-choices" className="hover:underline">
+              <Link to="/app/ad-choices" className="hover:underline hover:text-gray-700 dark:hover:text-gray-200">
                 Ad Choices
               </Link>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Link to="/app/cookies" className="hover:underline">
+              <Link to="/app/cookies" className="hover:underline hover:text-gray-700 dark:hover:text-gray-200">
                 Cookies
               </Link>
               <span>·</span>
-              <Link to="/app/help" className="hover:underline">
+              <Link to="/app/help" className="hover:underline hover:text-gray-700 dark:hover:text-gray-200">
                 More
               </Link>
               <span>·</span>
