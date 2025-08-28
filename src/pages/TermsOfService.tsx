@@ -514,7 +514,7 @@ const TermsOfService = () => {
           <CardContent>
             <p className="text-sm">
               We reserve the right to modify these Terms at any time. We will notify users of 
-              material changes via email or platform notifications. Continued use of SoftChat 
+              material changes via email or platform notifications. Continued use of Eloity 
               after modifications constitutes acceptance of the updated Terms.
             </p>
           </CardContent>
