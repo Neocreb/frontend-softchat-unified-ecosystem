@@ -588,7 +588,7 @@ const ActivityEconomyDashboard: React.FC = () => {
                           Daily Cap
                         </p>
                         <p className="text-lg font-bold text-purple-600">
-                          {activitySummary.trustScore.dailyCap} SP
+                          {activitySummary.trustScore.dailyCap} ELO
                         </p>
                       </div>
                     </div>
