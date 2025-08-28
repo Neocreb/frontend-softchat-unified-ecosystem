@@ -332,6 +332,115 @@ const SafeReferralComponent: React.FC = () => {
         </CardContent>
       </Card>
 
+      {/* Automatic Reward Sharing Details */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Heart className="w-5 h-5" />
+            Automatic Reward Sharing
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border border-blue-200">
+              <h3 className="font-semibold text-gray-900 mb-2">How It Works</h3>
+              <p className="text-sm text-gray-700 mb-3">
+                As part of our commitment to community growth, 0.5% of your creator economy earnings
+                are automatically shared with the people you've referred to Eloity.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <h4 className="font-medium text-gray-800 mb-1">✅ Included Earnings:</h4>
+                  <ul className="text-gray-600 space-y-1">
+                    <li>• Content creation rewards</li>
+                    <li>• Ad revenue sharing</li>
+                    <li>• Engagement bonuses</li>
+                    <li>• Challenge completions</li>
+                    <li>• Battle voting rewards</li>
+                    <li>• Gifts and tips received</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-800 mb-1">❌ Not Included:</h4>
+                  <ul className="text-gray-600 space-y-1">
+                    <li>• Freelance project payments</li>
+                    <li>• Marketplace sales</li>
+                    <li>• Crypto trading profits</li>
+                    <li>• Direct user payments</li>
+                    <li>• Withdrawal transactions</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                <h4 className="font-semibold text-green-800 mb-2">Your Sharing Impact</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-green-700">Total Shared:</span>
+                    <span className="font-medium text-green-900">
+                      {isLoading ? "Loading..." : formatCurrency(sharingStats?.totalShared || 0)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-green-700">Transactions:</span>
+                    <span className="font-medium text-green-900">
+                      {isLoading ? "..." : (sharingStats?.sharingTransactionsCount || 0)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-green-700">This Month:</span>
+                    <span className="font-medium text-green-900">
+                      {isLoading ? "..." : formatCurrency(sharingStats?.thisMonthShared || 0)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h4 className="font-semibold text-blue-800 mb-2">You've Received</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-blue-700">Total Received:</span>
+                    <span className="font-medium text-blue-900">
+                      {isLoading ? "Loading..." : formatCurrency(sharingStats?.totalReceived || 0)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-blue-700">From Others:</span>
+                    <span className="font-medium text-blue-900">
+                      {isLoading ? "..." : (sharingStats?.receivingTransactionsCount || 0)} people
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-blue-700">This Month:</span>
+                    <span className="font-medium text-blue-900">
+                      {isLoading ? "..." : formatCurrency(sharingStats?.thisMonthReceived || 0)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+              <div className="flex items-start gap-2">
+                <Info className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-yellow-800 mb-1">Important Information</h4>
+                  <p className="text-sm text-yellow-700">
+                    Automatic reward sharing is enabled by default and helps build a supportive community.
+                    This system is part of our Terms of Service and ensures that those who help grow the platform
+                    benefit from community success. The 0.5% is taken from platform reward earnings only,
+                    never from your personal business transactions.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Referral Tiers */}
       <Card>
         <CardHeader>
