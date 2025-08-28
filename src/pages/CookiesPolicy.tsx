@@ -390,7 +390,7 @@ const CookiesPolicy = () => {
             <div>
               <h4 className="font-semibold mb-2">Platform Controls</h4>
               <p className="text-sm mb-2">
-                SoftChat provides additional privacy controls:
+                Eloity provides additional privacy controls:
               </p>
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li>Cookie preference center (above)</li>
