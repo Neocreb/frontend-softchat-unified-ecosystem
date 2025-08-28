@@ -22,8 +22,26 @@ import { AutomaticRewardSharingService } from "@/services/automaticRewardSharing
 
 const SafeReferralComponent: React.FC = () => {
   const { toast } = useToast();
+  const [sharingStats, setSharingStats] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const referralLink = "https://eloity.app/join?ref=DEMO123";
+
+  useEffect(() => {
+    loadSharingStats();
+  }, []);
+
+  const loadSharingStats = async () => {
+    try {
+      setIsLoading(true);
+      const stats = await AutomaticRewardSharingService.getSharingStats();
+      setSharingStats(stats);
+    } catch (error) {
+      console.error('Failed to load sharing stats:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   const copyReferralLink = () => {
     navigator.clipboard.writeText(referralLink);
