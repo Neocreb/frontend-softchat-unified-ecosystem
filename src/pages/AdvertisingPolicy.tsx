@@ -40,14 +40,14 @@ const AdvertisingPolicy = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              SoftChat is committed to providing a high-quality advertising experience that 
-              respects user privacy while enabling businesses to reach their target audiences 
-              effectively. This Advertising Policy outlines how we display, target, and 
+              Eloity is committed to providing a high-quality advertising experience that
+              respects user privacy while enabling businesses to reach their target audiences
+              effectively. This Advertising Policy outlines how we display, target, and
               manage advertisements across our AI-powered social media and marketplace platform.
             </p>
             <p>
-              We believe in transparent, relevant, and respectful advertising that enhances 
-              rather than detracts from the user experience on SoftChat's social networking, 
+              We believe in transparent, relevant, and respectful advertising that enhances
+              rather than detracts from the user experience on Eloity's social networking, 
               marketplace, freelancing, and cryptocurrency features.
             </p>
           </CardContent>
