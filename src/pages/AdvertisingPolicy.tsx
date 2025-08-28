@@ -472,9 +472,9 @@ const AdvertisingPolicy = () => {
               For questions about our Advertising Policy or to report advertising issues:
             </p>
             <div className="space-y-2 text-sm">
-              <p><strong>Email:</strong> advertising@softchat.com</p>
-              <p><strong>Ad Review Team:</strong> adreview@softchat.com</p>
-              <p><strong>Policy Questions:</strong> policy@softchat.com</p>
+              <p><strong>Email:</strong> advertising@eloity.com</p>
+              <p><strong>Ad Review Team:</strong> adreview@eloity.com</p>
+              <p><strong>Policy Questions:</strong> policy@eloity.com</p>
               <p><strong>Response Time:</strong> We aim to respond within 2-5 business days</p>
             </div>
           </CardContent>
