@@ -96,8 +96,7 @@ const LegalInformation = () => {
                 <li>Comprehensive data privacy protection across all services</li>
                 <li>Clear earnings and payment terms for service providers</li>
                 <li>Transparent policies for advertising and monetization</li>
-                <li>Automatic reward sharing system for community growth</li>
-                <li>Pioneer badge program for early active users</li>
+                <li>Community programs including automatic reward sharing and pioneer badges (detailed in Terms of Service)</li>
                 <li>Regular updates to reflect platform evolution and legal requirements</li>
               </ul>
             </div>
@@ -179,91 +178,6 @@ const LegalInformation = () => {
           </CardContent>
         </Card>
 
-        {/* Reward Sharing and Community Programs */}
-        <Card className="border-l-4 border-l-purple-500">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="w-5 h-5 text-purple-600" />
-              Community Reward Sharing & Pioneer Badge Program
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-sm">
-              Eloity operates community-building programs that automatically share platform
-              rewards and recognize early active users through our Pioneer Badge system.
-            </p>
-
-            <div className="bg-purple-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-purple-800 mb-3">Automatic Reward Sharing System</h4>
-              <div className="text-sm text-purple-700 space-y-2">
-                <p>
-                  <strong>How it works:</strong> When users earn rewards from creator economy activities
-                  (content creation, engagement, ad revenue, challenges, etc.), 0.5% of these earnings
-                  are automatically shared with their verified referrals as part of our community growth initiative.
-                </p>
-                <p>
-                  <strong>Scope:</strong> This system applies only to "Rewards Page" earnings from platform
-                  activities. Personal earnings from freelance work, marketplace sales, crypto trading,
-                  and direct transactions are excluded.
-                </p>
-                <p>
-                  <strong>Legal basis:</strong> By using Eloity's platform, users consent to this automatic
-                  sharing mechanism. The system is transparent, clearly disclosed, and designed to foster
-                  community growth and loyalty.
-                </p>
-                <p>
-                  <strong>User rights:</strong> Users can view their sharing history, amounts shared and
-                  received through their referral dashboard. Sharing transactions are logged and auditable.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-yellow-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-yellow-800 mb-3">Pioneer Badge Program</h4>
-              <div className="text-sm text-yellow-700 space-y-2">
-                <p>
-                  <strong>Program overview:</strong> The first 500 genuinely active users on Eloity
-                  are eligible to earn a Pioneer Badge, recognizing their role in building our community.
-                </p>
-                <p>
-                  <strong>Eligibility criteria:</strong> Users must demonstrate real engagement through
-                  account age (minimum 7 days), active sessions (minimum 10), content creation (minimum 3 posts),
-                  quality session time (5+ minutes average), and community participation (10+ interactions).
-                </p>
-                <p>
-                  <strong>Anti-abuse measures:</strong> The system includes sophisticated fraud detection
-                  to ensure badges are awarded only to legitimate, active community members, not bots or abusive accounts.
-                </p>
-                <p>
-                  <strong>Badge benefits:</strong> Pioneer Badge holders receive recognition in the community
-                  and may be eligible for special features or programs as the platform evolves.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-gray-800 mb-2">Important Legal Notes</h4>
-              <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
-                <li>Both programs are integral parts of Eloity's Terms of Service</li>
-                <li>Participation is automatic for all users; explicit opt-out mechanisms are not provided</li>
-                <li>Reward sharing percentages and pioneer badge criteria may be updated with notice</li>
-                <li>All transactions are recorded and can be audited for compliance and transparency</li>
-                <li>Programs are designed to comply with applicable laws in all operating jurisdictions</li>
-                <li>Users retain rights to their primary earnings; only the specified small percentage is shared</li>
-              </ul>
-            </div>
-
-            <Alert className="border-blue-200">
-              <AlertTriangle className="w-4 h-4 text-blue-600" />
-              <AlertDescription className="text-blue-800">
-                <strong>Transparency Notice:</strong> These community programs are clearly disclosed throughout
-                the platform. Users can view detailed information about reward sharing in their referral dashboard
-                and pioneer badge eligibility in their rewards section. Full program details are available in our
-                comprehensive Terms of Service.
-              </AlertDescription>
-            </Alert>
-          </CardContent>
-        </Card>
 
         {/* Contact Information */}
         <Card>

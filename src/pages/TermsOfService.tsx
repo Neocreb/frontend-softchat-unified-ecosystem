@@ -350,6 +350,60 @@ const TermsOfService = () => {
           </CardContent>
         </Card>
 
+        {/* Community Programs & Reward Sharing */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="w-5 h-5 text-purple-600" />
+              Community Programs & Automatic Reward Sharing
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <h4 className="font-semibold mb-2">Automatic Reward Sharing System</h4>
+              <p className="text-sm mb-2">
+                To foster community growth and support our referral network, Eloity automatically shares
+                0.5% of certain user earnings with verified referrals:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-sm ml-4">
+                <li><strong>Included Earnings:</strong> Creator economy rewards (content creation, engagement bonuses, ad revenue sharing, challenge completions, battle voting rewards, gifts and tips)</li>
+                <li><strong>Excluded Earnings:</strong> Personal business transactions (freelance payments, marketplace sales, crypto trading profits, direct user payments, withdrawal transactions)</li>
+                <li><strong>Distribution:</strong> Shared equally among all verified referrals who remain active on the platform</li>
+                <li><strong>Transparency:</strong> All sharing transactions are logged and visible in your referral dashboard</li>
+              </ul>
+              <p className="text-sm mt-2">
+                <strong>Legal Basis:</strong> By using Eloity, you consent to this automatic sharing mechanism.
+                This system is designed to reward community builders and create sustainable growth incentives.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">Pioneer Badge Program</h4>
+              <p className="text-sm mb-2">
+                The first 500 genuinely active users are eligible for Pioneer Badges, recognizing early community builders:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-sm ml-4">
+                <li><strong>Eligibility Criteria:</strong> Account age (7+ days), active sessions (10+ quality sessions), content creation (3+ posts), engagement quality (5+ minutes average session), community participation (10+ interactions)</li>
+                <li><strong>Anti-Abuse Measures:</strong> Sophisticated fraud detection ensures badges go to legitimate users, not bots or manipulative accounts</li>
+                <li><strong>Benefits:</strong> Community recognition, potential access to exclusive features as they become available</li>
+                <li><strong>Verification:</strong> All badge awards are verified through multiple activity metrics and behavioral analysis</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">User Rights & Program Participation</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm ml-4">
+                <li>Both programs are integral parts of these Terms of Service</li>
+                <li>Participation is automatic for all users; explicit opt-out mechanisms are not provided</li>
+                <li>Users retain full rights to their primary earnings; only the specified 0.5% is shared</li>
+                <li>Program criteria and percentages may be updated with appropriate notice to users</li>
+                <li>All transactions and badge awards are recorded and auditable for transparency</li>
+                <li>Users can view detailed sharing history and badge progress through their account dashboard</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Financial Terms */}
         <Card>
           <CardHeader>

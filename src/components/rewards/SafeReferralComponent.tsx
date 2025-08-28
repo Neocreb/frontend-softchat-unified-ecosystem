@@ -406,7 +406,7 @@ const SafeReferralComponent: React.FC = () => {
                 <div>
                   <p className="text-xs text-yellow-700">
                     Automatic sharing is part of our Terms of Service.
-                    <a href="/legal" className="underline hover:text-yellow-800 ml-1">Learn more</a>
+                    <a href="/terms" className="underline hover:text-yellow-800 ml-1">Terms of Service</a>
                   </p>
                 </div>
               </div>
