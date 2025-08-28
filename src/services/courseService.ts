@@ -454,8 +454,86 @@ const mockCourses: Course[] = [
         order: 10
       }
     ]
+  },
+  // Skeleton courses that will be extended with full data
+  {
+    id: "risk-management",
+    title: "Risk Management",
+    description: "Learn how to protect your investments and minimize losses",
+    level: "Intermediate",
+    duration: "2.5 hours",
+    students: 750,
+    rating: 4.8,
+    totalLessons: 9,
+    icon: Shield,
+    color: "from-orange-500 to-red-600",
+    instructor: {
+      name: "Jennifer Davis",
+      title: "Risk Management Specialist",
+      avatar: "/api/placeholder/64/64",
+      bio: "Former hedge fund risk manager with 12+ years experience"
+    },
+    objectives: [],
+    requirements: [],
+    tags: ["risk management", "trading", "portfolio"],
+    enrolled: false,
+    progress: 0,
+    completedLessons: 0,
+    certificate: true,
+    lessons: []
+  },
+  {
+    id: "crypto-security",
+    title: "Crypto Security Best Practices",
+    description: "Secure your digital assets with proper wallet and key management",
+    level: "Beginner",
+    duration: "1.5 hours",
+    students: 980,
+    rating: 4.9,
+    totalLessons: 6,
+    icon: Shield,
+    color: "from-red-500 to-pink-600",
+    instructor: {
+      name: "David Kim",
+      title: "Cybersecurity Expert",
+      avatar: "/api/placeholder/64/64",
+      bio: "Cybersecurity specialist focused on blockchain security"
+    },
+    objectives: [],
+    requirements: [],
+    tags: ["security", "wallets", "safety"],
+    enrolled: false,
+    progress: 0,
+    completedLessons: 0,
+    certificate: true,
+    lessons: []
+  },
+  {
+    id: "trading-psychology",
+    title: "Advanced Trading Psychology",
+    description: "Master the mental aspects of trading and emotional control",
+    level: "Advanced",
+    duration: "3.5 hours",
+    students: 445,
+    rating: 4.6,
+    totalLessons: 11,
+    icon: Brain,
+    color: "from-indigo-500 to-purple-600",
+    instructor: {
+      name: "Dr. Maria Rodriguez",
+      title: "Trading Psychologist",
+      avatar: "/api/placeholder/64/64",
+      bio: "PhD in Psychology specializing in trader behavior"
+    },
+    objectives: [],
+    requirements: [],
+    tags: ["psychology", "emotions", "discipline"],
+    enrolled: false,
+    progress: 0,
+    completedLessons: 0,
+    certificate: true,
+    lessons: []
   }
-  // Add remaining courses (Risk Management, Security, Trading Psychology) with similar structure
 ];
 
 // Mock user progress data
