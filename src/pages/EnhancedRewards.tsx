@@ -377,12 +377,15 @@ export default function EnhancedRewards() {
                 />
               </RewardsErrorBoundary>
 
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <RewardsErrorBoundary>
                   <AchievementSystem />
                 </RewardsErrorBoundary>
                 <RewardsErrorBoundary>
                   <GoalTracking />
+                </RewardsErrorBoundary>
+                <RewardsErrorBoundary>
+                  <PioneerBadgeWidget />
                 </RewardsErrorBoundary>
               </div>
             </div>
