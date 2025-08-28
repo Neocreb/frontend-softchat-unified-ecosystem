@@ -412,13 +412,37 @@ const IntegrationManager = () => {
         </Card>
       </div>
 
+      {/* African Payment Methods Notice */}
+      <Card className="border-blue-200 bg-blue-50">
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            <div className="p-2 bg-blue-100 rounded-full">
+              <Smartphone className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <h4 className="font-medium text-blue-800 mb-2">
+                African Payment Methods Available
+              </h4>
+              <p className="text-sm text-blue-700 mb-3">
+                Mobile Money (MTN, Airtel, M-Pesa), Digital Banks (Kuda, OPay, TymeBank),
+                and Payment Gateways (Paystack, Flutterwave) are available in the Quick Actions section above.
+              </p>
+              <div className="text-xs text-blue-600">
+                <p>• Check the Overview tab for all African payment integrations</p>
+                <p>• Use Quick Actions for Mobile Money transfers and payments</p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Bank Accounts */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <Building className="h-5 w-5" />
-              Connected Bank Accounts
+              Traditional Bank Accounts
             </CardTitle>
             <Dialog open={showAddBankDialog} onOpenChange={setShowAddBankDialog}>
               <DialogTrigger asChild>
