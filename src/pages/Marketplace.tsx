@@ -194,7 +194,7 @@ const MarketplaceContent = () => {
                 <CardContent className="p-4">
                   <div className="flex flex-col lg:flex-row gap-4">
                     <div className="flex-1 relative">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400 dark:text-gray-500" />
                       <Input
                         placeholder="Search products, brands, or categories..."
                         value={searchQuery}
@@ -344,9 +344,9 @@ const MarketplaceContent = () => {
               </Card>
 
               {/* Trust & Security Banner */}
-              <Card className="bg-blue-50 border-blue-200">
+              <Card className="bg-blue-50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800">
                 <CardContent className="p-4">
-                  <div className="flex items-center justify-center gap-8 text-sm text-blue-800">
+                  <div className="flex items-center justify-center gap-8 text-sm text-blue-800 dark:text-blue-200">
                     <div className="flex items-center gap-2">
                       <Shield className="h-4 w-4" />
                       <span>Buyer Protection</span>
