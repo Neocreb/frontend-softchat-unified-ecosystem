@@ -166,12 +166,24 @@ const CryptoLearn = () => {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold">Welcome to Crypto Academy</h3>
-                    <p className="text-white font-medium">Start your journey to becoming a crypto expert</p>
+                    <p className="text-white font-medium">
+                      {courseStats.enrolledCourses > 0
+                        ? `Continue your crypto education journey`
+                        : `Start your journey to becoming a crypto expert`
+                      }
+                    </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold">0/6</div>
+                  <div className="text-2xl font-bold">
+                    {courseStats.completedCourses}/{courseStats.totalCourses}
+                  </div>
                   <div className="text-sm text-white font-medium">Courses Completed</div>
+                  {courseStats.enrolledCourses > 0 && (
+                    <div className="text-xs text-white/80 mt-1">
+                      {Math.round(courseStats.averageProgress)}% avg progress
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
