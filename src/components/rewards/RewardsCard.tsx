@@ -103,7 +103,7 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
               <Sparkles className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-card-foreground">SoftChat Rewards</h2>
+              <h2 className="text-base sm:text-lg font-bold text-card-foreground">Eloity Rewards</h2>
               <p className="text-muted-foreground text-xs sm:text-sm">Quality-based earnings</p>
             </div>
           </div>

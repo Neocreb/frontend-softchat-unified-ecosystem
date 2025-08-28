@@ -807,7 +807,7 @@ export const PWAInstallPrompt: React.FC = () => {
             <Download className="w-5 h-5 text-primary-foreground" />
           </div>
           <div className="flex-1">
-            <h4 className="font-medium text-sm">Install Softchat</h4>
+            <h4 className="font-medium text-sm">Install Eloity</h4>
             <p className="text-xs text-muted-foreground">
               Add to home screen for faster access
             </p>
