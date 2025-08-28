@@ -338,6 +338,7 @@ app.use('/api/freelance', freelanceRouter);
 app.use('/api/follow', followRouter);
 app.use('/api/referral', referralRouter);
 app.use('/api/rewards', rewardSharingRouter);
+app.use('/api/pioneer', pioneerBadgeRouter);
 
 // =============================================================================
 // CORE AUTHENTICATION ENDPOINTS
