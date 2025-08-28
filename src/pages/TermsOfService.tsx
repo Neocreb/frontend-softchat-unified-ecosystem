@@ -129,7 +129,7 @@ const TermsOfService = () => {
             <div>
               <h4 className="font-semibold mb-2">Account Creation</h4>
               <ul className="list-disc list-inside space-y-1 text-sm">
-                <li>You must be at least 13 years old to use SoftChat</li>
+                <li>You must be at least 13 years old to use Eloity</li>
                 <li>You must provide accurate and complete information</li>
                 <li>You are responsible for maintaining account security</li>
                 <li>One person may not maintain multiple accounts</li>
