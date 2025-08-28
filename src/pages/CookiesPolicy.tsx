@@ -66,11 +66,11 @@ const CookiesPolicy = () => {
           <CardContent className="space-y-4">
             <p>
               Cookies are small text files that are stored on your device when you visit 
-              SoftChat. They help us provide you with a better experience by remembering 
+              Eloity. They help us provide you with a better experience by remembering 
               your preferences, keeping you logged in, and enabling personalized features.
             </p>
             <p>
-              This Cookie Policy explains how SoftChat uses cookies and similar technologies 
+              This Cookie Policy explains how Eloity uses cookies and similar technologies 
               across our AI-powered social media and marketplace platform, including our 
               social networking, marketplace, freelancing, and cryptocurrency features.
             </p>
@@ -88,7 +88,7 @@ const CookiesPolicy = () => {
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground mb-4">
               Manage your cookie preferences below. Note that disabling certain cookies 
-              may affect your experience on SoftChat.
+              may affect your experience on Eloity.
             </p>
             
             <div className="space-y-4">
