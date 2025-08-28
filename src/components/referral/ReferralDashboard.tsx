@@ -211,6 +211,65 @@ const ReferralDashboard: React.FC = () => {
     };
   };
 
+  // Revenue sharing functions
+  const updateRevenueShare = async (linkId: string, percentage: number) => {
+    setIsUpdatingShare(true);
+    try {
+      const result = await ReferralService.updateRevenueSharePercentage(linkId, percentage);
+
+      if (result.success) {
+        toast({
+          title: "Updated!",
+          description: `Revenue sharing set to ${percentage}%`,
+        });
+
+        // Update the local state
+        setReferralLinks(prev =>
+          prev.map(link =>
+            link.id === linkId
+              ? { ...link, revenueSharePercentage: percentage }
+              : link
+          )
+        );
+
+        // Refresh revenue sharing data
+        const [shareStats, shareHistory] = await Promise.all([
+          ReferralService.getRevenueSharingStats(),
+          ReferralService.getRevenueSharingHistory(),
+        ]);
+        setRevenueSharingStats(shareStats);
+        setRevenueSharingHistory(shareHistory);
+
+        setEditingLinkId(null);
+        setNewSharePercentage(0);
+      } else {
+        toast({
+          title: "Update Failed",
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update revenue sharing percentage",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpdatingShare(false);
+    }
+  };
+
+  const startEditingShare = (linkId: string, currentPercentage: number) => {
+    setEditingLinkId(linkId);
+    setNewSharePercentage(currentPercentage);
+  };
+
+  const cancelEditingShare = () => {
+    setEditingLinkId(null);
+    setNewSharePercentage(0);
+  };
+
   if (isLoading) {
     return (
       <div className="space-y-6">
