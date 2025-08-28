@@ -146,30 +146,30 @@ export default function CryptoWalletBalanceCard({
           </div>
 
           {/* Right: Primary Asset & Actions */}
-          <div className="text-left sm:text-right space-y-2 sm:space-y-3 w-full sm:w-auto">
-            <div>
-              <p className="text-white/80 text-2xs sm:text-xs font-medium uppercase tracking-wide mb-1">
+          <div className="text-left sm:text-right space-y-3 sm:space-y-4 w-full sm:w-auto sm:min-w-[280px]">
+            <div className="space-y-1">
+              <p className="text-white/90 text-2xs sm:text-xs font-semibold uppercase tracking-wider mb-2 drop-shadow-sm">
                 Primary Asset
               </p>
-              <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white drop-shadow">
+              <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white drop-shadow-lg tracking-tight">
                 {showBalance ? `${primaryAsset.balance} ${primaryAsset.symbol}` : "••••••"}
               </div>
-              <p className="text-white/90 text-xs sm:text-sm font-medium">
+              <p className="text-white/95 text-sm sm:text-base font-medium drop-shadow-sm">
                 ≈ {showBalance ? formatCurrency(primaryAsset.value) : "••••••"}
               </p>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-2 w-full sm:w-auto">
+            <div className="flex gap-2.5 w-full sm:w-auto">
               <Button
                 onClick={onDeposit}
-                className="bg-white/20 hover:bg-white/30 text-white border border-white/20 backdrop-blur-sm font-semibold px-3 sm:px-6 py-2 rounded-lg shadow-lg transition-all duration-200 hover:scale-105 flex-1 sm:flex-none text-sm sm:text-base"
+                className="bg-white/25 hover:bg-white/35 text-white border border-white/30 backdrop-blur-md font-bold px-4 sm:px-6 py-2.5 rounded-xl shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl flex-1 sm:flex-none text-sm sm:text-base ring-1 ring-white/20 hover:ring-white/30"
               >
                 Deposit
               </Button>
               <Button
                 onClick={onWithdraw}
-                className="bg-white text-eloity-primary hover:bg-white/90 border border-white font-semibold px-3 sm:px-6 py-2 rounded-lg shadow-lg transition-all duration-200 hover:scale-105 flex-1 sm:flex-none text-sm sm:text-base"
+                className="bg-white text-eloity-primary hover:bg-white/95 border border-white font-bold px-4 sm:px-6 py-2.5 rounded-xl shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl flex-1 sm:flex-none text-sm sm:text-base hover:ring-2 hover:ring-white/50"
               >
                 Withdraw
               </Button>
