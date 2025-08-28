@@ -228,7 +228,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
       ]
     },
     {
-      name: "Messages & Chat",
+      name: "Engagement",
       icon: MessageSquare,
       color: "bg-purple-500",
       growth: 19.4,
