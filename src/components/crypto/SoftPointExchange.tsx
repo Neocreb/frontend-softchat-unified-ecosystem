@@ -94,32 +94,32 @@ const EloitExchange = () => {
     
     // Mock conversion rates
     const rates: Record<string, Record<string, number>> = {
-      softpoints: {
-        btc: 0.00000025, // 4,000,000 SP = 1 BTC
-        eth: 0.000004, // 250,000 SP = 1 ETH
-        usdt: 0.01, // 100 SP = 1 USDT
-        sol: 0.0006, // 1666 SP = 1 SOL
+      eloits: {
+        btc: 0.00000025, // 4,000,000 ELO = 1 BTC
+        eth: 0.000004, // 250,000 ELO = 1 ETH
+        usdt: 0.01, // 100 ELO = 1 USDT
+        sol: 0.0006, // 1666 ELO = 1 SOL
       },
       btc: {
-        softpoints: 4000000, // 1 BTC = 4,000,000 SP
+        eloits: 4000000, // 1 BTC = 4,000,000 ELO
         eth: 16, // 1 BTC = 16 ETH
         usdt: 52800, // 1 BTC = $52,800
         sol: 335, // 1 BTC = 335 SOL
       },
       eth: {
-        softpoints: 250000, // 1 ETH = 250,000 SP
+        eloits: 250000, // 1 ETH = 250,000 ELO
         btc: 0.0625, // 1 ETH = 0.0625 BTC
         usdt: 3145, // 1 ETH = $3,145
         sol: 20, // 1 ETH = 20 SOL
       },
       usdt: {
-        softpoints: 100, // 1 USDT = 100 SP
+        eloits: 100, // 1 USDT = 100 ELO
         btc: 0.000019, // 1 USDT = 0.000019 BTC
         eth: 0.00032, // 1 USDT = 0.00032 ETH
         sol: 0.00633, // 1 USDT = 0.00633 SOL
       },
       sol: {
-        softpoints: 1666, // 1 SOL = 1,666 SP
+        eloits: 1666, // 1 SOL = 1,666 ELO
         btc: 0.003, // 1 SOL = 0.003 BTC
         eth: 0.05, // 1 SOL = 0.05 ETH
         usdt: 157.83, // 1 SOL = $157.83
@@ -136,8 +136,8 @@ const EloitExchange = () => {
     }
 
     // Set fee percentage (mock)
-    // Higher fee for SoftPoints conversions
-    if (from === "softpoints" || to === "softpoints") {
+    // Higher fee for Eloits conversions
+    if (from === "eloits" || to === "eloits") {
       setFee(0.025); // 2.5% fee
     } else {
       setFee(0.015); // 1.5% standard fee
@@ -240,7 +240,7 @@ const EloitExchange = () => {
             <div>
               <CardTitle className="text-xl">Convert Crypto</CardTitle>
               <CardDescription>
-                Exchange SoftPoints for crypto or convert between cryptocurrencies
+                Exchange Eloits for crypto or convert between cryptocurrencies
               </CardDescription>
             </div>
             <div className="flex gap-2">
@@ -367,7 +367,7 @@ const EloitExchange = () => {
                         <TooltipContent className="w-80">
                           <p>
                             A fee of {feePercentage}% is charged on all conversions. 
-                            Higher fees apply for SoftPoints conversions.
+                            Higher fees apply for Eloits conversions.
                           </p>
                         </TooltipContent>
                       </Tooltip>
