@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { WalletProvider, useWalletContext } from "@/contexts/WalletContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Wallet,
   BarChart3,
@@ -36,6 +37,7 @@ const EnhancedWalletDashboardContent = () => {
     isLoading,
     refreshWallet,
   } = useWalletContext();
+  const { user } = useAuth();
 
   const [activeTab, setActiveTab] = useState("overview");
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
@@ -63,10 +65,19 @@ const EnhancedWalletDashboardContent = () => {
   return (
     <div className="mobile-container mobile-space-y bg-platform min-h-screen">
       {/* Header */}
-      <div className="text-center sm:text-left">
-        <h1 className="text-2xl font-bold text-foreground">
-          Wallet
-        </h1>
+      <div className="flex items-start justify-between gap-4 mb-2">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground truncate">
+            Hi, {user?.profile?.full_name || user?.profile?.username || user?.email?.split('@')[0] || 'User'}!
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">Manage your finances</p>
+        </div>
+        <div className="flex-shrink-0">
+          <Badge variant="outline" className="text-xs whitespace-nowrap">
+            <Wallet className="h-3 w-3 mr-1" />
+            Wallet
+          </Badge>
+        </div>
       </div>
 
       {/* Main Balance Card - Fixed CSS for visibility */}

@@ -30,7 +30,6 @@ import {
   Sparkles,
 
 } from "lucide-react";
-import AfricanPaymentQuickLinks from "./AfricanPaymentQuickLinks";
 
 interface QuickAction {
   id: string;
@@ -387,8 +386,6 @@ const QuickActionsWidget = () => {
         </CardContent>
       </Card>
 
-      {/* African Payment Quick Links */}
-      <AfricanPaymentQuickLinks />
 
       {/* Quick Action Modals */}
       <EnhancedSendMoneyModal

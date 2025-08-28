@@ -48,7 +48,7 @@ import {
   Receipt,
   Shield,
 } from "lucide-react";
-import { format, parseISO, isWithinInterval } from "date-fns";
+import { format, parseISO, isWithinInterval, formatDistanceToNow } from "date-fns";
 
 interface FilterState {
   search: string;
@@ -263,6 +263,35 @@ const AdvancedTransactionManager = () => {
     setReceiptTransaction(transaction);
     setShowReceiptDialog(true);
   }, []);
+
+  // Helper functions for transaction styling
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "completed":
+        return "bg-green-100 text-green-700 border-green-200";
+      case "pending":
+        return "bg-yellow-100 text-yellow-700 border-yellow-200";
+      case "failed":
+        return "bg-red-100 text-red-700 border-red-200";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-200";
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "earned":
+        return "text-green-600";
+      case "deposit":
+        return "text-blue-600";
+      case "withdrawal":
+        return "text-red-600";
+      case "transfer":
+        return "text-purple-600";
+      default:
+        return "text-gray-600";
+    }
+  };
 
   const printTransactions = useCallback(() => {
     const selectedData = selectedTransactions.length > 0 
@@ -628,19 +657,56 @@ const AdvancedTransactionManager = () => {
                   <Checkbox
                     checked={selectedTransactions.includes(transaction.id)}
                     onCheckedChange={() => toggleTransactionSelection(transaction.id)}
+                    className="flex-shrink-0"
                   />
-                  <div className="flex-1">
-                    <TransactionItem transaction={transaction} />
+                  <div className="flex items-center justify-between flex-1 min-w-0">
+                    <div className="flex items-center space-x-4 flex-1 min-w-0">
+                      <div className="flex-shrink-0">
+                        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-2xl">
+                          {transaction.sourceIcon}
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">
+                          {transaction.description}
+                        </p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <Badge
+                            variant="outline"
+                            className={`text-xs ${getStatusColor(transaction.status)}`}
+                          >
+                            {transaction.status}
+                          </Badge>
+                          <span className="text-xs text-gray-500">
+                            {formatDistanceToNow(new Date(transaction.timestamp), {
+                              addSuffix: true,
+                            })}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <div className="flex flex-col items-end">
+                        <span
+                          className={`text-lg font-semibold ${getTypeColor(transaction.type)}`}
+                        >
+                          {transaction.amount > 0 ? "+" : "-"}${Math.abs(transaction.amount).toFixed(2)}
+                        </span>
+                        <span className="text-xs text-gray-500 capitalize">
+                          {transaction.type}
+                        </span>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => generateReceipt(transaction)}
+                        className="flex items-center gap-1 text-xs whitespace-nowrap"
+                      >
+                        <Receipt className="h-3 w-3" />
+                        Receipt
+                      </Button>
+                    </div>
                   </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => generateReceipt(transaction)}
-                    className="flex items-center gap-1 text-xs"
-                  >
-                    <Receipt className="h-3 w-3" />
-                    Receipt
-                  </Button>
                 </div>
               ))}
             </div>
