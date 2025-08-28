@@ -147,6 +147,7 @@ import GlobalSearch from "./pages/GlobalSearch";
 import LandingPage from "./pages/LandingPage";
 import TestComponent from "./pages/TestComponent";
 import SupabaseDebug from "./pages/SupabaseDebug";
+import TestWallet from "./pages/TestWallet";
 import UnifiedNotifications from "./pages/UnifiedNotifications";
 import Create from "./pages/Create";
 import EnhancedPlatform from "./pages/EnhancedPlatform";
