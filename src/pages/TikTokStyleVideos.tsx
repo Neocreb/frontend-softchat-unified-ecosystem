@@ -779,7 +779,7 @@ const TikTokStyleVideos: React.FC = () => {
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden z-10">
       <Helmet>
-        <title>Videos | SoftChat</title>
+        <title>Videos | Eloity</title>
         <meta
           name="description"
           content="Discover trending videos and content from creators you follow"

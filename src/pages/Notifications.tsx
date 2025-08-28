@@ -48,7 +48,7 @@ const Notifications = () => {
   return (
     <>
       <Helmet>
-        <title>Notifications | Softchat</title>
+        <title>Notifications | Eloity</title>
       </Helmet>
 
       <div className="max-w-2xl mx-auto">
