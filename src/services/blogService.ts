@@ -250,7 +250,7 @@ These features are available in the Pro Trading section of your dashboard...
       name: "Alex Johnson",
       avatar:
         "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150",
-      bio: "Product Manager at SoftChat",
+      bio: "Product Manager at Eloity",
     },
     publishedAt: "2024-01-05T11:20:00Z",
     updatedAt: "2024-01-05T11:20:00Z",
@@ -500,8 +500,8 @@ class BlogService {
         return `
     <item>
       <title><![CDATA[${post.title}]]></title>
-      <link>https://softchat.com/blog/${post.slug}</link>
-      <guid isPermaLink="true">https://softchat.com/blog/${post.slug}</guid>
+      <link>https://eloity.com/blog/${post.slug}</link>
+      <guid isPermaLink="true">https://eloity.com/blog/${post.slug}</guid>
       <description><![CDATA[${post.excerpt}]]></description>
       <content:encoded><![CDATA[${post.content}]]></content:encoded>
       <pubDate>${pubDate}</pubDate>
@@ -517,16 +517,16 @@ class BlogService {
     return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>SoftChat Crypto Learning Blog</title>
-    <link>https://softchat.com/blog</link>
-    <description>Educational content about cryptocurrency, blockchain technology, and trading strategies from SoftChat</description>
+    <title>Eloity Crypto Learning Blog</title>
+    <link>https://eloity.com/blog</link>
+    <description>Educational content about cryptocurrency, blockchain technology, and trading strategies from Eloity</description>
     <language>en-us</language>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
-    <atom:link href="https://softchat.com/api/blog/rss" rel="self" type="application/rss+xml"/>
-    <generator>SoftChat Blog System</generator>
-    <managingEditor>team@softchat.com (SoftChat Team)</managingEditor>
-    <webMaster>tech@softchat.com (SoftChat Tech)</webMaster>
-    <copyright>Copyright ${new Date().getFullYear()} SoftChat. All rights reserved.</copyright>
+    <atom:link href="https://eloity.com/api/blog/rss" rel="self" type="application/rss+xml"/>
+    <generator>Eloity Blog System</generator>
+    <managingEditor>team@eloity.com (Eloity Team)</managingEditor>
+    <webMaster>tech@eloity.com (Eloity Tech)</webMaster>
+    <copyright>Copyright ${new Date().getFullYear()} Eloity. All rights reserved.</copyright>
     <category>Cryptocurrency</category>
     <category>Blockchain</category>
     <category>Trading</category>

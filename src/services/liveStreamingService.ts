@@ -139,8 +139,8 @@ class LiveStreamingService {
     try {
       // Generate stream credentials
       const streamKey = this.generateStreamKey();
-      const rtmpUrl = `rtmp://live.softchat.com/live/${streamKey}`;
-      const playbackUrl = `https://live.softchat.com/hls/${streamKey}/index.m3u8`;
+      const rtmpUrl = `rtmp://live.eloity.com/live/${streamKey}`;
+      const playbackUrl = `https://live.eloity.com/hls/${streamKey}/index.m3u8`;
 
       const { data, error } = await (supabase as any)
         .from("live_streams")
