@@ -315,12 +315,21 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setIsLoading(true);
         setError(null);
 
+        console.log("Attempting login for:", email);
+        console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
+
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
         if (error) {
+          console.error("Supabase auth error:", error);
+          console.error("Error details:", {
+            message: error.message,
+            status: error.status,
+            name: error.name
+          });
           setError(error);
           return { error };
         }
@@ -329,6 +338,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return {};
       } catch (error) {
         const authError = error as Error;
+        console.error("Login catch error:", authError);
         setError(authError);
         return { error: authError };
       } finally {
