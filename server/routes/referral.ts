@@ -6,6 +6,7 @@ import { authenticateToken } from '../middleware/auth.js';
 import { logger } from '../utils/logger.js';
 import { referral_links, referral_events } from '../../shared/enhanced-schema.js';
 import { users } from '../../shared/schema.js';
+import { creditRevenueSharing, updateRevenueSharePercentage, getRevenueSharingStats } from '../services/referralShareService.js';
 
 const router = express.Router();
 
@@ -465,24 +466,37 @@ router.post('/process-validated-rewards', async (req, res) => {
         const hasMinimalActivity = Number(refereeActivity.postCount) > 0 || Number(refereeActivity.points) > 35; // Posted or engaged
 
         if (isRecentlyActive && hasMinimalActivity) {
-          // Credit the referrer
-          await db.update(users)
-            .set({
-              points: sql`COALESCE(${users.points}, 0) + ${event.reward_amount}`,
-              updated_at: new Date()
-            })
-            .where(eq(users.id, event.referrer_id));
+          // Get the referral link to check for revenue sharing settings
+          const linkData = await db.select().from(referral_links)
+            .where(eq(referral_links.id, event.referral_link_id))
+            .limit(1);
 
-          // Mark reward as claimed
-          await db.update(referral_events)
-            .set({
-              is_reward_claimed: true,
-              metadata: sql`jsonb_set(COALESCE(${referral_events.metadata}, '{}'::jsonb), '{validatedAt}', to_jsonb(now()::text)) || jsonb_build_object('validationPassed', true, 'refereeActive', true)`
-            })
-            .where(eq(referral_events.id, event.id));
+          if (linkData.length > 0) {
+            // Use revenue sharing service to handle splitting
+            const success = await creditRevenueSharing(event, linkData[0]);
+            if (success) {
+              processedCount++;
+              creditedAmount += Number(event.reward_amount);
+            }
+          } else {
+            // Fallback to original logic if link not found
+            await db.update(users)
+              .set({
+                points: sql`COALESCE(${users.points}, 0) + ${event.reward_amount}`,
+                updated_at: new Date()
+              })
+              .where(eq(users.id, event.referrer_id));
 
-          processedCount++;
-          creditedAmount += Number(event.reward_amount);
+            await db.update(referral_events)
+              .set({
+                is_reward_claimed: true,
+                metadata: sql`jsonb_set(COALESCE(${referral_events.metadata}, '{}'::jsonb), '{validatedAt}', to_jsonb(now()::text)) || jsonb_build_object('validationPassed', true, 'refereeActive', true)`
+              })
+              .where(eq(referral_events.id, event.id));
+
+            processedCount++;
+            creditedAmount += Number(event.reward_amount);
+          }
         } else {
           // Mark as validation failed
           await db.update(referral_events)
