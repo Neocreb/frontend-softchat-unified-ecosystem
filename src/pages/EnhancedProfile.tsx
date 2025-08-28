@@ -520,7 +520,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="w-full max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
           <div className="space-y-4">
             <Skeleton className="h-48 w-full rounded-lg" />
@@ -625,42 +625,42 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       <div className="flex flex-wrap gap-1 mb-1">
                         <Badge
                           variant="secondary"
-                          className="text-xs bg-purple-100 text-purple-700 border-purple-200"
+                          className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-200 border-purple-200 dark:border-purple-700"
                         >
                           <Crown className="h-3 w-3 mr-1" />
                           Premium
                         </Badge>
                         <Badge
                           variant="secondary"
-                          className="text-xs bg-green-100 text-green-700 border-green-200"
+                          className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-200 border-green-200 dark:border-green-700"
                         >
                           <Shield className="h-3 w-3 mr-1" />
                           KYC Verified
                         </Badge>
                         <Badge
                           variant="secondary"
-                          className="text-xs bg-blue-100 text-blue-700 border-blue-200"
+                          className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-200 border-blue-200 dark:border-blue-700"
                         >
                           <Star className="h-3 w-3 mr-1" />
                           Creator Level 8
                         </Badge>
                         <Badge
                           variant="secondary"
-                          className="text-xs bg-emerald-100 text-emerald-700 border-emerald-200"
+                          className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-200 border-emerald-200 dark:border-emerald-700"
                         >
                           <Store className="h-3 w-3 mr-1" />
                           Pro Seller
                         </Badge>
                         <Badge
                           variant="secondary"
-                          className="text-xs bg-indigo-100 text-indigo-700 border-indigo-200"
+                          className="text-xs bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-200 border-indigo-200 dark:border-indigo-700"
                         >
                           <Code className="h-3 w-3 mr-1" />
                           Top Freelancer
                         </Badge>
                         <Badge
                           variant="secondary"
-                          className="text-xs bg-orange-100 text-orange-700 border-orange-200"
+                          className="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-200 border-orange-200 dark:border-orange-700"
                         >
                           <Coins className="h-3 w-3 mr-1" />
                           Crypto Trader
@@ -793,8 +793,8 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 <div className="mt-6">
                   <div className="relative">
                     {/* Gradient fade effects */}
-                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10 pointer-events-none" />
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10 pointer-events-none" />
 
                     {/* Scrollable stats container */}
                     <div className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide py-4 px-1">
@@ -819,7 +819,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                             </div>
                           </div>
                         </div>
-                        <div className="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 transition-colors">
                           Posts
                         </div>
                       </div>
@@ -836,7 +836,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                             </div>
                           </div>
                         </div>
-                        <div className="text-sm font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-purple-600 transition-colors">
                           Followers
                         </div>
                       </div>
@@ -853,7 +853,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                             </div>
                           </div>
                         </div>
-                        <div className="text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-indigo-600 transition-colors">
                           Following
                         </div>
                       </div>
@@ -871,7 +871,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                             </div>
                           </div>
                         </div>
-                        <div className="text-sm font-medium text-gray-700 group-hover:text-pink-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-pink-600 transition-colors">
                           Views
                         </div>
                       </div>
@@ -890,7 +890,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                               </div>
                             </div>
                           </div>
-                          <div className="text-sm font-medium text-gray-700 group-hover:text-green-600 transition-colors">
+                          <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-green-600 transition-colors">
                             Balance
                           </div>
                         </div>
@@ -912,7 +912,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                             </div>
                           </div>
                         </div>
-                        <div className="text-sm font-medium text-gray-700 group-hover:text-amber-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-amber-600 transition-colors">
                           Trust Level
                         </div>
                       </div>
@@ -930,7 +930,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                             </div>
                           </div>
                         </div>
-                        <div className="text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-orange-600 transition-colors">
                           Sales
                         </div>
                       </div>
@@ -948,7 +948,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                             </div>
                           </div>
                         </div>
-                        <div className="text-sm font-medium text-gray-700 group-hover:text-cyan-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-cyan-600 transition-colors">
                           Projects
                         </div>
                       </div>
@@ -966,7 +966,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                             </div>
                           </div>
                         </div>
-                        <div className="text-sm font-medium text-gray-700 group-hover:text-yellow-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-yellow-600 transition-colors">
                           Trades
                         </div>
                       </div>
@@ -985,7 +985,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                               </div>
                             </div>
                           </div>
-                          <div className="text-sm font-medium text-gray-700 group-hover:text-violet-600 transition-colors">
+                          <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-violet-600 transition-colors">
                             Delivery
                           </div>
                         </div>
