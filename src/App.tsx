@@ -311,6 +311,7 @@ const AppRoutes = () => {
       {/* Root path shows original feature-rich landing page */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/test" element={<TestComponent />} />
+      <Route path="/test-wallet" element={<TestWallet />} />
       <Route path="/supabase-debug" element={<SupabaseDebug />} />
       <Route path="/home" element={<Home />} />
       <Route path="/meme-gif-demo" element={<MemeGifDemo />} />
