@@ -52,7 +52,7 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = ({
 
           // No immediate reward - rewards are given only on payment completion
           notification.success('Added to cart!', {
-            description: 'Complete payment to earn SoftPoints rewards'
+            description: 'Complete payment to earn Eloits rewards'
           });
 
           // Navigate to cart page
@@ -77,8 +77,8 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = ({
             { source: 'quick_apply' }
           );
 
-          if (applyReward.success && applyReward.softPoints > 0) {
-            notification.success(`Application started! +${applyReward.softPoints} SoftPoints earned`, {
+          if (applyReward.success && applyReward.eloits > 0) {
+            notification.success(`Application started! +${applyReward.eloits} Eloits earned`, {
               description: 'Complete your application to apply'
             });
           }
@@ -94,8 +94,8 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = ({
             { source: 'quick_join' }
           );
 
-          if (joinReward.success && joinReward.softPoints > 0) {
-            notification.success(`Joined event! +${joinReward.softPoints} SoftPoints earned`, {
+          if (joinReward.success && joinReward.eloits > 0) {
+            notification.success(`Joined event! +${joinReward.eloits} Eloits earned`, {
               description: 'You will receive event updates'
             });
           } else {
@@ -114,8 +114,8 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = ({
             { type: 'live_stream', source: 'quick_watch' }
           );
 
-          if (liveReward.success && liveReward.softPoints > 0) {
-            notification.success(`Joining live! +${liveReward.softPoints} SoftPoints earned`, {
+          if (liveReward.success && liveReward.eloits > 0) {
+            notification.success(`Joining live! +${liveReward.eloits} Eloits earned`, {
               description: 'Enjoy the live content'
             });
           }
