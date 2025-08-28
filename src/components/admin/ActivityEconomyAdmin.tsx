@@ -58,7 +58,7 @@ interface RewardRule {
   actionType: string;
   displayName: string;
   description: string;
-  baseSoftPoints: number;
+  baseEloits: number;
   baseWalletBonus: number;
   currency: string;
   dailyLimit?: number;
@@ -80,12 +80,12 @@ interface RewardRule {
 interface PlatformStats {
   totalUsers: number;
   activeUsers24h: number;
-  totalSoftPointsIssued: number;
+  totalEloitsIssued: number;
   totalWalletBonusPaid: number;
   totalActivities: number;
   flaggedUsers: number;
   pendingReviews: number;
-  dailyActivity: Array<{ date: string; count: number; softPoints: number }>;
+  dailyActivity: Array<{ date: string; count: number; eloits: number }>;
 }
 
 interface FraudAlert {
