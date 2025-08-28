@@ -36,6 +36,7 @@ import {
   Heart,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import { cryptoService } from "@/services/cryptoService";
 import { blogService } from "@/services/blogService";
 import {
