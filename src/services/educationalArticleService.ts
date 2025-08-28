@@ -1,4 +1,6 @@
 import { FileText, TrendingUp, Shield, Target, Zap, Coins } from "lucide-react";
+import { ActivityRewardService } from './activityRewardService';
+import { PlatformRewardIntegration } from './platformRewardIntegration';
 
 export interface ArticleQuizQuestion {
   id: string;
@@ -44,6 +46,11 @@ export interface EducationalArticle {
     quizAttempts: number;
     averageScore: number;
   };
+  rewardPoints: {
+    reading: number;
+    quizCompletion: number;
+    perfectScore: number;
+  };
 }
 
 export interface UserArticleProgress {
@@ -54,6 +61,11 @@ export interface UserArticleProgress {
   lastRead: Date;
   bookmarked: boolean;
   liked: boolean;
+  rewardsEarned: {
+    reading: boolean;
+    quizCompletion: boolean;
+    perfectScore: boolean;
+  };
 }
 
 // Mock educational articles data
@@ -236,6 +248,11 @@ Understanding blockchain fundamentals is crucial for anyone looking to participa
       bookmarks: 756,
       quizAttempts: 3420,
       averageScore: 78
+    },
+    rewardPoints: {
+      reading: 15,
+      quizCompletion: 25,
+      perfectScore: 50
     }
   },
   {
@@ -461,6 +478,11 @@ The cost of proper security measures is minimal compared to the potential loss f
       bookmarks: 890,
       quizAttempts: 2750,
       averageScore: 82
+    },
+    rewardPoints: {
+      reading: 20,
+      quizCompletion: 30,
+      perfectScore: 60
     }
   },
   {
@@ -709,6 +731,11 @@ The DeFi space moves quickly, so what works today may not work tomorrow. Flexibi
       bookmarks: 567,
       quizAttempts: 1890,
       averageScore: 75
+    },
+    rewardPoints: {
+      reading: 25,
+      quizCompletion: 40,
+      perfectScore: 80
     }
   }
 ];
@@ -753,34 +780,53 @@ class EducationalArticleService {
     return userProgress.find(progress => progress.articleId === articleId) || null;
   }
 
-  // Update reading progress
-  updateReadingProgress(userId: string, articleId: string, timeSpent: number): void {
+  // Update reading progress with reward tracking
+  async updateReadingProgress(userId: string, articleId: string, timeSpent: number): Promise<void> {
     if (!userArticleProgressData[userId]) {
       userArticleProgressData[userId] = [];
     }
 
-    const existingProgress = userArticleProgressData[userId].find(p => p.articleId === articleId);
-    if (existingProgress) {
-      existingProgress.timeSpent += timeSpent;
-      existingProgress.lastRead = new Date();
-    } else {
-      userArticleProgressData[userId].push({
+    const article = this.getArticleById(articleId);
+    if (!article) return;
+
+    let existingProgress = userArticleProgressData[userId].find(p => p.articleId === articleId);
+    if (!existingProgress) {
+      existingProgress = {
         articleId,
         completed: false,
-        timeSpent,
+        timeSpent: 0,
         lastRead: new Date(),
         bookmarked: false,
-        liked: false
-      });
+        liked: false,
+        rewardsEarned: {
+          reading: false,
+          quizCompletion: false,
+          perfectScore: false
+        }
+      };
+      userArticleProgressData[userId].push(existingProgress);
+    }
+
+    existingProgress.timeSpent += timeSpent;
+    existingProgress.lastRead = new Date();
+
+    // Award reading reward if user has spent sufficient time and hasn't earned it yet
+    const minimumReadTime = Math.max(article.readingTime * 0.8, 5); // 80% of reading time or 5 minutes minimum
+    if (existingProgress.timeSpent >= minimumReadTime && !existingProgress.rewardsEarned.reading) {
+      await this.awardReadingReward(userId, articleId, article.rewardPoints.reading);
+      existingProgress.rewardsEarned.reading = true;
     }
   }
 
-  // Save quiz score
-  saveQuizScore(userId: string, articleId: string, score: number): boolean {
+  // Save quiz score with reward tracking
+  async saveQuizScore(userId: string, articleId: string, score: number): Promise<boolean> {
     try {
       if (!userArticleProgressData[userId]) {
         userArticleProgressData[userId] = [];
       }
+
+      const article = this.getArticleById(articleId);
+      if (!article) return false;
 
       let progress = userArticleProgressData[userId].find(p => p.articleId === articleId);
       if (!progress) {
@@ -790,7 +836,12 @@ class EducationalArticleService {
           timeSpent: 0,
           lastRead: new Date(),
           bookmarked: false,
-          liked: false
+          liked: false,
+          rewardsEarned: {
+            reading: false,
+            quizCompletion: false,
+            perfectScore: false
+          }
         };
         userArticleProgressData[userId].push(progress);
       }
@@ -799,15 +850,138 @@ class EducationalArticleService {
       progress.lastRead = new Date();
       
       // Mark as completed if quiz passed
-      const article = this.getArticleById(articleId);
-      if (article && score >= article.quiz.passingScore) {
+      if (score >= article.quiz.passingScore) {
         progress.completed = true;
+        
+        // Award completion reward if not already earned
+        if (!progress.rewardsEarned.quizCompletion) {
+          await this.awardQuizCompletionReward(userId, articleId, article.rewardPoints.quizCompletion);
+          progress.rewardsEarned.quizCompletion = true;
+        }
+
+        // Award perfect score bonus if applicable
+        if (score === 100 && !progress.rewardsEarned.perfectScore) {
+          await this.awardPerfectScoreReward(userId, articleId, article.rewardPoints.perfectScore);
+          progress.rewardsEarned.perfectScore = true;
+        }
       }
 
       return true;
     } catch (error) {
       console.error('Error saving quiz score:', error);
       return false;
+    }
+  }
+
+  // Reward functions
+  private async awardReadingReward(userId: string, articleId: string, points: number) {
+    try {
+      const article = this.getArticleById(articleId);
+      await ActivityRewardService.logActivity({
+        userId,
+        actionType: "complete_lesson",
+        targetId: articleId,
+        targetType: "educational_article",
+        value: points,
+        metadata: {
+          rewardType: "reading_completion",
+          articleTitle: article?.title,
+          difficulty: article?.difficulty,
+          category: article?.category.name,
+          points
+        }
+      });
+
+      // Also log via platform integration
+      await PlatformRewardIntegration.trackEducationalProgress({
+        userId,
+        contentId: articleId,
+        contentType: "article",
+        actionType: "reading_completion",
+        pointsEarned: points,
+        metadata: {
+          title: article?.title,
+          difficulty: article?.difficulty
+        }
+      });
+
+      console.log(`🎓 Reading reward earned! +${points} points for completing article: ${article?.title}`);
+    } catch (error) {
+      console.error('Error awarding reading reward:', error);
+    }
+  }
+
+  private async awardQuizCompletionReward(userId: string, articleId: string, points: number) {
+    try {
+      const article = this.getArticleById(articleId);
+      await ActivityRewardService.logActivity({
+        userId,
+        actionType: "complete_lesson",
+        targetId: articleId,
+        targetType: "educational_article_quiz",
+        value: points,
+        metadata: {
+          rewardType: "quiz_completion",
+          articleTitle: article?.title,
+          difficulty: article?.difficulty,
+          category: article?.category.name,
+          points
+        }
+      });
+
+      await PlatformRewardIntegration.trackEducationalProgress({
+        userId,
+        contentId: articleId,
+        contentType: "article_quiz",
+        actionType: "quiz_completion",
+        pointsEarned: points,
+        metadata: {
+          title: article?.title,
+          difficulty: article?.difficulty
+        }
+      });
+
+      console.log(`🏆 Quiz completion reward earned! +${points} points for passing quiz: ${article?.title}`);
+    } catch (error) {
+      console.error('Error awarding quiz completion reward:', error);
+    }
+  }
+
+  private async awardPerfectScoreReward(userId: string, articleId: string, points: number) {
+    try {
+      const article = this.getArticleById(articleId);
+      await ActivityRewardService.logActivity({
+        userId,
+        actionType: "achieve_milestone",
+        targetId: articleId,
+        targetType: "educational_article_quiz",
+        value: points,
+        metadata: {
+          rewardType: "perfect_score",
+          articleTitle: article?.title,
+          difficulty: article?.difficulty,
+          category: article?.category.name,
+          points,
+          milestone: "perfect_quiz_score"
+        }
+      });
+
+      await PlatformRewardIntegration.trackEducationalProgress({
+        userId,
+        contentId: articleId,
+        contentType: "article_quiz",
+        actionType: "perfect_score",
+        pointsEarned: points,
+        metadata: {
+          title: article?.title,
+          difficulty: article?.difficulty,
+          milestone: "perfect_score"
+        }
+      });
+
+      console.log(`⭐ Perfect score bonus earned! +${points} points for 100% on quiz: ${article?.title}`);
+    } catch (error) {
+      console.error('Error awarding perfect score reward:', error);
     }
   }
 
@@ -826,7 +1000,12 @@ class EducationalArticleService {
           timeSpent: 0,
           lastRead: new Date(),
           bookmarked: true,
-          liked: false
+          liked: false,
+          rewardsEarned: {
+            reading: false,
+            quizCompletion: false,
+            perfectScore: false
+          }
         };
         userArticleProgressData[userId].push(progress);
       } else {
@@ -841,7 +1020,7 @@ class EducationalArticleService {
   }
 
   // Toggle like
-  toggleLike(userId: string, articleId: string): boolean {
+  async toggleLike(userId: string, articleId: string): Promise<boolean> {
     try {
       if (!userArticleProgressData[userId]) {
         userArticleProgressData[userId] = [];
@@ -855,11 +1034,29 @@ class EducationalArticleService {
           timeSpent: 0,
           lastRead: new Date(),
           bookmarked: false,
-          liked: true
+          liked: true,
+          rewardsEarned: {
+            reading: false,
+            quizCompletion: false,
+            perfectScore: false
+          }
         };
         userArticleProgressData[userId].push(progress);
       } else {
         progress.liked = !progress.liked;
+      }
+
+      // Award small reward for engagement
+      if (progress.liked) {
+        await ActivityRewardService.logActivity({
+          userId,
+          actionType: "like_post",
+          targetId: articleId,
+          targetType: "educational_article",
+          metadata: {
+            contentType: "educational_article"
+          }
+        });
       }
 
       return progress.liked;
@@ -876,11 +1073,14 @@ class EducationalArticleService {
     averageScore: number;
     totalTimeSpent: number;
     bookmarkedArticles: number;
+    totalPointsEarned: number;
+    perfectScores: number;
   } {
     const userProgress = userArticleProgressData[userId] || [];
     const completedArticles = userProgress.filter(p => p.completed);
     const articlesWithScores = userProgress.filter(p => p.quizScore !== undefined);
     const bookmarkedArticles = userProgress.filter(p => p.bookmarked);
+    const perfectScores = userProgress.filter(p => p.quizScore === 100);
 
     const averageScore = articlesWithScores.length > 0
       ? articlesWithScores.reduce((sum, p) => sum + (p.quizScore || 0), 0) / articlesWithScores.length
@@ -888,12 +1088,25 @@ class EducationalArticleService {
 
     const totalTimeSpent = userProgress.reduce((total, p) => total + p.timeSpent, 0);
 
+    // Calculate total points earned
+    let totalPointsEarned = 0;
+    userProgress.forEach(progress => {
+      const article = this.getArticleById(progress.articleId);
+      if (article) {
+        if (progress.rewardsEarned.reading) totalPointsEarned += article.rewardPoints.reading;
+        if (progress.rewardsEarned.quizCompletion) totalPointsEarned += article.rewardPoints.quizCompletion;
+        if (progress.rewardsEarned.perfectScore) totalPointsEarned += article.rewardPoints.perfectScore;
+      }
+    });
+
     return {
       articlesRead: userProgress.length,
       articlesCompleted: completedArticles.length,
       averageScore: Math.round(averageScore),
       totalTimeSpent,
-      bookmarkedArticles: bookmarkedArticles.length
+      bookmarkedArticles: bookmarkedArticles.length,
+      totalPointsEarned,
+      perfectScores: perfectScores.length
     };
   }
 
@@ -904,6 +1117,30 @@ class EducationalArticleService {
     
     // Return articles not yet read
     return mockEducationalArticles.filter(article => !readArticleIds.includes(article.id));
+  }
+
+  // Get educational leaderboard for gamification
+  getEducationalLeaderboard(timeframe: 'week' | 'month' | 'all' = 'month'): Array<{
+    userId: string;
+    points: number;
+    articlesCompleted: number;
+    perfectScores: number;
+  }> {
+    const leaderboard: { [userId: string]: { points: number; articlesCompleted: number; perfectScores: number } } = {};
+
+    Object.entries(userArticleProgressData).forEach(([userId, progressArray]) => {
+      const stats = this.getUserStats(userId);
+      leaderboard[userId] = {
+        points: stats.totalPointsEarned,
+        articlesCompleted: stats.articlesCompleted,
+        perfectScores: stats.perfectScores
+      };
+    });
+
+    return Object.entries(leaderboard)
+      .map(([userId, stats]) => ({ userId, ...stats }))
+      .sort((a, b) => b.points - a.points)
+      .slice(0, 10); // Top 10
   }
 }
 
