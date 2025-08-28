@@ -379,7 +379,7 @@ const rewardCatalog: Record<string, EloitsReward> = {
     id: "cash_5",
     type: "cash",
     name: "$5 Cash",
-    description: "Convert SoftPoints to real money via bank transfer",
+    description: "Convert Eloits to real money via bank transfer",
     pointsRequired: 500,
     value: "$5.00",
     category: "Money",
@@ -389,7 +389,7 @@ const rewardCatalog: Record<string, EloitsReward> = {
     id: "cash_25",
     type: "cash",
     name: "$25 Cash",
-    description: "Convert SoftPoints to real money via bank transfer",
+    description: "Convert Eloits to real money via bank transfer",
     pointsRequired: 2500,
     value: "$25.00",
     category: "Money",
@@ -400,7 +400,7 @@ const rewardCatalog: Record<string, EloitsReward> = {
     id: "cash_100",
     type: "cash",
     name: "$100 Cash",
-    description: "Convert SoftPoints to real money via bank transfer",
+    description: "Convert Eloits to real money via bank transfer",
     pointsRequired: 10000,
     value: "$100.00",
     category: "Money",
@@ -592,7 +592,7 @@ class EloitsService {
   }
 
   // Get available activities
-  getAvailableActivities(userLevel: string = "Bronze"): SoftPointsActivity[] {
+  getAvailableActivities(userLevel: string = "Bronze"): EloitsActivity[] {
     return Object.values(activityConfig);
   }
 
@@ -600,7 +600,7 @@ class EloitsService {
   getAvailableRewards(
     userLevel: string = "Bronze",
     userPoints: number = 0,
-  ): SoftPointsReward[] {
+  ): EloitsReward[] {
     return Object.values(rewardCatalog).filter((reward) => {
       if (reward.minLevel) {
         const levels = Object.keys(levelConfig);
@@ -613,7 +613,7 @@ class EloitsService {
   }
 
   // Record a transaction
-  recordTransaction(transaction: SoftPointsTransaction): void {
+  recordTransaction(transaction: EloitsTransaction): void {
     // In a real app, this would save to database
     console.log("Recording transaction:", transaction);
   }
@@ -622,7 +622,7 @@ class EloitsService {
   getTransactionHistory(
     userId: string,
     limit: number = 50,
-  ): SoftPointsTransaction[] {
+  ): EloitsTransaction[] {
     // Mock data - in real app, fetch from database
     return [
       {
