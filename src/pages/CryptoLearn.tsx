@@ -25,6 +25,7 @@ import { blogService } from "@/services/blogService";
 import { BlogPost } from "@/types/blog";
 import { courseService, Course } from "@/services/courseService";
 import { educationalArticleService, EducationalArticle } from "@/services/educationalArticleService";
+import LearningProgressDashboard from "@/components/rewards/LearningProgressDashboard";
 
 const CryptoLearn = () => {
   const { user } = useAuth();
