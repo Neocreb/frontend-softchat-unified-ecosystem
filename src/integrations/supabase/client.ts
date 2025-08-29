@@ -10,33 +10,48 @@ const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 // Custom fetch to surface detailed error payloads from Supabase in the console
 const debugFetch: typeof fetch = async (input, init) => {
-  const res = await fetch(input as RequestInfo, init as RequestInit);
-  if (!res.ok) {
-    try {
-      const url = typeof input === 'string' ? input : (input as Request).url;
-      let body: any = null;
+  try {
+    const res = await fetch(input as RequestInfo, init as RequestInit);
+    if (!res.ok) {
       try {
-        body = await res.clone().json();
-      } catch (_) {
-        body = await res.clone().text();
+        const url = typeof input === 'string' ? input : (input as Request).url;
+        const ct = res.headers.get('content-type') || '';
+        const isParsable = res.type === 'basic' || res.type === 'cors';
+        let body: any = null;
+        if (isParsable && ct.includes('application/json')) {
+          body = await res.clone().json();
+        } else if (isParsable) {
+          body = await res.clone().text();
+        } else {
+          body = '[opaque response: body not readable]';
+        }
+        // Log structured details to aid debugging auth/API errors
+        console.error('Supabase request failed', {
+          url,
+          status: res.status,
+          statusText: res.statusText,
+          type: res.type,
+          contentType: ct,
+          body,
+        });
+      } catch (e) {
+        console.error('Supabase request failed and response could not be parsed', e);
       }
-      // Log structured details to aid debugging auth/API errors
-      console.error('Supabase request failed', {
-        url,
-        status: res.status,
-        statusText: res.statusText,
-        body,
-      });
-    } catch (e) {
-      console.error('Supabase request failed and response could not be parsed', e);
     }
+    return res;
+  } catch (networkError) {
+    console.error('Supabase network error', networkError);
+    throw networkError;
   }
-  return res;
 };
 
+if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+  console.error('Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY.');
+}
+
 export const supabase = createClient<Database>(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY,
+  SUPABASE_URL || '',
+  SUPABASE_PUBLISHABLE_KEY || '',
   {
     auth: {
       storage: localStorage,
