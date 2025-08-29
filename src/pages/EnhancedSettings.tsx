@@ -311,7 +311,7 @@ const EnhancedSettings = () => {
   const [fontSize, setFontSize] = useState(
     user?.settings?.font_size || (a11y.fontSize >= 16 ? "large" : a11y.fontSize <= 12 ? "small" : "medium"),
   );
-  const [language, setLanguage] = useState(user?.settings?.language || "en");
+  const [language, setLanguage] = useState(user?.settings?.language || a11y.language || "en");
 
   // Data & Storage
   const [dataUsage, setDataUsage] = useState("unlimited");
