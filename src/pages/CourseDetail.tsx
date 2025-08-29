@@ -100,11 +100,11 @@ const CourseDetail = () => {
 
     setEnrolling(true);
     try {
-      const success = courseService.enrollInCourse(user.id, course.id);
+      const success = await courseService.enrollInCourse(user.id, course.id);
       if (success) {
         toast({
-          title: "Enrollment Successful!",
-          description: "You have been enrolled in the course. Start learning now!",
+          title: "🎉 Enrollment Successful!",
+          description: `You've been enrolled and earned ${course.rewardPoints.enrollment} points! Start learning now!`,
         });
         loadCourse(); // Refresh course data
       } else {
