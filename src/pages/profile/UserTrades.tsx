@@ -441,10 +441,10 @@ const UserTrades: React.FC = () => {
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground">Payment:</span>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 flex-wrap">
                               {trade.payment_methods.map((method, index) => (
                                 <Badge key={index} variant="secondary" className="text-xs">
                                   {method}
@@ -453,10 +453,10 @@ const UserTrades: React.FC = () => {
                             </div>
                           </div>
                           <div className="flex gap-2">
-                            <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); navigate(`/app/crypto-p2p?type=${trade.type}&symbol=${trade.crypto_symbol}&fiat=${trade.fiat_currency}&min=${trade.min_limit}&max=${trade.max_limit}`); }}>
+                            <Button className="w-full sm:w-auto" size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); navigate(`/app/crypto-p2p?type=${trade.type}&symbol=${trade.crypto_symbol}&fiat=${trade.fiat_currency}&min=${trade.min_limit}&max=${trade.max_limit}`); }}>
                               Continue on P2P
                             </Button>
-                            <Button size="sm">
+                            <Button className="w-full sm:w-auto" size="sm">
                               <MessageSquare className="h-4 w-4 mr-2" />
                               Contact Trader
                             </Button>
