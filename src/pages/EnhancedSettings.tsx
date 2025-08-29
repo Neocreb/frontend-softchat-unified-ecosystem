@@ -309,7 +309,7 @@ const EnhancedSettings = () => {
     user?.settings?.high_contrast ?? a11y.highContrast,
   );
   const [fontSize, setFontSize] = useState(
-    user?.settings?.font_size || "medium",
+    user?.settings?.font_size || (a11y.fontSize >= 16 ? "large" : a11y.fontSize <= 12 ? "small" : "medium"),
   );
   const [language, setLanguage] = useState(user?.settings?.language || "en");
 
