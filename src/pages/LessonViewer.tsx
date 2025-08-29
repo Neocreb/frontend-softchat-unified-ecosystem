@@ -352,13 +352,61 @@ const LessonViewer = () => {
                       <CardTitle className="text-2xl mb-2">{lesson.title}</CardTitle>
                       <p className="text-muted-foreground">{lesson.description}</p>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Clock className="h-4 w-4" />
-                      {lesson.duration} min
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        {lesson.duration} min
+                      </div>
+                      {lesson.rewardPoints?.completion && (
+                        <div className="flex items-center gap-1 text-amber-600">
+                          <Coins className="h-4 w-4" />
+                          {lesson.rewardPoints.completion}
+                          {lesson.rewardPoints.bonus && `+${lesson.rewardPoints.bonus}`} pts
+                        </div>
+                      )}
                     </div>
                   </div>
                 </CardHeader>
               </Card>
+
+              {/* Reward Points Info */}
+              {lesson.rewardPoints && !lessonCompleted && (
+                <Card className="mb-6 border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                        <Gift className="h-4 w-4 text-amber-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-amber-800 dark:text-amber-200">Lesson Rewards</h4>
+                        <p className="text-xs text-amber-700 dark:text-amber-300">Complete this lesson to earn points</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4 text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                          <CheckCircle2 className="h-3 w-3 text-green-600" />
+                        </div>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Completion: {lesson.rewardPoints.completion} pts
+                        </span>
+                      </div>
+
+                      {lesson.rewardPoints.bonus && lesson.type === 'quiz' && (
+                        <div className="flex items-center gap-2">
+                          <div className="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                            <Star className="h-3 w-3 text-purple-600" />
+                          </div>
+                          <span className="text-gray-700 dark:text-gray-300">
+                            Perfect Score: +{lesson.rewardPoints.bonus} pts
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Lesson Content */}
               <Card className="mb-6">
