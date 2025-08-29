@@ -367,6 +367,16 @@ const UserProjects: React.FC = () => {
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-2">{userProfile.full_name}'s Portfolio</h2>
               <p className="text-muted-foreground">{userProfile.bio}</p>
+              {isOwnProfile && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Button asChild size="sm" variant="secondary">
+                    <Link to="/app/freelance/post-skill">Post a Skill</Link>
+                  </Button>
+                  <Button asChild size="sm" variant="outline">
+                    <Link to="/app/freelance/post-job">Post a Job</Link>
+                  </Button>
+                </div>
+              )}
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
