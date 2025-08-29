@@ -303,7 +303,7 @@ const EnhancedSettings = () => {
     user?.settings?.auto_play_videos ?? globalAutoPlay,
   );
   const [reducedMotion, setReducedMotion] = useState(
-    user?.settings?.reduced_motion ?? false,
+    user?.settings?.reduced_motion ?? a11y.reducedMotion,
   );
   const [highContrast, setHighContrast] = useState(
     user?.settings?.high_contrast ?? false,
