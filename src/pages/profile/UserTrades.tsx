@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { supabase } from "@/lib/supabase/client";
+import { ProfileService } from "@/services/profileService";
 import {
   TrendingUp,
   TrendingDown,
@@ -77,8 +79,13 @@ interface TradingStats {
 
 const UserTrades: React.FC = () => {
   const { username } = useParams();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("active_orders");
   const [tradeFilter, setTradeFilter] = useState("all");
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [activeFromDb, setActiveFromDb] = useState<P2PTrade[]>([]);
+  const [completedFromDb, setCompletedFromDb] = useState<P2PTrade[]>([]);
 
   // Mock data - in real app, fetch from API
   const userProfile: UserProfile = {
@@ -199,6 +206,66 @@ const UserTrades: React.FC = () => {
     return type === "buy" ? "text-green-600" : "text-red-600";
   };
 
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const svc = new ProfileService();
+        const p = username ? await svc.getUserByUsername(username) : null;
+        if (!mounted) return;
+        setProfile(p);
+        if (p?.id) {
+          const { data, error } = await supabase
+            .from("p2p_offers")
+            .select("*")
+            .eq("user_id", p.id)
+            .order("created_at", { ascending: false });
+          if (!mounted) return;
+          if (!error && data && data.length) {
+            const mapped: P2PTrade[] = data.map((row: any) => ({
+              id: String(row.id),
+              type: row.type === "SELL" || row.type === "sell" ? "sell" : "buy",
+              crypto: row.asset_name || row.asset || "Bitcoin",
+              crypto_symbol: row.asset_symbol || row.symbol || "BTC",
+              fiat_currency: row.fiat_currency || row.fiat || "USD",
+              amount: Number(row.amount || row.quantity || 0),
+              price_per_unit: Number(row.price || row.price_per_unit || 0),
+              total_amount: Number(row.total_amount || (row.amount || 0) * (row.price || 0)),
+              payment_methods: Array.isArray(row.payment_methods)
+                ? row.payment_methods
+                : (row.payment_methods ? String(row.payment_methods).split(",") : []),
+              min_limit: Number(row.min_amount || row.min_limit || 0),
+              max_limit: Number(row.max_amount || row.max_limit || 0),
+              status: String(row.status || "active").toLowerCase(),
+              created_at: row.created_at || new Date().toISOString(),
+              updated_at: row.updated_at || row.created_at || new Date().toISOString(),
+            }));
+            setActiveFromDb(mapped.filter((t) => t.status === "active" || t.status === "in_progress"));
+            setCompletedFromDb(mapped.filter((t) => t.status === "completed"));
+          } else {
+            setActiveFromDb([]);
+            setCompletedFromDb([]);
+          }
+        } else {
+          setActiveFromDb([]);
+          setCompletedFromDb([]);
+        }
+      } catch (e) {
+        setActiveFromDb([]);
+        setCompletedFromDb([]);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    load();
+    return () => { mounted = false; };
+  }, [username]);
+
+  const profileData = profile || userProfile;
+  const isDemo = (username || "").toLowerCase() === "demo";
+  const displayActiveTrades = activeFromDb.length ? activeFromDb : (isDemo ? activeTrades : []);
+  const displayCompletedTrades = completedFromDb.length ? completedFromDb : (isDemo ? completedTrades : []);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
@@ -207,7 +274,7 @@ const UserTrades: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link 
-                to={`/profile/${username}`}
+                to={`/app/profile/${username}`}
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -218,6 +285,9 @@ const UserTrades: React.FC = () => {
               <Button variant="outline" size="sm">
                 <Share2 className="h-4 w-4 mr-2" />
                 Share Trading Profile
+              </Button>
+              <Button asChild size="sm" variant="secondary">
+                <Link to="/app/crypto-p2p">Open P2P Marketplace</Link>
               </Button>
             </div>
           </div>
@@ -233,14 +303,14 @@ const UserTrades: React.FC = () => {
                 {/* Trader Info */}
                 <div className="text-center mb-6">
                   <Avatar className="h-20 w-20 mx-auto mb-4">
-                    <AvatarImage src={userProfile.avatar_url} alt={userProfile.full_name} />
+                    <AvatarImage src={profileData.avatar_url} alt={profileData.full_name} />
                     <AvatarFallback className="text-lg">
-                      {userProfile.full_name?.split(" ").map(n => n[0]).join("")}
+                      {profileData.full_name?.split(" ").map(n => n[0]).join("")}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <h1 className="text-xl font-bold">{userProfile.full_name}</h1>
-                    {userProfile.verified && (
+                    <h1 className="text-xl font-bold">{profileData.full_name}</h1>
+                    {profileData.verified && (
                       <Verified className="h-5 w-5 text-blue-500" />
                     )}
                     <Badge className="bg-green-100 text-green-800">
@@ -248,7 +318,7 @@ const UserTrades: React.FC = () => {
                       Verified Trader
                     </Badge>
                   </div>
-                  <p className="text-muted-foreground text-sm mb-2">@{userProfile.username}</p>
+                  <p className="text-muted-foreground text-sm mb-2">@{profileData.username}</p>
                   <div className="flex items-center justify-center gap-1 mb-4">
                     <Star className="h-4 w-4 text-yellow-500 fill-current" />
                     <span className="font-medium">{tradingStats.averageRating}</span>
@@ -298,7 +368,7 @@ const UserTrades: React.FC = () => {
                 <div className="space-y-3 pt-6 border-t">
                   <div className="flex items-center gap-2 text-sm">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span>{userProfile.location}</span>
+                    <span>{profileData.location}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -376,8 +446,8 @@ const UserTrades: React.FC = () => {
           {/* Trading Content */}
           <div className="lg:col-span-3">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">{userProfile.full_name}'s Trading Activity</h2>
-              <p className="text-muted-foreground">{userProfile.bio}</p>
+              <h2 className="text-2xl font-bold mb-2">{profileData.full_name}'s Trading Activity</h2>
+              <p className="text-muted-foreground">{profileData.bio}</p>
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -392,7 +462,7 @@ const UserTrades: React.FC = () => {
               <TabsContent value="active_orders" className="mt-6">
                 <div className="space-y-4">
                   {activeTrades.map((trade) => (
-                    <Card key={trade.id} className="hover:shadow-lg transition-shadow">
+                    <Card key={trade.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate(`/app/crypto-p2p?type=${trade.type}&symbol=${trade.crypto_symbol}&fiat=${trade.fiat_currency}&min=${trade.min_limit}&max=${trade.max_limit}`)}>
                       <CardContent className="p-6">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center gap-4">
@@ -437,10 +507,10 @@ const UserTrades: React.FC = () => {
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground">Payment:</span>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 flex-wrap">
                               {trade.payment_methods.map((method, index) => (
                                 <Badge key={index} variant="secondary" className="text-xs">
                                   {method}
@@ -448,10 +518,15 @@ const UserTrades: React.FC = () => {
                               ))}
                             </div>
                           </div>
-                          <Button size="sm">
-                            <MessageSquare className="h-4 w-4 mr-2" />
-                            Contact Trader
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button className="w-full sm:w-auto" size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); navigate(`/app/crypto-p2p?type=${trade.type}&symbol=${trade.crypto_symbol}&fiat=${trade.fiat_currency}&min=${trade.min_limit}&max=${trade.max_limit}`); }}>
+                              Continue on P2P
+                            </Button>
+                            <Button className="w-full sm:w-auto" size="sm">
+                              <MessageSquare className="h-4 w-4 mr-2" />
+                              Contact Trader
+                            </Button>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>

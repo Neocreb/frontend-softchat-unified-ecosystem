@@ -76,7 +76,7 @@ const UserProjects: React.FC = () => {
   const [activeTab, setActiveTab] = useState("portfolio");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [showAddWorkModal, setShowAddWorkModal] = useState(false);
-  const [externalWorks, setExternalWorks] = useState(externalWorksData);
+  const [externalWorks, setExternalWorks] = useState<ExternalWork[]>([]);
 
   // Check if this is the user's own profile (in real app, check authentication)
   const isOwnProfile = true; // Mock - in real app: currentUser?.username === username
@@ -164,6 +164,10 @@ const UserProjects: React.FC = () => {
     },
   ];
 
+  useEffect(() => {
+    setExternalWorks(externalWorksData);
+  }, []);
+
   const externalWorksData: ExternalWork[] = [
     {
       id: "1",
@@ -223,7 +227,7 @@ const UserProjects: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link 
-                to={`/profile/${username}`}
+                to={`/app/profile/${username}`}
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -367,6 +371,16 @@ const UserProjects: React.FC = () => {
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-2">{userProfile.full_name}'s Portfolio</h2>
               <p className="text-muted-foreground">{userProfile.bio}</p>
+              {isOwnProfile && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Button asChild size="sm" variant="secondary">
+                    <Link to="/app/freelance/post-skill">Post a Skill</Link>
+                  </Button>
+                  <Button asChild size="sm" variant="outline">
+                    <Link to="/app/freelance/post-job">Post a Job</Link>
+                  </Button>
+                </div>
+              )}
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

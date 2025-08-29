@@ -61,14 +61,29 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     (rawUser: User | null): ExtendedUser | null => {
       if (!rawUser) return null;
 
+      const makeUsername = (): string => {
+        const meta = (rawUser as any)?.user_metadata || {};
+        const candidate = (meta.username || meta.user_name || "").toString().trim();
+        if (candidate && candidate.toLowerCase() !== "unknown") return candidate;
+        const emailLocal = (rawUser.email || "").split("@")[0] || "";
+        const fromEmail = emailLocal
+          .toLowerCase()
+          .replace(/[^a-z0-9_]/g, "_")
+          .replace(/_+/g, "_")
+          .replace(/^_+|_+$/g, "");
+        if (fromEmail) return fromEmail;
+        return `user_${rawUser.id.slice(0, 6)}`;
+      };
+
       try {
+        const safeUsername = makeUsername();
         return {
           ...rawUser,
           name:
             rawUser.user_metadata?.name ||
             rawUser.user_metadata?.full_name ||
             "User",
-          username: rawUser.user_metadata?.username || "unknown",
+          username: safeUsername,
           avatar:
             rawUser.user_metadata?.avatar ||
             rawUser.user_metadata?.avatar_url ||
@@ -78,9 +93,9 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
           role: rawUser.user_metadata?.role || "user",
           profile: {
             id: rawUser.id,
-            username: rawUser.user_metadata?.username,
+            username: safeUsername,
             full_name:
-              rawUser.user_metadata?.name || rawUser.user_metadata?.full_name,
+              rawUser.user_metadata?.name || rawUser.user_metadata?.full_name || safeUsername,
             avatar_url:
               rawUser.user_metadata?.avatar ||
               rawUser.user_metadata?.avatar_url,
@@ -96,17 +111,18 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         };
       } catch (error) {
         console.warn("Failed to enhance user data:", error);
+        const fallbackUsername = `user_${rawUser.id.slice(0, 6)}`;
         return {
           ...rawUser,
           name: "User",
-          username: "unknown",
+          username: fallbackUsername,
           avatar: `https://ui-avatars.com/api/?name=User&background=random`,
           points: 0,
           level: "bronze",
           role: "user",
           profile: {
             id: rawUser.id,
-            username: "unknown",
+            username: fallbackUsername,
             full_name: "User",
             avatar_url: null,
             bio: null,
