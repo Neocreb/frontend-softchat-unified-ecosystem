@@ -202,7 +202,7 @@ const CryptoLearn = () => {
 
           {/* Content Tabs */}
           <Tabs defaultValue="courses" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="courses" className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
                 Courses
@@ -210,6 +210,10 @@ const CryptoLearn = () => {
               <TabsTrigger value="articles" className="flex items-center gap-2">
                 <Play className="h-4 w-4" />
                 Articles
+              </TabsTrigger>
+              <TabsTrigger value="progress" className="flex items-center gap-2">
+                <Trophy className="h-4 w-4" />
+                Progress
               </TabsTrigger>
               <TabsTrigger value="community" className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
