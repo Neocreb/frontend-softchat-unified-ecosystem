@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -77,6 +77,7 @@ interface TradingStats {
 
 const UserTrades: React.FC = () => {
   const { username } = useParams();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("active_orders");
   const [tradeFilter, setTradeFilter] = useState("all");
 
@@ -395,7 +396,7 @@ const UserTrades: React.FC = () => {
               <TabsContent value="active_orders" className="mt-6">
                 <div className="space-y-4">
                   {activeTrades.map((trade) => (
-                    <Card key={trade.id} className="hover:shadow-lg transition-shadow">
+                    <Card key={trade.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate(`/app/crypto-p2p?type=${trade.type}&symbol=${trade.crypto_symbol}&fiat=${trade.fiat_currency}&min=${trade.min_limit}&max=${trade.max_limit}`)}>
                       <CardContent className="p-6">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center gap-4">
@@ -451,10 +452,15 @@ const UserTrades: React.FC = () => {
                               ))}
                             </div>
                           </div>
-                          <Button size="sm">
-                            <MessageSquare className="h-4 w-4 mr-2" />
-                            Contact Trader
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); navigate(`/app/crypto-p2p?type=${trade.type}&symbol=${trade.crypto_symbol}&fiat=${trade.fiat_currency}&min=${trade.min_limit}&max=${trade.max_limit}`); }}>
+                              Continue on P2P
+                            </Button>
+                            <Button size="sm">
+                              <MessageSquare className="h-4 w-4 mr-2" />
+                              Contact Trader
+                            </Button>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
