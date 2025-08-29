@@ -851,7 +851,7 @@ Remember that no single indicator is perfect, and moving averages work best as p
         ],
         completed: false,
         order: 6,
-        rewardPoints: { completion: 0.75, bonus: 15 }
+        rewardPoints: { completion: 0.75, bonus: 0.75 }
       },
       {
         id: "ta-lesson-7",
@@ -928,7 +928,7 @@ Remember that no single indicator is perfect, and moving averages work best as p
         ],
         completed: false,
         order: 12,
-        rewardPoints: { completion: 25, bonus: 20 }
+        rewardPoints: { completion: 1.0, bonus: 1.0 }
       }
     ]
   },
