@@ -476,6 +476,180 @@ export class PlatformRewardIntegration {
   }
 
   // =============================================================================
+  // EDUCATIONAL CONTENT INTEGRATION
+  // =============================================================================
+
+  static async trackEducationalProgress(params: {
+    userId: string;
+    contentId: string;
+    contentType: "course" | "lesson" | "article" | "article_quiz" | "course_quiz";
+    actionType: "reading_completion" | "quiz_completion" | "perfect_score" | "course_completion" | "lesson_completion";
+    pointsEarned: number;
+    metadata?: any;
+  }) {
+    const actionTypeMap = {
+      reading_completion: "complete_lesson",
+      quiz_completion: "complete_lesson",
+      perfect_score: "achieve_milestone",
+      course_completion: "complete_course",
+      lesson_completion: "complete_lesson"
+    };
+
+    return ActivityRewardService.logActivity({
+      userId: params.userId,
+      actionType: actionTypeMap[params.actionType] || "complete_lesson",
+      targetId: params.contentId,
+      targetType: params.contentType,
+      value: params.pointsEarned,
+      metadata: {
+        educationalAction: params.actionType,
+        pointsEarned: params.pointsEarned,
+        contentType: params.contentType,
+        ...params.metadata,
+      },
+    });
+  }
+
+  static async trackCourseEnrollment(params: {
+    userId: string;
+    courseId: string;
+    courseName: string;
+    difficulty: string;
+  }) {
+    return ActivityRewardService.logActivity({
+      userId: params.userId,
+      actionType: "enroll_course",
+      targetId: params.courseId,
+      targetType: "course",
+      metadata: {
+        courseName: params.courseName,
+        difficulty: params.difficulty,
+        enrollmentDate: new Date().toISOString(),
+      },
+    });
+  }
+
+  static async trackLessonProgress(params: {
+    userId: string;
+    courseId: string;
+    lessonId: string;
+    lessonType: "video" | "text" | "quiz" | "interactive";
+    timeSpent: number;
+    completed: boolean;
+    pointsEarned?: number;
+  }) {
+    if (params.completed) {
+      return ActivityRewardService.logActivity({
+        userId: params.userId,
+        actionType: "complete_lesson",
+        targetId: params.lessonId,
+        targetType: "lesson",
+        value: params.pointsEarned || 0,
+        metadata: {
+          courseId: params.courseId,
+          lessonType: params.lessonType,
+          timeSpent: params.timeSpent,
+          pointsEarned: params.pointsEarned || 0,
+        },
+      });
+    }
+    return null;
+  }
+
+  static async trackQuizAttempt(params: {
+    userId: string;
+    contentId: string;
+    contentType: "course" | "article";
+    score: number;
+    passingScore: number;
+    timeSpent: number;
+    pointsEarned?: number;
+  }) {
+    const passed = params.score >= params.passingScore;
+    const isPerfectScore = params.score === 100;
+
+    const results = [];
+
+    if (passed) {
+      // Quiz completion reward
+      results.push(
+        ActivityRewardService.logActivity({
+          userId: params.userId,
+          actionType: "complete_lesson",
+          targetId: params.contentId,
+          targetType: `${params.contentType}_quiz`,
+          value: params.pointsEarned || 0,
+          metadata: {
+            quizScore: params.score,
+            passingScore: params.passingScore,
+            timeSpent: params.timeSpent,
+            passed: true,
+            pointsEarned: params.pointsEarned || 0,
+          },
+        })
+      );
+
+      // Perfect score bonus
+      if (isPerfectScore) {
+        results.push(
+          ActivityRewardService.logActivity({
+            userId: params.userId,
+            actionType: "achieve_milestone",
+            targetId: params.contentId,
+            targetType: `${params.contentType}_quiz`,
+            metadata: {
+              milestone: "perfect_quiz_score",
+              quizScore: params.score,
+              contentType: params.contentType,
+            },
+          })
+        );
+      }
+    }
+
+    return Promise.all(results);
+  }
+
+  static async trackLearningStreak(params: {
+    userId: string;
+    streakDays: number;
+    streakType: "daily_learning" | "quiz_streak" | "course_completion_streak";
+  }) {
+    return ActivityRewardService.logActivity({
+      userId: params.userId,
+      actionType: "achieve_milestone",
+      targetType: "learning_streak",
+      metadata: {
+        milestone: params.streakType,
+        streakDays: params.streakDays,
+        description: `${params.streakDays} day ${params.streakType.replace('_', ' ')} streak`,
+      },
+    });
+  }
+
+  static async trackCertificateEarned(params: {
+    userId: string;
+    courseId: string;
+    courseName: string;
+    difficulty: string;
+    finalScore?: number;
+  }) {
+    return ActivityRewardService.logActivity({
+      userId: params.userId,
+      actionType: "achieve_milestone",
+      targetId: params.courseId,
+      targetType: "course_certificate",
+      metadata: {
+        milestone: "course_certificate",
+        courseName: params.courseName,
+        difficulty: params.difficulty,
+        finalScore: params.finalScore,
+        certificateDate: new Date().toISOString(),
+      },
+    });
+  }
+
+  // =============================================================================
   // UTILITY METHODS
   // =============================================================================
 

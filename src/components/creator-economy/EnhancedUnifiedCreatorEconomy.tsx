@@ -98,6 +98,7 @@ interface EnhancedEconomyData {
     p2pTrading: number;       // Confirmed trades
     referrals: number;        // Quality referrals
     challenges: number;       // Challenge completions
+    education: number;        // Learning rewards from courses and articles
   };
   
   // Recent Activity (Enhanced)

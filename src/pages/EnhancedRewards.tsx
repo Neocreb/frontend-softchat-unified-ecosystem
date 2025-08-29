@@ -71,6 +71,7 @@ interface RewardData {
     battleVoting: number;
     battleRewards: number;
     giftsAndTips: number;
+    education: number;
   };
   recentActivity: Array<{
     id: string;
@@ -89,8 +90,8 @@ interface RewardData {
 
 // Demo data function to avoid duplication
 const getDemoData = (): RewardData => ({
-  totalEarnings: 3525.05,
-  availableToWithdraw: 3245.18, // Match centralized rewards balance
+  totalEarnings: 3592.90, // Updated to include education earnings
+  availableToWithdraw: 3312.03, // Match centralized rewards balance
   currentEloits: 18642,
   trustScore: {
     current: 78,
@@ -105,16 +106,17 @@ const getDemoData = (): RewardData => ({
     streakDays: 12
   },
   earningsByType: {
-    contentCreation: 1068.75, // 32.1%
-    engagement: 355.94,       // 10.7%
-    marketplace: 711.88,      // 21.4%
-    freelance: 533.91,        // 16.1%
+    contentCreation: 1068.75, // 31.6%
+    engagement: 355.94,       // 10.5%
+    marketplace: 711.88,      // 21.0%
+    freelance: 533.91,        // 15.8%
     p2pTrading: 106.78,       // 3.2%
     referrals: 71.19,         // 2.1%
     challenges: 0,            // 0%
-    battleVoting: 285.50,     // 8.6% - earnings from voting on battles
-    battleRewards: 178.25,    // 5.4% - rewards from battle participation
-    giftsAndTips: 213.80      // 6.4% - earnings from gifts and tips
+    battleVoting: 285.50,     // 8.4% - earnings from voting on battles
+    battleRewards: 178.25,    // 5.3% - rewards from battle participation
+    giftsAndTips: 213.80,     // 6.3% - earnings from gifts and tips
+    education: 67.85          // 2.0% - learning rewards from courses and articles
   },
   recentActivity: [
     { id: "1", type: "post_creation", description: "Quality post with media", amount: 15.5, timestamp: "2024-01-20T10:00:00Z" },
@@ -123,7 +125,9 @@ const getDemoData = (): RewardData => ({
     { id: "4", type: "battle_voting_win", description: "Won battle vote on Alex Dance vs Music Mike", amount: 87.50, timestamp: "2024-01-20T08:45:00Z" },
     { id: "5", type: "battle_participation", description: "Battle performance bonus", amount: 32.25, timestamp: "2024-01-20T08:30:00Z" },
     { id: "6", type: "gift_received", description: "Received Crown gift from user123", amount: 25.0, timestamp: "2024-01-19T20:10:00Z" },
-    { id: "7", type: "tip_received", description: "Video tip from premium viewer", amount: 12.75, timestamp: "2024-01-19T17:20:00Z" }
+    { id: "7", type: "tip_received", description: "Video tip from premium viewer", amount: 12.75, timestamp: "2024-01-19T17:20:00Z" },
+    { id: "8", type: "education_reward", description: "Completed Cryptocurrency Basics course", amount: 3.25, timestamp: "2024-01-19T15:30:00Z" },
+    { id: "9", type: "education_reward", description: "Perfect score on DeFi quiz", amount: 2.0, timestamp: "2024-01-19T14:45:00Z" }
   ],
   referralStats: {
     totalReferrals: 23,

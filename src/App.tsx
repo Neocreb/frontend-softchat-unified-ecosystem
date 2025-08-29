@@ -38,6 +38,7 @@ import {
   ConnectionStatus,
   PWAInstallPrompt,
 } from "./components/mobile/MobileOptimizations";
+import { RewardNotificationContainer } from "./components/rewards/RewardNotification";
 
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
@@ -105,6 +106,9 @@ import CryptoTrading from "./pages/CryptoTrading";
 import CryptoP2P from "./pages/CryptoP2P";
 import CryptoPortfolio from "./pages/CryptoPortfolio";
 import CryptoLearn from "./pages/CryptoLearn";
+import CourseDetail from "./pages/CourseDetail";
+import LessonViewer from "./pages/LessonViewer";
+import ArticleViewer from "./pages/ArticleViewer";
 import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
 import EnhancedSettings from "./pages/EnhancedSettings";
@@ -488,6 +492,9 @@ const AppRoutes = () => {
           <Route path="crypto-p2p" element={<CryptoP2P />} />
           <Route path="crypto-portfolio" element={<CryptoPortfolio />} />
           <Route path="crypto-learn" element={<CryptoLearn />} />
+          <Route path="course/:courseId" element={<CourseDetail />} />
+          <Route path="course/:courseId/lesson/:lessonId" element={<LessonViewer />} />
+          <Route path="article/:articleId" element={<ArticleViewer />} />
           <Route path="crypto/profile/:username" element={<CryptoProfile />} />
           <Route path="delivery/profile/:username" element={<DeliveryProfile />} />
           <Route path="campaigns" element={<CampaignCenter />} />
@@ -725,6 +732,7 @@ const App = () => {
                           {/* Global Components */}
                           <OnboardingTour />
                           <NotificationSystem />
+                          <RewardNotificationContainer />
                           <AccessibilityControlPanel />
                           <KeyboardNavigationHelper />
                           <ReadingGuide />
