@@ -10,7 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
+import {
   ArrowLeft,
   Play,
   CheckCircle2,
@@ -25,7 +25,10 @@ import {
   ListChecks,
   Lock,
   Download,
-  Share2
+  Share2,
+  Gift,
+  Coins,
+  Trophy
 } from "lucide-react";
 import { courseService, Course, Lesson } from "@/services/courseService";
 
