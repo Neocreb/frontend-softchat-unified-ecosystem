@@ -8,33 +8,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu";
-import {
   Briefcase,
   TrendingUp,
   DollarSign,
   Clock,
   Users,
-  Filter,
   Search,
   Star,
   Award,
   Plus,
   Bell,
   Settings,
-  ChevronDown,
   Grid3x3,
   List,
   MapPin,
   Calendar,
   Zap,
-  Target,
   TrendingDown,
   Eye,
   Heart,
@@ -240,27 +229,6 @@ export const EnhancedFreelanceHub: React.FC = () => {
               <List className="w-4 h-4" />
             </Button>
           </div>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="shadow-sm h-8">
-                <Filter className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">Filters</span>
-                <ChevronDown className="w-4 h-4 ml-1 sm:ml-2" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Filter by Category</DropdownMenuLabel>
-              <DropdownMenuItem>Web Development</DropdownMenuItem>
-              <DropdownMenuItem>Mobile Development</DropdownMenuItem>
-              <DropdownMenuItem>Design & Creative</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>Budget Range</DropdownMenuLabel>
-              <DropdownMenuItem>$0 - $500</DropdownMenuItem>
-              <DropdownMenuItem>$500 - $2000</DropdownMenuItem>
-              <DropdownMenuItem>$2000+</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
 
           <Button size="sm" className="shadow-sm h-8">
             <RefreshCw className="w-4 h-4 sm:mr-2" />
@@ -506,49 +474,6 @@ export const EnhancedFreelanceHub: React.FC = () => {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Quick Actions */}
-            <Card className="shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Target className="w-5 h-5 text-blue-600" />
-                  Quick Actions
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  className="w-full justify-start"
-                  onClick={() => navigate("/app/freelance/post-job")}
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Post a New Job
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => navigate("/app/freelance/post-skill")}
-                >
-                  <Award className="w-4 h-4 mr-2" />
-                  Post Skill/Talent
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => navigate('/app/chat')}
-                >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  View Messages
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => navigate('/app/unified-creator-studio')}
-                >
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  Analytics Dashboard
-                </Button>
-              </CardContent>
-            </Card>
-
             {/* Trending Categories */}
             <Card className="shadow-sm">
               <CardHeader>
