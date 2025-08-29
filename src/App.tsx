@@ -38,6 +38,7 @@ import {
   ConnectionStatus,
   PWAInstallPrompt,
 } from "./components/mobile/MobileOptimizations";
+import { RewardNotificationContainer } from "./components/rewards/RewardNotification";
 
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
