@@ -1035,9 +1035,9 @@ Remember that no single indicator is perfect, and moving averages work best as p
     completedLessons: 0,
     certificate: true,
     rewardPoints: {
-      enrollment: 12,
-      completion: 120,
-      certificate: 180
+      enrollment: 0.5,
+      completion: 4.0,
+      certificate: 6.0
     },
     lessons: []
   },
@@ -1066,9 +1066,9 @@ Remember that no single indicator is perfect, and moving averages work best as p
     completedLessons: 0,
     certificate: true,
     rewardPoints: {
-      enrollment: 8,
-      completion: 80,
-      certificate: 120
+      enrollment: 0.25,
+      completion: 2.5,
+      certificate: 4.0
     },
     lessons: []
   },
@@ -1097,9 +1097,9 @@ Remember that no single indicator is perfect, and moving averages work best as p
     completedLessons: 0,
     certificate: true,
     rewardPoints: {
-      enrollment: 18,
-      completion: 180,
-      certificate: 250
+      enrollment: 0.75,
+      completion: 6.0,
+      certificate: 10.0
     },
     lessons: []
   }
