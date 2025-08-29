@@ -76,7 +76,7 @@ const UserProjects: React.FC = () => {
   const [activeTab, setActiveTab] = useState("portfolio");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [showAddWorkModal, setShowAddWorkModal] = useState(false);
-  const [externalWorks, setExternalWorks] = useState(externalWorksData);
+  const [externalWorks, setExternalWorks] = useState<ExternalWork[]>([]);
 
   // Check if this is the user's own profile (in real app, check authentication)
   const isOwnProfile = true; // Mock - in real app: currentUser?.username === username
@@ -163,6 +163,10 @@ const UserProjects: React.FC = () => {
       status: "completed",
     },
   ];
+
+  useEffect(() => {
+    setExternalWorks(externalWorksData);
+  }, []);
 
   const externalWorksData: ExternalWork[] = [
     {
