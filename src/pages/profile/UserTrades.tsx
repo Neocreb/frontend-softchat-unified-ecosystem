@@ -82,6 +82,10 @@ const UserTrades: React.FC = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("active_orders");
   const [tradeFilter, setTradeFilter] = useState("all");
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [activeFromDb, setActiveFromDb] = useState<P2PTrade[]>([]);
+  const [completedFromDb, setCompletedFromDb] = useState<P2PTrade[]>([]);
 
   // Mock data - in real app, fetch from API
   const userProfile: UserProfile = {
