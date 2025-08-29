@@ -71,6 +71,7 @@ interface RewardData {
     battleVoting: number;
     battleRewards: number;
     giftsAndTips: number;
+    education: number;
   };
   recentActivity: Array<{
     id: string;
