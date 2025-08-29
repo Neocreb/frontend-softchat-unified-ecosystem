@@ -17,6 +17,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Minus,
+  GraduationCap,
 } from "lucide-react";
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { cn } from "@/lib/utils";
@@ -47,6 +48,7 @@ interface RewardsStatsProps {
     battleVoting: number;
     battleRewards: number;
     giftsAndTips: number;
+    education: number;
   };
   currency?: string;
 }
@@ -102,6 +104,8 @@ const RewardsStats: React.FC<RewardsStatsProps> = ({
         return <Award className="h-4 w-4" />;
       case "giftsAndTips":
         return <Star className="h-4 w-4" />;
+      case "education":
+        return <GraduationCap className="h-4 w-4" />;
       default:
         return <Zap className="h-4 w-4" />;
     }
@@ -129,6 +133,8 @@ const RewardsStats: React.FC<RewardsStatsProps> = ({
         return "Battle Rewards";
       case "giftsAndTips":
         return "Gifts & Tips";
+      case "education":
+        return "Education";
       default:
         return type;
     }
