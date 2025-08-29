@@ -20,6 +20,7 @@ import { WalletProvider } from "./contexts/WalletContext";
 import { LiveContentProvider } from "./contexts/LiveContentContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import { I18nProvider } from "./contexts/I18nContext";
+import { AppSettingsProvider } from "./contexts/AppSettingsContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 import { UnifiedNotificationProvider } from "./contexts/UnifiedNotificationContext";
 import { FeedProvider } from "./contexts/FeedContext";
