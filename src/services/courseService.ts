@@ -122,9 +122,9 @@ const mockCourses: Course[] = [
     completedLessons: 0,
     certificate: true,
     rewardPoints: {
-      enrollment: 10,
-      completion: 100,
-      certificate: 150
+      enrollment: 0.25,
+      completion: 3.0,
+      certificate: 5.0
     },
     lessons: [
       {
@@ -198,7 +198,7 @@ const mockCourses: Course[] = [
         ],
         completed: false,
         order: 5,
-        rewardPoints: { completion: 20, bonus: 10 }
+        rewardPoints: { completion: 0.75, bonus: 0.5 }
       },
       {
         id: "lesson-6",
