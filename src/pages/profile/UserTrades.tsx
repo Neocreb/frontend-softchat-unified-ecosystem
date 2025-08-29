@@ -303,14 +303,14 @@ const UserTrades: React.FC = () => {
                 {/* Trader Info */}
                 <div className="text-center mb-6">
                   <Avatar className="h-20 w-20 mx-auto mb-4">
-                    <AvatarImage src={userProfile.avatar_url} alt={userProfile.full_name} />
+                    <AvatarImage src={profileData.avatar_url} alt={profileData.full_name} />
                     <AvatarFallback className="text-lg">
-                      {userProfile.full_name?.split(" ").map(n => n[0]).join("")}
+                      {profileData.full_name?.split(" ").map(n => n[0]).join("")}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <h1 className="text-xl font-bold">{userProfile.full_name}</h1>
-                    {userProfile.verified && (
+                    <h1 className="text-xl font-bold">{profileData.full_name}</h1>
+                    {profileData.verified && (
                       <Verified className="h-5 w-5 text-blue-500" />
                     )}
                     <Badge className="bg-green-100 text-green-800">
@@ -318,7 +318,7 @@ const UserTrades: React.FC = () => {
                       Verified Trader
                     </Badge>
                   </div>
-                  <p className="text-muted-foreground text-sm mb-2">@{userProfile.username}</p>
+                  <p className="text-muted-foreground text-sm mb-2">@{profileData.username}</p>
                   <div className="flex items-center justify-center gap-1 mb-4">
                     <Star className="h-4 w-4 text-yellow-500 fill-current" />
                     <span className="font-medium">{tradingStats.averageRating}</span>
@@ -368,7 +368,7 @@ const UserTrades: React.FC = () => {
                 <div className="space-y-3 pt-6 border-t">
                   <div className="flex items-center gap-2 text-sm">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span>{userProfile.location}</span>
+                    <span>{profileData.location}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -446,8 +446,8 @@ const UserTrades: React.FC = () => {
           {/* Trading Content */}
           <div className="lg:col-span-3">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">{userProfile.full_name}'s Trading Activity</h2>
-              <p className="text-muted-foreground">{userProfile.bio}</p>
+              <h2 className="text-2xl font-bold mb-2">{profileData.full_name}'s Trading Activity</h2>
+              <p className="text-muted-foreground">{profileData.bio}</p>
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
