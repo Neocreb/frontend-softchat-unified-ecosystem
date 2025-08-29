@@ -137,7 +137,7 @@ const mockCourses: Course[] = [
         videoUrl: "https://example.com/crypto-intro.mp4",
         completed: false,
         order: 1,
-        rewardPoints: { completion: 10 }
+        rewardPoints: { completion: 0.25 }
       },
       {
         id: "lesson-2",
@@ -149,7 +149,7 @@ const mockCourses: Course[] = [
         videoUrl: "https://example.com/blockchain-intro.mp4",
         completed: false,
         order: 2,
-        rewardPoints: { completion: 15 }
+        rewardPoints: { completion: 0.5 }
       },
       {
         id: "lesson-3",
@@ -160,7 +160,7 @@ const mockCourses: Course[] = [
         content: "Bitcoin was created in 2009 by an anonymous person or group known as Satoshi Nakamoto...",
         completed: false,
         order: 3,
-        rewardPoints: { completion: 10 }
+        rewardPoints: { completion: 0.25 }
       },
       {
         id: "lesson-4",
@@ -171,7 +171,7 @@ const mockCourses: Course[] = [
         content: "Learn about various cryptocurrency categories including coins, tokens, stablecoins, and NFTs...",
         completed: false,
         order: 4,
-        rewardPoints: { completion: 15 }
+        rewardPoints: { completion: 0.5 }
       },
       {
         id: "lesson-5",
@@ -210,7 +210,7 @@ const mockCourses: Course[] = [
         videoUrl: "https://example.com/crypto-wallets.mp4",
         completed: false,
         order: 6,
-        rewardPoints: { completion: 15 }
+        rewardPoints: { completion: 0.5 }
       },
       {
         id: "lesson-7",
@@ -221,7 +221,7 @@ const mockCourses: Course[] = [
         content: "Learn how to safely send and receive cryptocurrency transactions...",
         completed: false,
         order: 7,
-        rewardPoints: { completion: 15 }
+        rewardPoints: { completion: 0.5 }
       },
       {
         id: "lesson-8",
@@ -536,7 +536,7 @@ The cryptocurrency space is still young, and security practices continue to evol
         `,
         completed: false,
         order: 8,
-        rewardPoints: { completion: 20 }
+        rewardPoints: { completion: 0.75 }
       }
     ]
   },
@@ -575,7 +575,7 @@ The cryptocurrency space is still young, and security practices continue to evol
     certificate: true,
     rewardPoints: {
       enrollment: 15,
-      completion: 150,
+      completion: 0.50,
       certificate: 200
     },
     lessons: [
@@ -600,7 +600,7 @@ The cryptocurrency space is still young, and security practices continue to evol
         content: "Candlestick charts provide crucial information about market sentiment...",
         completed: false,
         order: 2,
-        rewardPoints: { completion: 15 }
+        rewardPoints: { completion: 0.5 }
       },
       {
         id: "ta-lesson-3",
@@ -831,7 +831,7 @@ Remember that no single indicator is perfect, and moving averages work best as p
         videoUrl: "https://example.com/rsi-indicators.mp4",
         completed: false,
         order: 5,
-        rewardPoints: { completion: 15 }
+        rewardPoints: { completion: 0.5 }
       },
       {
         id: "ta-lesson-6",
@@ -851,7 +851,7 @@ Remember that no single indicator is perfect, and moving averages work best as p
         ],
         completed: false,
         order: 6,
-        rewardPoints: { completion: 20, bonus: 15 }
+        rewardPoints: { completion: 0.75, bonus: 15 }
       },
       {
         id: "ta-lesson-7",
@@ -885,7 +885,7 @@ Remember that no single indicator is perfect, and moving averages work best as p
         content: "Risk management is the most important aspect of successful trading...",
         completed: false,
         order: 9,
-        rewardPoints: { completion: 15 }
+        rewardPoints: { completion: 0.5 }
       },
       {
         id: "ta-lesson-10",
@@ -896,7 +896,7 @@ Remember that no single indicator is perfect, and moving averages work best as p
         content: "Learn to combine multiple technical analysis tools into coherent trading strategies...",
         completed: false,
         order: 10,
-        rewardPoints: { completion: 20 }
+        rewardPoints: { completion: 0.75 }
       },
       {
         id: "ta-lesson-11",
@@ -908,7 +908,7 @@ Remember that no single indicator is perfect, and moving averages work best as p
         videoUrl: "https://example.com/backtesting.mp4",
         completed: false,
         order: 11,
-        rewardPoints: { completion: 15 }
+        rewardPoints: { completion: 0.5 }
       },
       {
         id: "ta-lesson-12",
@@ -968,7 +968,7 @@ Remember that no single indicator is perfect, and moving averages work best as p
     certificate: true,
     rewardPoints: {
       enrollment: 20,
-      completion: 200,
+      completion: 0.750,
       certificate: 300
     },
     lessons: [
@@ -982,7 +982,7 @@ Remember that no single indicator is perfect, and moving averages work best as p
         videoUrl: "https://example.com/defi-intro.mp4",
         completed: false,
         order: 1,
-        rewardPoints: { completion: 15 }
+        rewardPoints: { completion: 0.5 }
       },
       {
         id: "defi-lesson-2",
@@ -993,7 +993,7 @@ Remember that no single indicator is perfect, and moving averages work best as p
         content: "Automated Market Makers revolutionize how trading works in DeFi...",
         completed: false,
         order: 2,
-        rewardPoints: { completion: 20 }
+        rewardPoints: { completion: 0.75 }
       },
       // Add more DeFi lessons...
       {
