@@ -10,7 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { 
+import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
@@ -24,7 +24,10 @@ import {
   ListChecks,
   Target,
   BookOpen,
-  Award
+  Award,
+  Gift,
+  Star,
+  Coins
 } from "lucide-react";
 import { courseService, Course, Lesson, QuizQuestion } from "@/services/courseService";
 
