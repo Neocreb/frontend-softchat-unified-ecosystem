@@ -37,6 +37,10 @@ interface RewardsActivitiesTabProps {
     p2pTrading: number;
     referrals: number;
     challenges: number;
+    battleVoting: number;
+    battleRewards: number;
+    giftsAndTips: number;
+    education: number;
   };
   recentActivity: Array<{
     id: string;
@@ -72,7 +76,8 @@ const RewardsActivitiesTab = ({ earningsByType, recentActivity }: RewardsActivit
     { value: "freelance", label: "Freelance" },
     { value: "referrals", label: "Referrals" },
     { value: "challenges", label: "Challenges" },
-    { value: "p2p_trading", label: "P2P Trading" }
+    { value: "p2p_trading", label: "P2P Trading" },
+    { value: "education", label: "Education" }
   ];
 
   const filteredActivities = enhancedActivities.filter(activity => {
@@ -183,7 +188,8 @@ const RewardsActivitiesTab = ({ earningsByType, recentActivity }: RewardsActivit
                 challenges: "Challenges",
                 battleVoting: "Battle Voting",
                 battleRewards: "Battle Rewards",
-                giftsAndTips: "Gifts & Tips"
+                giftsAndTips: "Gifts & Tips",
+                education: "Education",
               };
 
               return (
