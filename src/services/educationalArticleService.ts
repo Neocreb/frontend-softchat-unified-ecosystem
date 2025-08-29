@@ -250,9 +250,9 @@ Understanding blockchain fundamentals is crucial for anyone looking to participa
       averageScore: 78
     },
     rewardPoints: {
-      reading: 15,
-      quizCompletion: 25,
-      perfectScore: 50
+      reading: 0.5,
+      quizCompletion: 1.0,
+      perfectScore: 2.0
     }
   },
   {
@@ -480,9 +480,9 @@ The cost of proper security measures is minimal compared to the potential loss f
       averageScore: 82
     },
     rewardPoints: {
-      reading: 20,
-      quizCompletion: 30,
-      perfectScore: 60
+      reading: 0.75,
+      quizCompletion: 1.5,
+      perfectScore: 2.5
     }
   },
   {
@@ -733,9 +733,9 @@ The DeFi space moves quickly, so what works today may not work tomorrow. Flexibi
       averageScore: 75
     },
     rewardPoints: {
-      reading: 25,
-      quizCompletion: 40,
-      perfectScore: 80
+      reading: 1.0,
+      quizCompletion: 2.0,
+      perfectScore: 3.0
     }
   }
 ];
