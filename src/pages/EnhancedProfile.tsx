@@ -91,7 +91,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
   const { toast } = useToast();
 
   const targetUsername = propUsername || paramUsername;
-  const slugUsername = targetUsername || user?.profile?.username;
+  const resolvedUsername = targetUsername || user?.profile?.username || (user as any)?.username || "user";
 
   // State management
   const [profileUser, setProfileUser] = useState<UserProfile | null>(null);
@@ -900,7 +900,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       {/* Trust Level */}
                       <div
                         className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => slugUsername && navigate(`/app/profile/${slugUsername}/trust`)}
+                        onClick={() => navigate(`/app/profile/${resolvedUsername}/trust`)}
                       >
                         <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-amber-100 to-amber-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
@@ -921,7 +921,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       {/* Marketplace Sales */}
                       <div
                         className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => slugUsername && navigate(`/app/profile/${slugUsername}/store`)}
+                        onClick={() => navigate(`/app/profile/${resolvedUsername}/store`)}
                       >
                         <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-orange-100 to-orange-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
@@ -939,7 +939,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       {/* Freelance Projects */}
                       <div
                         className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => slugUsername && navigate(`/app/profile/${slugUsername}/projects`)}
+                        onClick={() => navigate(`/app/profile/${resolvedUsername}/projects`)}
                       >
                         <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-cyan-100 to-cyan-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
@@ -957,7 +957,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       {/* Crypto Trades */}
                       <div
                         className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => slugUsername && navigate(`/app/profile/${slugUsername}/trades`)}
+                        onClick={() => navigate(`/app/profile/${resolvedUsername}/trades`)}
                       >
                         <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-yellow-100 to-yellow-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
