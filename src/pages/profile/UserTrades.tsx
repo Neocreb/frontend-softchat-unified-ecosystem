@@ -206,6 +206,66 @@ const UserTrades: React.FC = () => {
     return type === "buy" ? "text-green-600" : "text-red-600";
   };
 
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const svc = new ProfileService();
+        const p = username ? await svc.getUserByUsername(username) : null;
+        if (!mounted) return;
+        setProfile(p);
+        if (p?.id) {
+          const { data, error } = await supabase
+            .from("p2p_offers")
+            .select("*")
+            .eq("user_id", p.id)
+            .order("created_at", { ascending: false });
+          if (!mounted) return;
+          if (!error && data && data.length) {
+            const mapped: P2PTrade[] = data.map((row: any) => ({
+              id: String(row.id),
+              type: row.type === "SELL" || row.type === "sell" ? "sell" : "buy",
+              crypto: row.asset_name || row.asset || "Bitcoin",
+              crypto_symbol: row.asset_symbol || row.symbol || "BTC",
+              fiat_currency: row.fiat_currency || row.fiat || "USD",
+              amount: Number(row.amount || row.quantity || 0),
+              price_per_unit: Number(row.price || row.price_per_unit || 0),
+              total_amount: Number(row.total_amount || (row.amount || 0) * (row.price || 0)),
+              payment_methods: Array.isArray(row.payment_methods)
+                ? row.payment_methods
+                : (row.payment_methods ? String(row.payment_methods).split(",") : []),
+              min_limit: Number(row.min_amount || row.min_limit || 0),
+              max_limit: Number(row.max_amount || row.max_limit || 0),
+              status: String(row.status || "active").toLowerCase(),
+              created_at: row.created_at || new Date().toISOString(),
+              updated_at: row.updated_at || row.created_at || new Date().toISOString(),
+            }));
+            setActiveFromDb(mapped.filter((t) => t.status === "active" || t.status === "in_progress"));
+            setCompletedFromDb(mapped.filter((t) => t.status === "completed"));
+          } else {
+            setActiveFromDb([]);
+            setCompletedFromDb([]);
+          }
+        } else {
+          setActiveFromDb([]);
+          setCompletedFromDb([]);
+        }
+      } catch (e) {
+        setActiveFromDb([]);
+        setCompletedFromDb([]);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    load();
+    return () => { mounted = false; };
+  }, [username]);
+
+  const profileData = profile || userProfile;
+  const isDemo = (username || "").toLowerCase() === "demo";
+  const displayActiveTrades = activeFromDb.length ? activeFromDb : (isDemo ? activeTrades : []);
+  const displayCompletedTrades = completedFromDb.length ? completedFromDb : (isDemo ? completedTrades : []);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
