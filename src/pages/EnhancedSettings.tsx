@@ -299,8 +299,8 @@ const EnhancedSettings = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   // App preferences
-  const [autoPlayVideos, setAutoPlayVideos] = useState(
-    user?.settings?.auto_play_videos ?? true,
+  const [autoPlayVideos, setAutoPlayVideosState] = useState(
+    user?.settings?.auto_play_videos ?? globalAutoPlay,
   );
   const [reducedMotion, setReducedMotion] = useState(
     user?.settings?.reduced_motion ?? false,
