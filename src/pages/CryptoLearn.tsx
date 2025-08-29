@@ -462,6 +462,11 @@ const CryptoLearn = () => {
               </div>
             </TabsContent>
 
+            {/* Progress Tab */}
+            <TabsContent value="progress" className="mt-6">
+              <LearningProgressDashboard />
+            </TabsContent>
+
             {/* Community Tab */}
             <TabsContent value="community" className="mt-6">
               <div className="text-center py-12">
