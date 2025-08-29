@@ -130,6 +130,9 @@ const EnhancedSettings = () => {
   const { user, updateProfile, logout } = useAuth();
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
+  const { setLanguage: applyLanguage } = useI18n();
+  const { settings: a11y, updateSettings: updateA11y } = useAccessibility();
+  const { autoPlayVideos: globalAutoPlay, setAutoPlayVideos, setNotificationSettings } = useAppSettings();
 
   // Profile states
   const [skills, setSkills] = useState<string[]>(user?.profile?.skills || []);
