@@ -237,11 +237,24 @@ const LessonViewer = () => {
       // Save quiz score
       if (user && courseId) {
         courseService.saveQuizScore(user.id, courseId, lessonId!, score);
-        
+
         if (score >= 70) {
+          // Calculate reward points
+          let rewardMessage = `Congratulations! You scored ${score}% and passed the quiz.`;
+          let totalPoints = 0;
+
+          if (lesson?.rewardPoints?.completion) {
+            totalPoints += lesson.rewardPoints.completion;
+          }
+
+          if (score === 100 && lesson?.rewardPoints?.bonus) {
+            totalPoints += lesson.rewardPoints.bonus;
+            rewardMessage += ` Perfect score bonus included!`;
+          }
+
           toast({
-            title: "Quiz Passed!",
-            description: `Congratulations! You scored ${score}% and passed the quiz.`,
+            title: "🏆 Quiz Passed!",
+            description: `${rewardMessage} You earned ${totalPoints} points!`,
           });
         } else {
           toast({
