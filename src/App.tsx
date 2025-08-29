@@ -732,6 +732,7 @@ const App = () => {
                           {/* Global Components */}
                           <OnboardingTour />
                           <NotificationSystem />
+                          <RewardNotificationContainer />
                           <AccessibilityControlPanel />
                           <KeyboardNavigationHelper />
                           <ReadingGuide />
