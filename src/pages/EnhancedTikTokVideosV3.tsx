@@ -95,6 +95,8 @@ import { useVideoPlayback } from "@/hooks/use-video-playback";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { useAccessibility } from "@/components/accessibility/AccessibilityFeatures";
 
 interface VideoData {
   id: string;
@@ -318,7 +320,9 @@ const VideoCard: React.FC<{
   const [isLiked, setIsLiked] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [showMore, setShowMore] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(isActive);
+  const { autoPlayVideos } = useAppSettings();
+  const { settings: a11y } = useAccessibility();
+  const [isPlaying, setIsPlaying] = useState(isActive && autoPlayVideos && !a11y.reducedMotion);
   const [isFollowing, setIsFollowing] = useState(video.user.isFollowing || false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
@@ -355,6 +359,15 @@ const VideoCard: React.FC<{
       }
     };
   }, [isActive, isPlaying, safePlay, safePause]);
+
+  // Sync playing state with global app preferences and accessibility settings
+  useEffect(() => {
+    if (!isActive) {
+      setIsPlaying(false);
+      return;
+    }
+    setIsPlaying(autoPlayVideos && !a11y.reducedMotion);
+  }, [isActive, autoPlayVideos, a11y.reducedMotion]);
 
   const togglePlay = useCallback(async () => {
     const videoElement = videoRef.current;
