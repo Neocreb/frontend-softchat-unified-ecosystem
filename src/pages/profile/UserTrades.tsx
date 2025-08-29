@@ -219,6 +219,9 @@ const UserTrades: React.FC = () => {
                 <Share2 className="h-4 w-4 mr-2" />
                 Share Trading Profile
               </Button>
+              <Button asChild size="sm" variant="secondary">
+                <Link to="/app/crypto-p2p">Open P2P Marketplace</Link>
+              </Button>
             </div>
           </div>
         </div>
