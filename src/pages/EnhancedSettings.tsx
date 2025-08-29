@@ -306,7 +306,7 @@ const EnhancedSettings = () => {
     user?.settings?.reduced_motion ?? a11y.reducedMotion,
   );
   const [highContrast, setHighContrast] = useState(
-    user?.settings?.high_contrast ?? false,
+    user?.settings?.high_contrast ?? a11y.highContrast,
   );
   const [fontSize, setFontSize] = useState(
     user?.settings?.font_size || "medium",
