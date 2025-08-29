@@ -16,6 +16,8 @@ function VideoPlayer({ video, onNext }: VideoPlayerProps) {
   const [liked, setLiked] = useState(false);
   const [muted, setMuted] = useState(true);
   const [following, setFollowing] = useState(video.isFollowing);
+  const { autoPlayVideos } = useAppSettings();
+  const { settings: a11y } = useAccessibility();
 
   return (
     <div className="relative h-full w-full overflow-y-hidden">
@@ -24,7 +26,7 @@ function VideoPlayer({ video, onNext }: VideoPlayerProps) {
           src={video.url}
           poster={video.thumbnail}
           className="h-full w-full object-cover"
-          autoPlay
+          autoPlay={autoPlayVideos && !a11y.reducedMotion}
           loop
           muted={muted}
           playsInline
