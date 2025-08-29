@@ -3,6 +3,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useI18n } from "@/contexts/I18nContext";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useAccessibility } from "@/components/accessibility/AccessibilityFeatures";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
 import {
   Card,
   CardContent,
