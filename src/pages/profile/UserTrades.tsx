@@ -207,7 +207,7 @@ const UserTrades: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link 
-                to={`/profile/${username}`}
+                to={`/app/profile/${username}`}
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ArrowLeft className="h-5 w-5" />
