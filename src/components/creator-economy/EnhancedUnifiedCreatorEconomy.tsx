@@ -181,9 +181,10 @@ const EnhancedUnifiedCreatorEconomy: React.FC = () => {
           engagement: 2280,         // 12.5% - Likes, comments, shares
           marketplace: 4560,        // 25% - Payment-completed sales
           freelance: 3420,          // 18.75% - Milestone-based
-          p2pTrading: 684,          // 3.75% - Confirmed trades  
+          p2pTrading: 684,          // 3.75% - Confirmed trades
           referrals: 456,           // 2.5% - Quality referrals
           challenges: 0,            // 0% - No active completions
+          education: 0,             // Learning rewards
         },
         
         recentRewards: [

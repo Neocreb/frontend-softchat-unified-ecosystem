@@ -26,6 +26,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { courseService } from '@/services/courseService';
 import { educationalArticleService } from '@/services/educationalArticleService';
+import { formatDateTime } from '@/utils/formatters';
 
 interface LearningStats {
   totalPointsEarned: number;
@@ -543,7 +544,7 @@ const LearningProgressDashboard: React.FC = () => {
                     </div>
                     <p className="text-sm text-muted-foreground">{activity.description}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {activity.timestamp.toRelativeTimeString()}
+                      {formatDateTime(activity.timestamp)}
                     </p>
                   </div>
                 </div>

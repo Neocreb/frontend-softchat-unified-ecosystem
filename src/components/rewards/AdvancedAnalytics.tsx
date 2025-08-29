@@ -77,6 +77,7 @@ interface AdvancedAnalyticsProps {
     battleVoting: number;
     battleRewards: number;
     giftsAndTips: number;
+    education: number;
   };
 }
 

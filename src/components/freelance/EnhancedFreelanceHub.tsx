@@ -12,7 +12,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -21,20 +20,17 @@ import {
   DollarSign,
   Clock,
   Users,
-  Filter,
   Search,
   Star,
   Award,
   Plus,
   Bell,
   Settings,
-  ChevronDown,
   Grid3x3,
   List,
   MapPin,
   Calendar,
   Zap,
-  Target,
   TrendingDown,
   Eye,
   Heart,
@@ -64,8 +60,7 @@ import TalentsList, { Talent } from "./TalentsList";
 import TalentProfile from "./TalentProfile";
 import { useFreelance } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
-import AdvancedFreelanceFilters from "./AdvancedFreelanceFilters";
-import SmartRecommendations from "./SmartRecommendations";
+import CompactFreelanceFilters from "./CompactFreelanceFilters";
 
 export const EnhancedFreelanceHub: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
@@ -108,36 +103,6 @@ export const EnhancedFreelanceHub: React.FC = () => {
     successRate: { value: 94, change: +2, trend: "up" },
   };
 
-  const quickActions = [
-    {
-      label: "Post a Job",
-      icon: <Plus className="w-4 h-4" />,
-      action: () => navigate("/app/freelance/post-job"),
-      variant: "default" as const,
-      premium: false,
-    },
-    {
-      label: "Post Skill",
-      icon: <Award className="w-4 h-4" />,
-      action: () => navigate("/app/freelance/post-skill"),
-      variant: "outline" as const,
-      premium: false,
-    },
-    {
-      label: "AI Match",
-      icon: <Sparkles className="w-4 h-4" />,
-      action: () => setActiveTab("recommended"),
-      variant: "outline" as const,
-      premium: true,
-    },
-    {
-      label: "Dashboard",
-      icon: <BarChart3 className="w-4 h-4" />,
-      action: () => navigate("/app/freelance/dashboard"),
-      variant: "outline" as const,
-      premium: false,
-    },
-  ];
 
   const trendingCategories = [
     { name: "AI/ML Development", jobs: 234, growth: "+23%" },
@@ -172,52 +137,25 @@ export const EnhancedFreelanceHub: React.FC = () => {
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <div className="flex items-center justify-between mb-6">
         <TabsList className="bg-white border shadow-sm h-auto flex-wrap sm:h-12 w-full justify-start">
-          <TabsTrigger
-            value="browse"
-            className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 px-3 sm:px-6 flex-shrink-0"
-          >
+          <TabsTrigger value="browse" className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 px-3 sm:px-6 flex-shrink-0">
             <Briefcase className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Browse Jobs</span>
+            <span className="hidden sm:inline">Jobs</span>
             <span className="sm:hidden">Jobs</span>
           </TabsTrigger>
-          <TabsTrigger
-            value="talents"
-            className="data-[state=active]:bg-green-50 data-[state=active]:text-green-700 px-3 sm:px-6 flex-shrink-0"
-          >
+          <TabsTrigger value="talents" className="data-[state=active]:bg-green-50 data-[state=active]:text-green-700 px-3 sm:px-6 flex-shrink-0">
             <Users className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Find Talent</span>
+            <span className="hidden sm:inline">Talent</span>
             <span className="sm:hidden">Talent</span>
           </TabsTrigger>
-          <TabsTrigger
-            value="proposals"
-            className="data-[state=active]:bg-purple-50 data-[state=active]:text-purple-700 px-3 sm:px-6 flex-shrink-0"
-          >
+          <TabsTrigger value="proposals" className="data-[state=active]:bg-purple-50 data-[state=active]:text-purple-700 px-3 sm:px-6 flex-shrink-0">
             <FileText className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">My Proposals</span>
+            <span className="hidden sm:inline">Props</span>
             <span className="sm:hidden">Props</span>
           </TabsTrigger>
-          <TabsTrigger
-            value="saved"
-            className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700 px-3 sm:px-6 flex-shrink-0"
-          >
+          <TabsTrigger value="saved" className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700 px-3 sm:px-6 flex-shrink-0">
             <Bookmark className="w-4 h-4 mr-1 sm:mr-2" />
             <span className="hidden sm:inline">Saved</span>
-            <span className="sm:hidden">Save</span>
-          </TabsTrigger>
-          <TabsTrigger
-            value="recommended"
-            className="data-[state=active]:bg-yellow-50 data-[state=active]:text-yellow-700 px-2 sm:px-6 flex-shrink-0"
-          >
-            <Sparkles className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">AI Recommended</span>
-            <span className="sm:hidden">AI</span>
-            <Badge
-              variant="secondary"
-              className="ml-1 sm:ml-2 bg-yellow-100 text-yellow-800 text-xs"
-            >
-              <span className="hidden sm:inline">Pro</span>
-              <span className="sm:hidden">★</span>
-            </Badge>
+            <span className="sm:hidden">Saved</span>
           </TabsTrigger>
         </TabsList>
 
@@ -240,27 +178,6 @@ export const EnhancedFreelanceHub: React.FC = () => {
               <List className="w-4 h-4" />
             </Button>
           </div>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="shadow-sm h-8">
-                <Filter className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">Filters</span>
-                <ChevronDown className="w-4 h-4 ml-1 sm:ml-2" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Filter by Category</DropdownMenuLabel>
-              <DropdownMenuItem>Web Development</DropdownMenuItem>
-              <DropdownMenuItem>Mobile Development</DropdownMenuItem>
-              <DropdownMenuItem>Design & Creative</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>Budget Range</DropdownMenuLabel>
-              <DropdownMenuItem>$0 - $500</DropdownMenuItem>
-              <DropdownMenuItem>$500 - $2000</DropdownMenuItem>
-              <DropdownMenuItem>$2000+</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
 
           <Button size="sm" className="shadow-sm h-8">
             <RefreshCw className="w-4 h-4 sm:mr-2" />
@@ -315,13 +232,6 @@ export const EnhancedFreelanceHub: React.FC = () => {
         </div>
       </TabsContent>
 
-      <TabsContent value="recommended" className="space-y-6">
-        <SmartRecommendations
-          userType="freelancer"
-          onJobSelect={handleJobSelect}
-          onFreelancerSelect={handleTalentSelect}
-        />
-      </TabsContent>
     </Tabs>
   );
 
@@ -356,53 +266,32 @@ export const EnhancedFreelanceHub: React.FC = () => {
       {/* Enhanced Header Section */}
       <div className="bg-white border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex-1 min-w-0">
-              <h1 className="text-xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2 sm:gap-3">
-                <div className="p-1.5 sm:p-2 bg-blue-100 rounded-lg">
-                  <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
-                </div>
-                <span className="truncate">Freelance Hub</span>
-                <Badge
-                  variant="secondary"
-                  className="bg-green-100 text-green-800 flex-shrink-0"
-                >
-                  <Activity className="w-3 h-3 mr-1" />
-                  Live
-                </Badge>
-              </h1>
-              <p className="text-gray-600 mt-1 text-sm sm:text-base">
-                Connect with top talent and exciting opportunities worldwide
-              </p>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="p-1.5 sm:p-2 bg-blue-100 rounded-lg">
+                <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
+              </div>
+              <h1 className="text-xl sm:text-3xl font-bold text-gray-900 truncate">Freelance Hub</h1>
+              <Badge variant="secondary" className="bg-green-100 text-green-800 flex-shrink-0">
+                <Activity className="w-3 h-3 mr-1" /> Live
+              </Badge>
             </div>
-
-            <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
-              {quickActions.map((action, index) => (
-                <Button
-                  key={index}
-                  variant={action.variant}
-                  onClick={action.action}
-                  className="shadow-sm relative text-sm"
-                  size="sm"
-                >
-                  {action.icon}
-                  <span className="ml-1 sm:ml-2 hidden sm:inline">
-                    {action.label}
-                  </span>
-                  <span className="ml-1 sm:hidden">
-                    {action.label === "Post a Job"
-                      ? "Post"
-                      : action.label === "AI Match"
-                        ? "AI"
-                        : action.label === "Dashboard"
-                          ? "Dashboard"
-                          : action.label}
-                  </span>
-                  {action.premium && (
-                    <Crown className="w-3 h-3 ml-1 text-yellow-500" />
-                  )}
-                </Button>
-              ))}
+            <div className="flex items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="shadow-sm" size="sm">
+                    <Plus className="w-4 h-4 mr-2" /> Post
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Post</DropdownMenuLabel>
+                  <DropdownMenuItem onClick={() => navigate("/app/freelance/post-job")}>Post Job</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/app/freelance/post-skill")}>Post Skill</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Button variant="outline" size="sm" className="shadow-sm" onClick={() => navigate("/app/freelance/dashboard")}>
+                <BarChart3 className="w-4 h-4 mr-2" /> Dashboard
+              </Button>
             </div>
           </div>
         </div>
@@ -412,15 +301,6 @@ export const EnhancedFreelanceHub: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
-            {/* Advanced Search and Filters */}
-            <AdvancedFreelanceFilters
-              onFiltersChange={(newFilters) => {
-                setFilters(newFilters);
-                setSearchQuery(newFilters.searchQuery);
-              }}
-              initialFilters={{ searchQuery }}
-            />
-
             {/* Stats Overview */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <Card className="shadow-sm">
@@ -500,55 +380,21 @@ export const EnhancedFreelanceHub: React.FC = () => {
               </Card>
             </div>
 
+            {/* Compact Advanced Filters */}
+            <CompactFreelanceFilters
+              onFiltersChange={(newFilters: any) => {
+                setFilters(newFilters);
+                setSearchQuery(newFilters.searchQuery);
+              }}
+              initialFilters={{ searchQuery }}
+            />
+
             {/* Main Tabs */}
             <RenderTabs />
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Quick Actions */}
-            <Card className="shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Target className="w-5 h-5 text-blue-600" />
-                  Quick Actions
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  className="w-full justify-start"
-                  onClick={() => navigate("/app/freelance/post-job")}
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Post a New Job
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => navigate("/app/freelance/post-skill")}
-                >
-                  <Award className="w-4 h-4 mr-2" />
-                  Post Skill/Talent
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => navigate('/app/chat')}
-                >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  View Messages
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => navigate('/app/unified-creator-studio')}
-                >
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  Analytics Dashboard
-                </Button>
-              </CardContent>
-            </Card>
-
             {/* Trending Categories */}
             <Card className="shadow-sm">
               <CardHeader>
