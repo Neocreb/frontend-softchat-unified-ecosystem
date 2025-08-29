@@ -92,6 +92,9 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
 
   const targetUsername = propUsername || paramUsername;
   const resolvedUsername = targetUsername || user?.profile?.username || (user as any)?.username || "user";
+  const pageUsername = (targetUsername && targetUsername !== "unknown" && targetUsername !== "user")
+    ? targetUsername
+    : (user?.profile?.username || (user as any)?.username || resolvedUsername);
 
   // State management
   const [profileUser, setProfileUser] = useState<UserProfile | null>(null);
