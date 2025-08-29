@@ -1224,7 +1224,7 @@ const EnhancedSettings = () => {
                     <Switch
                       id="autoPlayVideos"
                       checked={autoPlayVideos}
-                      onCheckedChange={setAutoPlayVideos}
+                      onCheckedChange={setAutoPlayVideosState}
                     />
                   </div>
 
