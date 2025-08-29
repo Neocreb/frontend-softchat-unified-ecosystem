@@ -725,6 +725,7 @@ const App = () => {
                     <UnifiedNotificationProvider>
                     <AdminProvider>
                     <AccessibilityProvider>
+                    <AppSettingsProvider>
                       <TooltipProvider>
                         <GlobalCallProvider>
                           <AppRoutes />
@@ -744,6 +745,7 @@ const App = () => {
                           <Sonner />
                         </GlobalCallProvider>
                       </TooltipProvider>
+                    </AppSettingsProvider>
                     </AccessibilityProvider>
                     </AdminProvider>
                     </UnifiedNotificationProvider>
