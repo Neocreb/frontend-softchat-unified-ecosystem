@@ -346,14 +346,16 @@ export default function BuyerDashboard() {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="orders" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-6">
-          <TabsTrigger value="orders">Orders</TabsTrigger>
-          <TabsTrigger value="wishlist">Wishlist</TabsTrigger>
-          <TabsTrigger value="reviews">Reviews</TabsTrigger>
-          <TabsTrigger value="addresses">Addresses</TabsTrigger>
-          <TabsTrigger value="payment">Payment</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto -mx-1 pb-2">
+          <TabsList className="flex w-max gap-2 bg-gray-100 p-1 rounded-lg">
+            <TabsTrigger value="orders" className="px-3 py-2 text-sm whitespace-nowrap">Orders</TabsTrigger>
+            <TabsTrigger value="wishlist" className="px-3 py-2 text-sm whitespace-nowrap">Wishlist</TabsTrigger>
+            <TabsTrigger value="reviews" className="px-3 py-2 text-sm whitespace-nowrap">Reviews</TabsTrigger>
+            <TabsTrigger value="addresses" className="px-3 py-2 text-sm whitespace-nowrap">Addresses</TabsTrigger>
+            <TabsTrigger value="payment" className="px-3 py-2 text-sm whitespace-nowrap">Payment</TabsTrigger>
+            <TabsTrigger value="settings" className="px-3 py-2 text-sm whitespace-nowrap">Settings</TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Orders Tab */}
         <TabsContent value="orders" className="space-y-6">
