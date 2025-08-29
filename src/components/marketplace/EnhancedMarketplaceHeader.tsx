@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 interface CategoryFilter {
   id: string;
@@ -89,9 +90,12 @@ export const EnhancedMarketplaceHeader: React.FC<
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header with Search */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-4">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex-shrink-0">
-            Marketplace
-          </h1>
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Marketplace</h1>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/app/marketplace/my">Dashboard</Link>
+            </Button>
+          </div>
 
           <div className="flex items-center gap-2 sm:gap-4 flex-1 max-w-full">
             {/* Search Bar */}
