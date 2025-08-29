@@ -30,6 +30,8 @@ import {
 import { Product } from "@/types/marketplace";
 import { UserProfile } from "@/types/user";
 import ProductCard from "@/components/marketplace/ProductCard";
+import { cn } from "@/lib/utils";
+import { Link as RouterLink } from "react-router-dom";
 
 interface UserStoreProps {
   // Add any props if needed
@@ -81,47 +83,40 @@ const UserStore: React.FC<UserStoreProps> = () => {
   const products: Product[] = [
     {
       id: "1",
-      title: "Premium Leather Handbag",
+      name: "Premium Leather Handbag",
       description: "Handcrafted premium leather handbag with gold accents",
       price: 189.99,
+      image: "/placeholder.svg",
       images: ["/placeholder.svg"],
       category: "bags",
-      seller_id: "1",
-      seller_name: "Sarah Johnson",
-      seller_avatar: "/placeholder.svg",
       rating: 4.9,
-      reviews_count: 34,
-      created_at: "2024-01-15",
-      updated_at: "2024-01-15",
-      views: 1420,
-      saves: 89,
-      status: "active",
+      reviewCount: 34,
+      inStock: true,
+      sellerId: "1",
+      sellerName: "Sarah Johnson",
+      sellerAvatar: "/placeholder.svg",
       condition: "new",
-      shipping_cost: 9.99,
-      location: "New York, USA",
+      createdAt: "2024-01-15",
+      updatedAt: "2024-01-15",
     },
     {
-      id: "2", 
-      title: "Vintage Gold Chain Necklace",
+      id: "2",
+      name: "Vintage Gold Chain Necklace",
       description: "Elegant vintage-style gold chain necklace, perfect for any occasion",
       price: 89.99,
+      image: "/placeholder.svg",
       images: ["/placeholder.svg"],
       category: "jewelry",
-      seller_id: "1",
-      seller_name: "Sarah Johnson",
-      seller_avatar: "/placeholder.svg",
       rating: 4.7,
-      reviews_count: 28,
-      created_at: "2024-01-12",
-      updated_at: "2024-01-12",
-      views: 890,
-      saves: 45,
-      status: "active",
+      reviewCount: 28,
+      inStock: true,
+      sellerId: "1",
+      sellerName: "Sarah Johnson",
+      sellerAvatar: "/placeholder.svg",
       condition: "new",
-      shipping_cost: 5.99,
-      location: "New York, USA",
+      createdAt: "2024-01-12",
+      updatedAt: "2024-01-12",
     },
-    // Add more products...
   ];
 
   return (
@@ -143,6 +138,9 @@ const UserStore: React.FC<UserStoreProps> = () => {
               <Button variant="outline" size="sm">
                 <Share2 className="h-4 w-4 mr-2" />
                 Share Store
+              </Button>
+              <Button asChild size="sm" variant="secondary">
+                <RouterLink to={`/app/marketplace/seller/${username}`}>Open in Marketplace</RouterLink>
               </Button>
             </div>
           </div>
@@ -318,14 +316,15 @@ const UserStore: React.FC<UserStoreProps> = () => {
                 ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" 
                 : "space-y-4"
             )}>
-              {products.map((product) => (
+              {products
+                .filter(p => selectedCategory === "all" || p.category === selectedCategory)
+                .map((product) => (
                 <div key={product.id}>
                   <ProductCard
                     product={product}
                     onAddToCart={() => {}}
                     onAddToWishlist={() => {}}
-                    onContactSeller={() => {}}
-                    viewMode={viewMode}
+                    onMessageSeller={() => {}}
                   />
                 </div>
               ))}
