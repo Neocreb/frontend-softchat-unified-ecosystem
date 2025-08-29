@@ -1,10 +1,11 @@
-
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Share2, VolumeX, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { VideoItem } from "@/types/video";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { useAccessibility } from "@/components/accessibility/AccessibilityFeatures";
 
 interface VideoPlayerProps {
   video: VideoItem;
