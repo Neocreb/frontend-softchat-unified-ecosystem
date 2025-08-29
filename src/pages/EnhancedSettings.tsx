@@ -318,6 +318,54 @@ const EnhancedSettings = () => {
   const [autoBackup, setAutoBackup] = useState(true);
   const [cacheSize, setCacheSize] = useState("245MB");
 
+  // Apply appearance/accessibility settings globally
+  useEffect(() => {
+    const mapped = fontSize === "large" ? 16 : fontSize === "small" ? 12 : 13;
+    updateA11y({ reducedMotion, highContrast, fontSize: mapped });
+  }, [reducedMotion, highContrast, fontSize]);
+
+  // Apply language via i18n and accessibility
+  useEffect(() => {
+    applyLanguage(language);
+    updateA11y({ language });
+  }, [language]);
+
+  // Persist auto play preference to AppSettings
+  useEffect(() => {
+    setAutoPlayVideos(autoPlayVideos);
+  }, [autoPlayVideos, setAutoPlayVideos]);
+
+  // Persist notification preferences for services that read from localStorage
+  useEffect(() => {
+    const enabled = emailNotifications || pushNotifications;
+    setNotificationSettings({
+      enabled,
+      types: {
+        rewards: enabled,
+        social: socialActivity,
+        orders: orderUpdates,
+        trading: tradingAlerts,
+        price: priceAlerts,
+        news: newsUpdates,
+        security: securityAlerts,
+        weeklyDigest,
+        marketing: marketingEmails,
+      },
+    });
+  }, [
+    emailNotifications,
+    pushNotifications,
+    marketingEmails,
+    orderUpdates,
+    tradingAlerts,
+    socialActivity,
+    newsUpdates,
+    weeklyDigest,
+    priceAlerts,
+    securityAlerts,
+    setNotificationSettings,
+  ]);
+
   // UI states
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
