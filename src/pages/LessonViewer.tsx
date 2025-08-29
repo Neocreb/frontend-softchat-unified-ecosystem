@@ -141,17 +141,34 @@ const LessonViewer = () => {
     }
   };
 
-  const markLessonComplete = () => {
+  const markLessonComplete = async () => {
     if (!user || !courseId || !lessonId || lessonCompleted) return;
 
-    const success = courseService.markLessonCompleted(user.id, courseId, lessonId);
+    const success = await courseService.markLessonCompleted(user.id, courseId, lessonId);
     if (success) {
       setLessonCompleted(true);
+
+      // Calculate rewards earned
+      const rewardPoints = lesson?.rewardPoints?.completion || 10;
+      let toastMessage = `Great job! You earned ${rewardPoints} points.`;
+
+      // Check if course is completed
+      const userProgress = courseService.getUserProgressForCourse(user.id, courseId);
+      if (userProgress && userProgress.progress === 100) {
+        const courseRewards = course?.rewardPoints.completion || 0;
+        const certificateRewards = course?.certificate ? course.rewardPoints.certificate : 0;
+        const totalBonus = courseRewards + certificateRewards;
+
+        if (totalBonus > 0) {
+          toastMessage += ` Plus ${totalBonus} bonus points for course completion!`;
+        }
+      }
+
       toast({
-        title: "Lesson Completed!",
-        description: "Great job! You can now proceed to the next lesson.",
+        title: "🎉 Lesson Completed!",
+        description: toastMessage,
       });
-      
+
       // Update course progress
       const updatedCourse = courseService.getCourseById(courseId);
       if (updatedCourse) {
