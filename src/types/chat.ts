@@ -45,31 +45,31 @@ export interface ChatMessage {
   pinnedBy?: string;
   pinnedAt?: string;
   metadata?: {
-    fileName?: string;
-    fileSize?: number;
-    fileType?: string;
-    mediaType?: "image" | "video" | "file" | "gif";
-    caption?: string;
-    duration?: number;
-    transcription?: string;
-    // System message metadata
-    systemAction?: string;
-    // Sticker-specific metadata
-    stickerName?: string;
-    stickerPackId?: string;
-    stickerPackName?: string;
-    stickerUrl?: string;
-    stickerThumbnailUrl?: string;
-    isAnimated?: boolean;
-    animated?: boolean;
-    stickerType?: "static" | "animated" | "gif";
-    stickerWidth?: number;
-    stickerHeight?: number;
-    topText?: string;
-    bottomText?: string;
-    // Mentioned users
-    mentionedUserIds?: string[];
-    [key: string]: any;
+  duration?: number;
+  transcription?: string;
+  fileName?: string;
+  fileSize?: number;
+  fileType?: string;
+  mediaType?: 'image' | 'video' | 'file' | 'gif';
+  caption?: string;
+  // System message metadata
+  systemAction?: string;
+  // Sticker-specific metadata
+  stickerName?: string;
+  stickerPackId?: string;
+  stickerPackName?: string;
+  stickerUrl?: string;
+  stickerThumbnailUrl?: string;
+  isAnimated?: boolean;
+  animated?: boolean;
+  stickerType?: "static" | "animated" | "gif";
+  stickerWidth?: number;
+  stickerHeight?: number;
+  topText?: string;
+  bottomText?: string;
+  // Mentioned users
+  mentionedUserIds?: string[];
+  [key: string]: any;
   };
 }
 
