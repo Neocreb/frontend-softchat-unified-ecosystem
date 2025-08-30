@@ -48,10 +48,12 @@ export interface ChatMessage {
     fileName?: string;
     fileSize?: number;
     fileType?: string;
-    mediaType?: "image" | "video" | "file";
+    mediaType?: "image" | "video" | "file" | "gif";
     caption?: string;
     duration?: number;
     transcription?: string;
+    // System message metadata
+    systemAction?: string;
     // Sticker-specific metadata
     stickerName?: string;
     stickerPackId?: string;
@@ -59,9 +61,14 @@ export interface ChatMessage {
     stickerUrl?: string;
     stickerThumbnailUrl?: string;
     isAnimated?: boolean;
+    animated?: boolean;
     stickerType?: "static" | "animated" | "gif";
     stickerWidth?: number;
     stickerHeight?: number;
+    topText?: string;
+    bottomText?: string;
+    // Mentioned users
+    mentionedUserIds?: string[];
     [key: string]: any;
   };
 }
@@ -123,13 +130,20 @@ export interface SendMessageRequest {
     fileName?: string;
     fileSize?: number;
     fileType?: string;
-    mediaType?: "image" | "video" | "file";
+    mediaType?: "image" | "video" | "file" | "gif";
     caption?: string;
     duration?: number;
     transcription?: string;
+    // Sticker metadata
     stickerName?: string;
-    pack?: string;
+    stickerUrl?: string;
+    stickerType?: "static" | "animated" | "gif";
+    stickerWidth?: number;
+    stickerHeight?: number;
     animated?: boolean;
+    topText?: string;
+    bottomText?: string;
+    pack?: string;
     [key: string]: any;
   };
 }

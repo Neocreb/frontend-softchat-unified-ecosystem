@@ -38,3 +38,4 @@ export function TempBadge({ className, variant = "default", ...props }: TempBadg
 // Export as Badge for compatibility  
 export const Badge = TempBadge;
 export const badgeVariants = () => ""; // placeholder
+export default Badge;
