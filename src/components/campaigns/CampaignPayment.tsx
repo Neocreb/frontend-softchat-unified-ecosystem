@@ -155,7 +155,7 @@ const CampaignPayment: React.FC<CampaignPaymentProps> = ({
 
     // Apply discounts
     const discountBonus = method.bonuses.find(b => b.type === "discount");
-    if (discountBonus && discountBonus.percentage !== undefined) {
+    if (discountBonus && 'percentage' in discountBonus && discountBonus.percentage !== undefined) {
       finalCost *= (1 - discountBonus.percentage / 100);
     }
 
@@ -168,7 +168,7 @@ const CampaignPayment: React.FC<CampaignPaymentProps> = ({
 
   const calculateEnhancedReach = (method: typeof PAYMENT_METHODS[0]) => {
     const reachBonus = method.bonuses.find(b => b.type === "reach");
-    if (reachBonus && reachBonus.multiplier !== undefined) {
+    if (reachBonus && 'multiplier' in reachBonus && reachBonus.multiplier !== undefined) {
       return Math.round(estimatedReach * reachBonus.multiplier);
     }
     return estimatedReach;
