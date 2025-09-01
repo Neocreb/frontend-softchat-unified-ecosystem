@@ -13,6 +13,7 @@ import {
 import { setupGlobalErrorHandlers } from "@/lib/error-handler";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { AdminProvider } from "./contexts/AdminContext";
+import AppInitializer from './components/layout/AppInitializer';
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { EnhancedMarketplaceProvider } from "./contexts/EnhancedMarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
@@ -721,33 +722,35 @@ const App = () => {
             <I18nProvider>
               <CurrencyProvider>
                 <AuthProvider>
-                  <UserCollectionsProvider>
-                    <UnifiedNotificationProvider>
-                    <AdminProvider>
-                    <AccessibilityProvider>
-                      <TooltipProvider>
-                        <GlobalCallProvider>
-                          <AppRoutes />
+                  <AppInitializer>
+                    <UserCollectionsProvider>
+                      <UnifiedNotificationProvider>
+                      <AdminProvider>
+                      <AccessibilityProvider>
+                        <TooltipProvider>
+                          <GlobalCallProvider>
+                            <AppRoutes />
 
-                          {/* Global Components */}
-                          <OnboardingTour />
-                          <NotificationSystem />
-                          <RewardNotificationContainer />
-                          <AccessibilityControlPanel />
-                          <KeyboardNavigationHelper />
-                          <ReadingGuide />
-                          <ConnectionStatus />
-                          <PWAInstallPrompt />
+                            {/* Global Components */}
+                            <OnboardingTour />
+                            <NotificationSystem />
+                            <RewardNotificationContainer />
+                            <AccessibilityControlPanel />
+                            <KeyboardNavigationHelper />
+                            <ReadingGuide />
+                            <ConnectionStatus />
+                            <PWAInstallPrompt />
 
-                          {/* Toasters */}
-                          <Toaster />
-                          <Sonner />
-                        </GlobalCallProvider>
-                      </TooltipProvider>
-                    </AccessibilityProvider>
-                    </AdminProvider>
-                    </UnifiedNotificationProvider>
-                  </UserCollectionsProvider>
+                            {/* Toasters */}
+                            <Toaster />
+                            <Sonner />
+                          </GlobalCallProvider>
+                        </TooltipProvider>
+                      </AccessibilityProvider>
+                      </AdminProvider>
+                      </UnifiedNotificationProvider>
+                    </UserCollectionsProvider>
+                  </AppInitializer>
                 </AuthProvider>
               </CurrencyProvider>
             </I18nProvider>
