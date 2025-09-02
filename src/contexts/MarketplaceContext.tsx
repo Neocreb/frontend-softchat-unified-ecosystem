@@ -10,6 +10,7 @@ import {
 } from "@/types/marketplace";
 import { useAuth } from "./AuthContext";
 import { useToast } from "@/components/ui/use-toast";
+import { realMarketplaceService } from "@/services/realMarketplaceService";
 
 // Mock data for products
 const mockProducts: Product[] = [
@@ -370,18 +371,65 @@ export const useMarketplace = () => useContext(MarketplaceContext);
 export const MarketplaceProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [products, setProducts] = useState<Product[]>(mockProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [sellers, setSellers] = useState<SellerProfile[]>(mockSellers);
-  const [reviews, setReviews] = useState<Record<string, Review[]>>({
-    "1": mockReviews
-  });
+  const [reviews, setReviews] = useState<Record<string, Review[]>>({});
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [filter, setFilter] = useState<ProductFilter>({});
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [activeSeller, setActiveSeller] = useState<SellerProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [boostOptions] = useState<BoostOption[]>(mockBoostOptions);
+
+  // Load real products from Supabase
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setIsLoading(true);
+        const realProducts = await realMarketplaceService.getProducts({ limit: 50 });
+        
+        // Transform Supabase data to match Product interface
+        const transformedProducts: Product[] = realProducts.map((p: any) => ({
+          id: p.id,
+          name: p.title,
+          description: p.description || '',
+          price: p.price,
+          discountPrice: p.discount_price,
+          image: p.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
+          images: p.images || [],
+          category: p.category || 'general',
+          rating: 4.5, // Default rating
+          reviewCount: 0, // Will be calculated later
+          inStock: p.status === 'active',
+          isNew: new Date(p.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          isFeatured: Math.random() > 0.7, // Random for now
+          isSponsored: false,
+          tags: [p.category || 'general'],
+          sellerId: p.seller_id,
+          sellerName: `Seller ${p.seller_id.slice(0, 8)}`,
+          sellerAvatar: "https://api.dicebear.com/7.x/initials/svg?seed=seller",
+          sellerRating: 4.5,
+          sellerVerified: true,
+          createdAt: p.created_at,
+          updatedAt: p.updated_at || p.created_at
+        }));
+
+        setProducts(transformedProducts);
+      } catch (error) {
+        console.error('Error loading products:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load products",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, [toast]);
 
   // Calculate derived state
   const sponsoredProducts = products.filter(p => p.isSponsored);
