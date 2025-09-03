@@ -1356,7 +1356,7 @@ export type Database = {
       }
     }
     Views: {
-      public_profiles: {
+      public_profiles_secure: {
         Row: {
           avatar_url: string | null
           created_at: string | null
@@ -1364,22 +1364,6 @@ export type Database = {
           is_verified: boolean | null
           user_id: string | null
           username: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string | null
-          display_name?: never
-          is_verified?: boolean | null
-          user_id?: string | null
-          username?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string | null
-          display_name?: never
-          is_verified?: boolean | null
-          user_id?: string | null
-          username?: string | null
         }
         Relationships: []
       }
@@ -1429,6 +1413,17 @@ export type Database = {
           p_user_id: string
         }
         Returns: string
+      }
+      get_public_profiles: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          avatar_url: string
+          created_at: string
+          display_name: string
+          is_verified: boolean
+          user_id: string
+          username: string
+        }[]
       }
       get_user_banking_info_full: {
         Args: { p_purpose?: string; p_user_id: string }
