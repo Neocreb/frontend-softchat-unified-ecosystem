@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/ui";
 import { Card, CardContent } from "@/components/ui/card";
 import { MemeGifActionDialog } from "./MemeGifActionDialog";
 import { StickerData } from "@/types/sticker";
@@ -220,7 +220,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
       return "sticker";
     }
     if (message.type === "media") {
-      if (message.content.includes('.gif') || message.metadata?.mediaType === "gif") {
+      if (message.content.includes('.gif') || message.metadata?.mediaType === "gif" || message.metadata?.stickerType === "gif") {
         return "gif";
       }
       return "image";

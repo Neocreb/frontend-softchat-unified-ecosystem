@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge, badgeVariants } from "@/components/ui/badge";
+import { Badge, badgeVariants } from "@/components/ui";
 import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
