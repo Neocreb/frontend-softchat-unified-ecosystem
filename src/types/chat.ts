@@ -1,4 +1,4 @@
-export type ChatType = "freelance" | "marketplace" | "p2p" | "social";
+export type ChatType = "freelance" | "marketplace" | "p2p" | "social" | "crypto" | "ai_assistant";
 
 export interface ChatThread {
   id: string;
@@ -20,6 +20,12 @@ export interface ChatThread {
   isArchived?: boolean;
   isMuted?: boolean;
   mutedUntil?: string;
+  title?: string;
+  participant_profile?: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
 }
 
 export interface ChatMessage {
@@ -104,7 +110,9 @@ export interface ChatParticipant {
   name: string;
   avatar?: string;
   isOnline?: boolean;
+  is_online?: boolean; // For compatibility
   lastSeen?: string;
+  last_seen?: string; // For compatibility
   role?: "admin" | "member"; // For group chats
   username?: string;
   status?: string;

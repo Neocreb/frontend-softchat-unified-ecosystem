@@ -202,8 +202,11 @@ import CampaignCenter from "./components/campaigns/CampaignCenter";
 import MemeGifDemo from "./pages/MemeGifDemo";
 import MemeGifTest from "./components/debug/MemeGifTest";
 
-// Import missing components
-import MarketplaceSell from "./pages/marketplace/MarketplaceSell";
+import RealFreelance from "./pages/RealFreelance";
+import RealChat from "./pages/RealChat";
+import RealNotifications from "./pages/RealNotifications";
+import RealMarketplace from "./pages/RealMarketplace";
+import RealCreatorStudio from "./pages/RealCreatorStudio";
 import VideoDetail from "./pages/VideoDetail";
 import {
   ServiceDetail,
@@ -380,7 +383,7 @@ const AppRoutes = () => {
           <Route path="feed" element={<EnhancedFeedWithTabs />} />
           {/* <Route path="feed-demo" element={<FeedWithFollowDemo />} /> */}
           <Route path="create" element={<EnhancedFreelance />} />
-          <Route path="freelance" element={<FreelanceJobs />} />
+          <Route path="freelance" element={<RealFreelance />} />
           <Route
             path="freelance/dashboard"
             element={
@@ -417,7 +420,7 @@ const AppRoutes = () => {
           <Route path="freelance/job/:jobId" element={<DetailedJobPage />} />
           <Route path="freelance/service/:serviceId" element={<ServiceDetail />} />
           <Route path="freelance/profile/:username" element={<FreelancerProfile />} />
-          <Route path="chat" element={<Chat />} />
+          <Route path="chat" element={<RealChat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
           <Route path="chat-test/:threadId" element={<ChatTest />} />
           <Route path="chat-simple/:threadId" element={<SimpleChatRoom />} />
@@ -445,10 +448,10 @@ const AppRoutes = () => {
           <Route path="unified-profile/:username" element={<UnifiedProfile />} />
           <Route path="demo/profiles" element={<ProfileDemo />} />
           <Route path="wallet" element={<Wallet />} />
-          <Route path="notifications" element={<UnifiedNotifications />} />
+          <Route path="notifications" element={<RealNotifications />} />
 
           {/* Marketplace routes */}
-          <Route path="marketplace" element={<EnhancedMarketplace />} />
+          <Route path="marketplace" element={<RealMarketplace />} />
           <Route
             path="marketplace/browse"
             element={<Navigate to="/app/marketplace" replace />}
@@ -479,7 +482,7 @@ const AppRoutes = () => {
             path="marketplace/checkout"
             element={<MarketplaceCheckout />}
           />
-          <Route path="marketplace/sell" element={<MarketplaceSell />} />
+          <Route path="marketplace/sell" element={<MarketplaceSeller />} />
 
           {/* Delivery routes */}
           <Route path="delivery" element={<DeliveryProviderStatus />} />
@@ -546,7 +549,7 @@ const AppRoutes = () => {
           <Route path="monetization-policy" element={<MonetizationPolicy />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
-          <Route path="unified-creator-studio" element={<UnifiedCreatorStudio />} />
+          <Route path="unified-creator-studio" element={<RealCreatorStudio />} />
           <Route path="send-gifts" element={<SendGifts />} />
           <Route path="post/:postId" element={<PostDetail />} />
           {/* <Route path="feed-toggle-demo" element={<FeedToggleDemo />} /> */}
