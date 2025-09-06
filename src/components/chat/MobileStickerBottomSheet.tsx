@@ -58,7 +58,10 @@ const mockStickers: Record<string, StickerData[]> = {
       fileUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=150&h=150&fit=crop&crop=face",
       thumbnailUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=80&h=80&fit=crop&crop=face",
       width: 150,
-      height: 150
+      height: 150,
+      packId: "memes",
+      packName: "Memes",
+      usageCount: 0
     },
     {
       id: "m2",
@@ -68,17 +71,23 @@ const mockStickers: Record<string, StickerData[]> = {
       fileUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150&h=150&fit=crop&crop=face",
       thumbnailUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=80&h=80&fit=crop&crop=face",
       width: 150,
-      height: 150
+      height: 150,
+      packId: "memes",
+      packName: "Memes",
+      usageCount: 0
     },
     {
       id: "m3",
       name: "Surprised Dog",
       type: "image",
       tags: ["surprised", "dog", "reaction"],
-      fileUrl: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=150&h=150&fit=crop&crop=face",
+      fileUrl: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=150&h=150&fit=crop&crop=face", 
       thumbnailUrl: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=80&h=80&fit=crop&crop=face",
       width: 150,
-      height: 150
+      height: 150,
+      packId: "memes",
+      packName: "Memes",
+      usageCount: 0
     },
     {
       id: "m4",
@@ -88,7 +97,10 @@ const mockStickers: Record<string, StickerData[]> = {
       fileUrl: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=150&h=150&fit=crop&crop=face",
       thumbnailUrl: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=80&h=80&fit=crop&crop=face",
       width: 150,
-      height: 150
+      height: 150,
+      packId: "memes",
+      packName: "Memes",
+      usageCount: 0
     },
     {
       id: "m5",
@@ -98,7 +110,10 @@ const mockStickers: Record<string, StickerData[]> = {
       fileUrl: "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=150&h=150&fit=crop&crop=face",
       thumbnailUrl: "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=80&h=80&fit=crop&crop=face",
       width: 150,
-      height: 150
+      height: 150,
+      packId: "memes",
+      packName: "Memes",
+      usageCount: 0
     },
     {
       id: "m6",
@@ -108,7 +123,10 @@ const mockStickers: Record<string, StickerData[]> = {
       fileUrl: "https://images.unsplash.com/photo-1571566882372-1598d88abd90?w=150&h=150&fit=crop&crop=face",
       thumbnailUrl: "https://images.unsplash.com/photo-1571566882372-1598d88abd90?w=80&h=80&fit=crop&crop=face",
       width: 150,
-      height: 150
+      height: 150,
+      packId: "memes",
+      packName: "Memes",
+      usageCount: 0
     },
   ],
   gifs: [
@@ -122,7 +140,10 @@ const mockStickers: Record<string, StickerData[]> = {
       thumbnailUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/200w_d.gif",
       animated: true,
       width: 200,
-      height: 200
+      height: 200,
+      packId: "gifs",
+      packName: "GIFs",
+      usageCount: 0
     },
     {
       id: "g2",
@@ -267,7 +288,7 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
             {/* Tab Navigation */}
             <div className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-              <ScrollArea orientation="horizontal" className="w-full">
+              <ScrollArea className="w-full">
                 <TabsList className="inline-flex h-12 w-full bg-transparent p-0 justify-start">
                   {MOBILE_TABS.map((tab) => (
                     <TabsTrigger

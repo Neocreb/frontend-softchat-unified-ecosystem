@@ -410,7 +410,7 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
         <div className="border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
-          <ScrollArea orientation="horizontal" className="w-full">
+          <ScrollArea className="w-full">
             <TabsList className={cn(
               "inline-flex h-auto bg-transparent w-full",
               isMobile ? "p-0.5 justify-start" : "p-1 justify-start"
@@ -897,14 +897,14 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
         creatorName: "You",
         downloadCount: 0,
         rating: 5,
-        isOfficial: false,
-        isPremium: false,
-        isCustom: true,
-        tags: ["custom", "user-generated"],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        thumbnailUrl: stickers[0]?.fileUrl || "",
+        ratingCount: 1,
+        tags: ["custom"],
         price: 0,
+        isPublic: false,
+        isPremium: false,
+        isOfficial: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
 
       onPackCreated(newPack);
