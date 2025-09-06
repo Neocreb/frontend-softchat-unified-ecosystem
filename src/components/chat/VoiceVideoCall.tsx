@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+// Temporary fix: remove Badge import
+// import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,

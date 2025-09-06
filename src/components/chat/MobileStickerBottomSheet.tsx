@@ -154,7 +154,10 @@ const mockStickers: Record<string, StickerData[]> = {
       thumbnailUrl: "https://media.giphy.com/media/111ebonMs90YLu/200w_d.gif",
       animated: true,
       width: 200,
-      height: 200
+      height: 200,
+      packId: "gifs",
+      packName: "GIFs",
+      usageCount: 0
     },
     {
       id: "g3",
@@ -165,18 +168,24 @@ const mockStickers: Record<string, StickerData[]> = {
       thumbnailUrl: "https://media.giphy.com/media/7rj2ZgttvgomY/200w_d.gif",
       animated: true,
       width: 200,
-      height: 200
+      height: 200,
+      packId: "gifs",
+      packName: "GIFs",
+      usageCount: 0
     },
     {
       id: "g4",
-      name: "Mind Blown",
+      name: "Mind Blown", 
       type: "gif",
       tags: ["mind", "blown", "amazed"],
       fileUrl: "https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif",
       thumbnailUrl: "https://media.giphy.com/media/26ufdipQqU2lhNA4g/200w_d.gif",
       animated: true,
       width: 200,
-      height: 200
+      height: 200,
+      packId: "gifs",
+      packName: "GIFs",
+      usageCount: 0
     },
   ],
 };
@@ -200,7 +209,7 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
     
     return stickers.filter(sticker => 
       sticker.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      sticker.emoji.includes(searchQuery)
+      (sticker.emoji && sticker.emoji.includes(searchQuery))
     );
   }, [activeTab, searchQuery]);
 
@@ -298,7 +307,7 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                         "flex flex-col items-center gap-2 px-8 py-3 text-sm rounded-none border-b-3 transition-all flex-1",
                         "data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20",
                         "data-[state=inactive]:border-transparent data-[state=inactive]:text-gray-500"
-                      )}
+            )}
                     >
                       <span className="text-lg">{tab.icon}</span>
                       <span className="text-xs font-medium leading-none">{tab.label}</span>

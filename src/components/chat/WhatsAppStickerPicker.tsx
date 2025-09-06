@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
+// Temporary fix: remove Badge import
+// import { Badge } from "@/components/ui/badge";
 import {
   Smile,
   Heart,

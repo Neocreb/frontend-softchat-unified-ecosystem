@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui";
+import { StickerData, StickerPackData, StickerCategory, StickerUploadMode } from "@/types/sticker";
+// Temporary fix: use span instead of Badge until import issue is resolved
+// import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
@@ -55,9 +57,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import {
-  StickerData,
-  StickerPackData,
-  StickerCategory,
   StickerPickerTab,
   UserStickerLibrary,
   EMOJI_STICKER_PACKS
@@ -434,9 +433,9 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
                     {isMobile ? tab.name.slice(0, 3) : tab.name}
                   </span>
                   {tab.count && tab.count > 0 && (
-                    <Badge variant="secondary" className="text-xs px-1 py-0 h-3 min-w-[12px]">
+                    <span className="bg-secondary text-secondary-foreground rounded-full px-2 py-0.5 text-xs">
                       {tab.count > 9 ? "9+" : tab.count}
-                    </Badge>
+                    </span>
                   )}
                   {tab.premium && (
                     <Crown className="w-2.5 h-2.5 text-yellow-500" />
@@ -762,7 +761,7 @@ const StickerPackCard: React.FC<StickerPackCardProps> = ({
             <CardTitle className="text-sm flex items-center gap-2">
               {pack.name}
               {pack.isPremium && <Crown className="w-4 h-4 text-yellow-500" />}
-              {pack.isOfficial && <Badge variant="secondary" className="text-xs">Official</Badge>}
+              {pack.isOfficial && <span className="bg-secondary text-secondary-foreground rounded-full px-2 py-0.5 text-xs">Official</span>}
             </CardTitle>
             <p className="text-xs text-muted-foreground mt-1">
               {pack.stickers.length} stickers
@@ -814,7 +813,7 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
   const [packName, setPackName] = useState("");
   const [packDescription, setPackDescription] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const [creationMethod, setCreationMethod] = useState<"upload" | "camera" | "ai">("upload");
+  const [creationMethod, setCreationMethod] = useState<StickerUploadMode>("upload");
   const [isCreating, setIsCreating] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
