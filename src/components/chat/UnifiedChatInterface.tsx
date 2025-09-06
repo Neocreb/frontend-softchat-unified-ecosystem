@@ -251,10 +251,15 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   const handleStartVoiceCall = () => {
     if (!selectedChat || !user) return;
 
+    const firstParticipant = selectedChat.participants?.[0];
+    const participantData = typeof firstParticipant === 'string' 
+      ? { id: firstParticipant, name: firstParticipant, avatar: undefined }
+      : firstParticipant;
+    
     const mockParticipant = {
-      id: selectedChat.participants?.[0]?.id || "participant-1",
-      name: selectedChat.participants?.[0]?.name || selectedChat.title,
-      avatar: selectedChat.participants?.[0]?.avatar,
+      id: participantData?.id || "participant-1",
+      name: participantData?.name || selectedChat.title,
+      avatar: participantData?.avatar,
       isAudioMuted: false,
       isVideoEnabled: false,
       isScreenSharing: false,
@@ -287,10 +292,15 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   const handleStartVideoCall = () => {
     if (!selectedChat || !user) return;
 
+    const firstParticipant = selectedChat.participants?.[0];
+    const participantData = typeof firstParticipant === 'string' 
+      ? { id: firstParticipant, name: firstParticipant, avatar: undefined }
+      : firstParticipant;
+    
     const mockParticipant = {
-      id: selectedChat.participants?.[0]?.id || "participant-1",
-      name: selectedChat.participants?.[0]?.name || selectedChat.title,
-      avatar: selectedChat.participants?.[0]?.avatar,
+      id: participantData?.id || "participant-1", 
+      name: participantData?.name || selectedChat.title,
+      avatar: participantData?.avatar,
       isAudioMuted: false,
       isVideoEnabled: true,
       isScreenSharing: false,
@@ -501,8 +511,8 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
           (msg) => ({
             id: msg.id,
             senderId: msg.senderId,
-            senderName: msg.sender?.name || msg.sender?.full_name || "Unknown",
-            senderAvatar: msg.sender?.avatar || msg.sender?.avatar_url,
+            senderName: "Unknown User", // Will be fetched from profiles
+            senderAvatar: undefined, // Will be fetched from profiles
             content: msg.content,
             type:
               msg.messageType === "voice"

@@ -61,7 +61,7 @@ import {
   UserStickerLibrary,
   EMOJI_STICKER_PACKS
 } from "@/types/sticker";
-import { SAMPLE_MEMES, SAMPLE_GIFS, COMMUNITY_MEME_GIF_PACKS } from "@/data/sampleMemesGifsData";
+import { REAL_MEMES, REAL_GIFS, COMMUNITY_REAL_PACKS } from "@/data/realMemesGifsData";
 import { EnhancedMediaCreationPanel } from "./EnhancedMediaCreationPanel";
 import { useUserCollections } from "@/contexts/UserCollectionsContext";
 
