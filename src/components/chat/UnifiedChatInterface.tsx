@@ -375,7 +375,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
 
     setGroupVideoRoom({
       roomId: `room-${selectedChat.id}`,
-      roomName: selectedChat.title,
+      roomName: selectedChat.title || "Chat Room",
       roomType:
         selectedChat.type === "freelance"
           ? "freelance_collab"
@@ -621,7 +621,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
       const newMessage: EnhancedChatMessage = {
         id: Date.now().toString(),
         senderId: user.id,
-        senderName: user.profile?.full_name || user.email,
+        senderName: user.profile?.full_name || user.email || "User",
         senderAvatar: user.profile?.avatar_url,
         content,
         type,
@@ -1013,8 +1013,8 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                             </Avatar>
                             <div className="absolute -bottom-0.5 -right-0.5">
                               <OnlineStatusIndicator
-                                isOnline={conv.participant_profile?.is_online || false}
-                                lastSeen={conv.participant_profile?.last_seen}
+                                isOnline={false}
+                                lastSeen={undefined}
                                 size={isMobile ? "sm" : "md"}
                               />
                             </div>
@@ -1052,9 +1052,9 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                         : "h-5 min-w-[20px] px-1.5"
                                     }`}
                                   >
-                                    {conv.unreadCount > 99
+                                    {(conv.unreadCount || 0) > 99
                                       ? "99+"
-                                      : conv.unreadCount}
+                                      : (conv.unreadCount || 0)}
                                   </Badge>
                                 )}
                               </div>
@@ -1213,8 +1213,8 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                   </div>
                                   <div className="flex items-center gap-2">
                                     <OnlineStatusIndicator
-                                      isOnline={selectedChat.participant_profile?.is_online || false}
-                                      lastSeen={selectedChat.participant_profile?.last_seen}
+                                      isOnline={false}
+                                      lastSeen={undefined}
                                       size="sm"
                                       showLabel={true}
                                     />
@@ -1327,6 +1327,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                         >
                                           <EnhancedMessage
                                             message={msg}
+                                            currentUserId={user?.id || ""}
                                             isCurrentUser={
                                               msg.senderId === user.id
                                             }

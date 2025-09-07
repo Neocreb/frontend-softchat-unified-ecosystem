@@ -97,10 +97,10 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   const unifiedMemePack: StickerPackData = {
     id: "memes",
     name: "Memes",
-    description: `All memes (${collections.memes.length + SAMPLE_MEMES.length})`,
+    description: `All memes (${collections.memes.length + REAL_MEMES.length})`,
     category: "memes" as StickerCategory,
     // User memes first, then community memes
-    stickers: [...collections.memes, ...SAMPLE_MEMES],
+    stickers: [...collections.memes, ...REAL_MEMES],
     creatorId: "unified",
     creatorName: "Community",
     downloadCount: 0,
@@ -113,17 +113,17 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
     tags: ["memes", "community", "unified"],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    thumbnailUrl: collections.memes[0]?.thumbnailUrl || SAMPLE_MEMES[0]?.thumbnailUrl || "",
+    thumbnailUrl: collections.memes[0]?.thumbnailUrl || REAL_MEMES[0]?.thumbnailUrl || "",
     price: 0,
   };
 
   const unifiedGifPack: StickerPackData = {
     id: "gifs",
     name: "GIFs",
-    description: `All GIFs (${collections.gifs.length + SAMPLE_GIFS.length})`,
-    category: "gifs" as StickerCategory,
-    // User GIFs first, then community GIFs
-    stickers: [...collections.gifs, ...SAMPLE_GIFS],
+      description: `All GIFs (${collections.gifs.length + REAL_GIFS.length})`,
+      category: "gifs" as StickerCategory,
+      // User GIFs first, then community GIFs
+      stickers: [...collections.gifs, ...REAL_GIFS],
     creatorId: "unified",
     creatorName: "Community",
     downloadCount: 0,
@@ -136,7 +136,7 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
     tags: ["gifs", "animated", "community", "unified"],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    thumbnailUrl: collections.gifs[0]?.thumbnailUrl || SAMPLE_GIFS[0]?.thumbnailUrl || "",
+      thumbnailUrl: collections.gifs[0]?.thumbnailUrl || REAL_GIFS[0]?.thumbnailUrl || "",
     price: 0,
   };
 
@@ -157,10 +157,10 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
     const updatedUnifiedMemePack: StickerPackData = {
       id: "memes",
       name: "Memes",
-      description: `All memes (${collections.memes.length + SAMPLE_MEMES.length})`,
+      description: `All memes (${collections.memes.length + REAL_MEMES.length})`,
       category: "memes" as StickerCategory,
       // User memes first, then community memes
-      stickers: [...collections.memes, ...SAMPLE_MEMES],
+      stickers: [...collections.memes, ...REAL_MEMES],
       creatorId: "unified",
       creatorName: "Community",
       downloadCount: 0,
@@ -173,17 +173,17 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
       tags: ["memes", "community", "unified"],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      thumbnailUrl: collections.memes[0]?.thumbnailUrl || SAMPLE_MEMES[0]?.thumbnailUrl || "",
+      thumbnailUrl: collections.memes[0]?.thumbnailUrl || REAL_MEMES[0]?.thumbnailUrl || "",
       price: 0,
     };
 
     const updatedUnifiedGifPack: StickerPackData = {
       id: "gifs",
       name: "GIFs",
-      description: `All GIFs (${collections.gifs.length + SAMPLE_GIFS.length})`,
+      description: `All GIFs (${collections.gifs.length + REAL_GIFS.length})`,
       category: "gifs" as StickerCategory,
       // User GIFs first, then community GIFs
-      stickers: [...collections.gifs, ...SAMPLE_GIFS],
+      stickers: [...collections.gifs, ...REAL_GIFS],
       creatorId: "unified",
       creatorName: "Community",
       downloadCount: 0,
@@ -196,7 +196,7 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
       tags: ["gifs", "animated", "community", "unified"],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      thumbnailUrl: collections.gifs[0]?.thumbnailUrl || SAMPLE_GIFS[0]?.thumbnailUrl || "",
+      thumbnailUrl: collections.gifs[0]?.thumbnailUrl || REAL_GIFS[0]?.thumbnailUrl || "",
       price: 0,
     };
 

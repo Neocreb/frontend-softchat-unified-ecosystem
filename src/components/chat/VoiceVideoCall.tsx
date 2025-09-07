@@ -234,9 +234,9 @@ export const VoiceVideoCall: React.FC<VoiceVideoCallProps> = ({
                   {chatName || participants[0]?.name}
                 </h3>
                 {participants.length > 1 && (
-                  <Badge variant="secondary">
+                  <span className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full">
                     {participants.length} participants
-                  </Badge>
+                  </span>
                 )}
               </div>
               <div className="text-sm text-gray-300">
