@@ -98,9 +98,6 @@ const LiveCommunityEvents = () => {
   const { toast } = useToast();
 
 
-  useEffect(() => {
-    setEvents(mockEvents);
-  }, []);
 
   const getEventTypeIcon = (type: string) => {
     switch (type) {
