@@ -84,14 +84,14 @@ export class ProfileService {
 
       if (error) {
         console.warn(
-          `Followers table query failed: ${error.message}. Using mock data.`,
+          `Followers table query failed: ${error.message}. Returning 0.`,
         );
-        return Math.floor(Math.random() * 1000) + 100;
+        return 0;
       }
       return count || 0;
     } catch (error: any) {
       console.warn("Error fetching followers count:", error?.message || error);
-      return Math.floor(Math.random() * 1000) + 100; // Return mock data on error
+      return 0;
     }
   }
 
