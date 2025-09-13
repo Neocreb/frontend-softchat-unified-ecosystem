@@ -72,7 +72,7 @@ export const MarketplaceProvider = ({ children }: { children: React.ReactNode })
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [activeSeller, setActiveSeller] = useState<SellerProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [boostOptions] = useState<BoostOption[]>(mockBoostOptions);
+  const [boostOptions] = useState<BoostOption[]>([]);
 
   // Load real products from Supabase
   useEffect(() => {
