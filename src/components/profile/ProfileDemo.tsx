@@ -15,7 +15,6 @@ import {
   ArrowRight,
   Eye,
 } from "lucide-react";
-import { mockUsers } from "@/data/mockUsers";
 
 export const ProfileDemo: React.FC = () => {
   const navigate = useNavigate();
