@@ -104,14 +104,14 @@ export class ProfileService {
 
       if (error) {
         console.warn(
-          `Following table query failed: ${error.message}. Using mock data.`,
+          `Following table query failed: ${error.message}. Returning 0.`,
         );
-        return Math.floor(Math.random() * 500) + 50;
+        return 0;
       }
       return count || 0;
     } catch (error: any) {
       console.warn("Error fetching following count:", error?.message || error);
-      return Math.floor(Math.random() * 500) + 50; // Return mock data on error
+      return 0;
     }
   }
 
