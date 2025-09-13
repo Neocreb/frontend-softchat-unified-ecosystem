@@ -35,15 +35,8 @@ export class ProfileService {
 
       if (error) {
         console.warn(
-          "User not found in database, checking mock users or generating new mock user",
+          "User not found in database",
         );
-
-        // Search in mock users by partial match
-        const mockSearchResults = searchMockUsers(username);
-        if (mockSearchResults.length > 0) {
-          return mockSearchResults[0].profile!;
-        }
-
         return null;
       }
 
