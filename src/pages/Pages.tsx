@@ -58,7 +58,7 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 
-import { pages as mockPages } from "@/data/mockExploreData";
+const mockPages: any[] = [];
 
 interface Page {
   id: string;
