@@ -7,7 +7,6 @@ import {
   FreelanceProfile,
   CryptoProfile,
 } from "@/types/user";
-import { mockUsers, searchMockUsers } from "@/data/mockUsers";
 
 // Enhanced profile service with comprehensive profile management
 export class ProfileService {
