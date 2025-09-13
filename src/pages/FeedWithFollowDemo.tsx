@@ -66,7 +66,7 @@ const FeedWithFollowDemo: React.FC = () => {
             <Badge variant="outline">Interactive</Badge>
           </div>
           <div className="space-y-4">
-            {sampleUsers.map((user, index) => (
+            {sampleUsersLocal.map((user, index) => (
               <FeedUserCard
                 key={`user-${index}`}
                 user={user}
