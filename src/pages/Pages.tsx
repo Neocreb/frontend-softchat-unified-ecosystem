@@ -109,11 +109,12 @@ const Pages = () => {
   });
 
   // Filter and sort pages
-  const filteredPages = mockPages
+  const pagesList = mockPages; // TODO: replace with API call
+  const filteredPages = pagesList
     .filter((page) => {
       const matchesSearch =
         page.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        page.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (page.description || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
         page.category.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory =
         selectedCategory === "all" || page.category === selectedCategory;
