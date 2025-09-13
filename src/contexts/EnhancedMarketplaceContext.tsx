@@ -448,13 +448,13 @@ export const EnhancedMarketplaceProvider = ({
   const { toast } = useToast();
 
   // State
-  const [products, setProducts] = useState<Product[]>(mockProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] =
-    useState<ProductCategory[]>(mockCategories);
-  const [campaigns, setCampaigns] = useState<Campaign[]>(mockCampaigns);
+    useState<ProductCategory[]>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [sellers, setSellers] = useState<SellerProfile[]>([]);
   const [reviews, setReviews] = useState<Record<string, Review[]>>({});
-  const [boostOptions] = useState<BoostOption[]>(mockBoostOptions);
+  const [boostOptions] = useState<BoostOption[]>([]);
   const [productBoosts, setProductBoosts] = useState<ProductBoost[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
