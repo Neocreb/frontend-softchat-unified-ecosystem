@@ -4,8 +4,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FeedUserCard, FeedGroupCard, FeedPageCard } from '@/components/feed/FeedEntityCards';
 import { useEntityFollowHandlers } from '@/components/feed/UnifiedFeedHandlers';
-import { groups, pages } from '@/data/mockExploreData';
-import { getRandomMockUsers } from '@/data/mockUsers';
+const groups: any[] = [];
+const pages: any[] = [];
+const sampleUsers: any[] = [];
 import { Users, Building, UserPlus } from 'lucide-react';
 
 const FeedWithFollowDemo: React.FC = () => {
