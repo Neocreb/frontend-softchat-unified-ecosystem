@@ -86,25 +86,25 @@ export const useRealtimeVideos = (limit: number = 20) => {
         user_id: video.user_id,
         content: video.content,
         video_url: video.video_url!,
-        thumbnail_url: video.image_url, // Use image_url as thumbnail if available
+        thumbnail_url: video.image_url,
         filter: video.filter,
         tags: video.tags,
-        view_count: Math.floor(Math.random() * 1000), // Mock view count for now
-        like_count: video.post_likes?.length || 0,
-        comment_count: Math.floor(Math.random() * 50), // Mock comment count
-        share_count: Math.floor(Math.random() * 25), // Mock share count
+        view_count: video.view_count || 0,
+        like_count: Array.isArray(video.post_likes) ? video.post_likes.length : 0,
+        comment_count: video.comment_count || 0,
+        share_count: video.share_count || 0,
         softpoints: video.softpoints,
         created_at: video.created_at,
         updated_at: video.updated_at,
         author: video.author || {
           user_id: video.user_id,
           name: 'Unknown User',
-          username: `user-${video.user_id.slice(0, 8)}`,
-          avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=default',
+          username: `user-${String(video.user_id || '').slice(0, 8)}`,
+          avatar_url: '/placeholder.svg',
           is_verified: false,
         },
         is_liked: user ? video.post_likes?.some((like: any) => like.user_id === user.id) : false,
-        is_following: false, // Would need followers table lookup
+        is_following: false,
       }));
 
       if (reset) {
